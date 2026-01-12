@@ -1,0 +1,1 @@
+// This hook handles filtering menu items by category.
