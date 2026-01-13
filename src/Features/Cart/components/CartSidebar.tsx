@@ -20,11 +20,11 @@ export const CartSidebar: React.FC = () => {
     }, [isCartOpen]);
 
     // Slide-up for mobile, Slide-from-right for desktop
-    const sidebarClass = `fixed inset-0 md:left-auto md:right-0 md:w-[450px] bg-gray-50 md:bg-white shadow-2xl z-[60] transform transition-transform duration-500 ease-in-out ${isCartOpen ? "translate-y-0 md:translate-x-0" : "translate-y-full md:translate-x-full md:translate-y-0"}`;
-    const overlayClass = `fixed inset-0 bg-black/50 z-[55] transition-opacity duration-500 ${isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`;
+    const sidebarClass = `fixed bottom-0 left-0 right-0 h-3/4 md:top-0 md:h-full md:left-auto md:right-0 md:w-[450px] bg-gray-50 md:bg-white shadow-2xl z-[60] transform transition-transform duration-500 ease-in-out ${isCartOpen ? "translate-y-0 md:translate-x-0" : "translate-y-full md:translate-x-full md:translate-y-0"}`;
+    const overlayClass = `fixed inset-0 bg-white-70 backdrop-blur-[2px] z-[55] transition-opacity duration-500 ${isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`;
 
-    const taxAmount = cartTotal * 0.13;
-    const grandTotal = cartTotal + taxAmount;
+   
+    const grandTotal = cartTotal;
 
     return (
         <>
@@ -171,44 +171,16 @@ export const CartSidebar: React.FC = () => {
                     {cartItems.length > 0 && (
                         <div className="border-t border-gray-100 p-6 bg-white space-y-4">
                             <div className="space-y-2">
-                                <div className="flex justify-between text-gray-500 text-sm">
-                                    <span>Subtotal</span>
-                                    <span>NRP {cartTotal}</span>
-                                </div>
-                                <div className="flex justify-between text-gray-500 text-sm">
-                                    <span>Tax (13%)</span>
-                                    <span>NRP {taxAmount.toFixed(0)}</span>
-                                </div>
-                                <div className="flex justify-between text-gray-500 text-sm">
-                                    <span>Delivery Fee</span>
-                                    <span>NRP 50</span>
-                                </div>
+                               
                                 <div className="flex justify-between text-gray-900 font-bold text-lg pt-4 mt-2 border-t border-gray-100">
                                     <span>Total Amount</span>
-                                    <span>NRP {grandTotal + 50}</span>
+                                    <span>NRP {grandTotal}</span>
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2 text-primary text-xs font-bold bg-primary/5 p-3 rounded-xl border border-primary/10">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
-                                    className="w-4 h-4"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"
-                                    />
-                                </svg>
-                                1 Coupon Applied
-                            </div>
 
                             <button className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary-hover active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-                                Proceed to Checkout
+                                Order
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
