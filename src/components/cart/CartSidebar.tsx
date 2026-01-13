@@ -67,7 +67,7 @@ export const CartSidebar: React.FC = () => {
                                         <div className="flex-1 flex flex-col justify-between">
                                             <div>
                                                 <h4 className="font-bold text-gray-800 text-sm">{item.name}</h4>
-                                                <p className="text-primary font-bold text-sm mt-1">NRP {item.price * item.quantity}</p>
+                                                <p className="text-primary font-bold text-sm mt-1">NPR {item.price * item.quantity}</p>
                                             </div>
 
                                             <div className="flex items-center justify-between mt-2">
@@ -78,7 +78,7 @@ export const CartSidebar: React.FC = () => {
                                                     >
                                                         -
                                                     </button>
-                                                    <span className="text-xs font-bold text-gray-800 min-w-[20px] text-center">{item.quantity}</span>
+                                                    <span className="text-xs font-bold text-gray-800 min-w-5 text-center">{item.quantity}</span>
                                                     <button
                                                         onClick={() => updateQuantity(item.id, 1)}
                                                         className="w-6 h-6 flex items-center justify-center bg-white rounded shadow-sm text-gray-600 hover:text-primary active:scale-95"
@@ -108,19 +108,19 @@ export const CartSidebar: React.FC = () => {
                             <div className="space-y-2">
                                 <div className="flex justify-between text-gray-500 text-sm">
                                     <span>Subtotal</span>
-                                    <span>NRP {cartTotal}</span>
+                                    <span>NPR {cartTotal}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-500 text-sm">
                                     <span>Tax (13%)</span>
-                                    <span>NRP {taxAmount.toFixed(0)}</span>
+                                    <span>NPR {taxAmount.toFixed(0)}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-500 text-sm">
                                     <span>Delivery Fee</span>
-                                    <span>NRP 50</span>
+                                    <span>NPR 50</span>
                                 </div>
                                 <div className="flex justify-between text-gray-900 font-bold text-lg pt-2 border-t border-gray-200">
                                     <span>Total Amount</span>
-                                    <span>NRP {grandTotal + 50}</span>
+                                    <span>NPR {grandTotal + 50}</span>
                                 </div>
                             </div>
 
