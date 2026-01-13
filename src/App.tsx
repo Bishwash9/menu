@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react';
-import { CartProvider } from './context/CartContext';
-import { Header } from './components/layout/Header';
-import { CategoryFilter } from './components/menu/CategoryFilter';
-import { FoodCard } from './components/menu/FoodCard';
-import { CartSidebar } from './components/cart/CartSidebar';
+import { CartProvider } from './Features/Cart';
+import { Header } from './Components/layout/Header';
+import { CategoryFilter } from './Features/Menu/components/CategoryFilter';
+import { FoodCard } from './Features/Menu/components/MenuCard';
+import { CartSidebar } from './Features/Cart/components/CartSidebar';
 import { MOCK_MENU_ITEMS, CATEGORIES } from './lib/data';
+import { FloatingCartBar } from './Features/Cart/components/FloatingCartBar';
 
 function App() {
     const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -72,7 +73,7 @@ function App() {
                 </div>
 
                 <CartSidebar />
-
+                <FloatingCartBar />
             </div>
         </CartProvider>
     );
