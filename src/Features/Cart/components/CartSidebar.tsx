@@ -100,7 +100,7 @@ export const CartSidebar: React.FC = () => {
                                 {cartItems.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="bg-white p-3 rounded-2xl flex gap-4 shadow-sm border border-gray-100 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                        className="bg-white p-3 rounded-2xl flex gap-4 shadow-sm border border-gray-100 animate-in  slide-in-from-bottom-2 duration-300"
                                     >
                                         <div className="w-20 h-20 rounded-xl overflow-hidden shadow-sm shrink-0 border border-gray-100">
                                             <img
@@ -147,7 +147,7 @@ export const CartSidebar: React.FC = () => {
                                                     >
                                                         -
                                                     </button>
-                                                    <span className="text-sm font-bold text-gray-800 min-w-[32px] text-center">
+                                                    <span className="text-sm font-bold text-gray-800 min-w-8 text-center">
                                                         {item.quantity}
                                                     </span>
                                                     <button

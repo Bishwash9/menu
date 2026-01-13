@@ -10,10 +10,10 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
     return (
-        <header className="sticky top-0 z-50 bg-white shadow-sm py-4 px-4 md:px-8 flex items-center justify-between min-h-[72px]">
+        <header className="sticky top-0 z-50 bg-white shadow-sm py-4 px-4 md:px-8 flex items-center justify-between min-h-18">
             {/* Mobile search expanded view */}
             {isSearchExpanded ? (
-                <div className="flex-1 flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-300">
+                <div className="flex-1 flex items-center gap-2 animate-in  slide-in-from-right-4 duration-300">
                     <button
                         onClick={() => setIsSearchExpanded(false)}
                         className="p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors"

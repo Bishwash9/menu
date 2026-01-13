@@ -29,7 +29,7 @@ function App() {
                 <Header onSearch={setSearchQuery} />
 
                 <div className="max-w-7xl mx-auto">
-                    <div className="sticky top-[72px] z-40 bg-gray-50/95 backdrop-blur-sm pt-2 pb-2">
+                    <div className="sticky top-18 z-40 bg-gray-50/95 backdrop-blur-sm pt-2 pb-2">
                         <CategoryFilter
                             activeCategory={activeCategory}
                             onSelectCategory={setActiveCategory}
