@@ -2,9 +2,9 @@ import { createContext, useContext, useState, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import type { MenuItem } from '../../../lib/data';
 
-// ============================================================================
+
 // TYPES & INTERFACES
-// ============================================================================
+
 
 export interface CartItem extends MenuItem {
     quantity: number;
@@ -22,15 +22,13 @@ interface CartContextType {
     toggleCart: () => void;
 }
 
-// ============================================================================
 // CONTEXT CREATION
-// ============================================================================
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// ============================================================================
+
 // PROVIDER COMPONENT
-// ============================================================================
+
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -94,9 +92,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
-// ============================================================================
+
 // CUSTOM HOOK
-// ============================================================================
+
 
 export const useCart = () => {
     const context = useContext(CartContext);

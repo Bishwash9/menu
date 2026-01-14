@@ -23,8 +23,9 @@ export const CartSidebar: React.FC = () => {
     const sidebarClass = `fixed bottom-0 left-0 right-0 h-3/4 md:top-0 md:h-full md:left-auto md:right-0 md:w-[450px] bg-gray-50 md:bg-white shadow-2xl z-[60] transform transition-transform duration-500 ease-in-out ${isCartOpen ? "translate-y-0 md:translate-x-0" : "translate-y-full md:translate-x-full md:translate-y-0"}`;
     const overlayClass = `fixed inset-0 bg-white-70 backdrop-blur-[2px] z-[55] transition-opacity duration-500 ${isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`;
 
-   
-    const grandTotal = cartTotal;
+    // Calculate tax and total
+    const taxAmount = cartTotal * 0.13; // 13% tax
+    const grandTotal = cartTotal + taxAmount + 50; // subtotal + tax + delivery fee
 
     return (
         <>
@@ -136,7 +137,7 @@ export const CartSidebar: React.FC = () => {
                                                 </button>
                                             </div>
                                             <p className="text-primary font-bold text-xs mt-1 uppercase tracking-wider">
-                                                NRP {item.price}
+                                                NPR {item.price}
                                             </p>
 
                                             <div className="flex items-center justify-between mt-3">
@@ -158,7 +159,7 @@ export const CartSidebar: React.FC = () => {
                                                     </button>
                                                 </div>
                                                 <span className="font-bold text-gray-800 text-sm">
-                                                    NRP {item.price * item.quantity}
+                                                    NPR {item.price * item.quantity}
                                                 </span>
                                             </div>
                                         </div>
@@ -171,10 +172,21 @@ export const CartSidebar: React.FC = () => {
                     {cartItems.length > 0 && (
                         <div className="border-t border-gray-100 p-6 bg-white space-y-4">
                             <div className="space-y-2">
-                               
+                                <div className="flex justify-between text-gray-500 text-sm">
+                                    <span>Subtotal</span>
+                                    <span>NPR {cartTotal.toFixed(0)}</span>
+                                </div>
+                                <div className="flex justify-between text-gray-500 text-sm">
+                                    <span>Tax (13%)</span>
+                                    <span>NPR {taxAmount.toFixed(0)}</span>
+                                </div>
+                                <div className="flex justify-between text-gray-500 text-sm">
+                                    <span>Delivery Fee</span>
+                                    <span>NPR 50</span>
+                                </div>
                                 <div className="flex justify-between text-gray-900 font-bold text-lg pt-4 mt-2 border-t border-gray-100">
                                     <span>Total Amount</span>
-                                    <span>NRP {grandTotal}</span>
+                                    <span>NPR {grandTotal.toFixed(0)}</span>
                                 </div>
                             </div>
 
@@ -196,10 +208,10 @@ export const CartSidebar: React.FC = () => {
                                     />
                                 </svg>
                             </button>
-                        </div>
+                        </div >
                     )}
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     );
 };
