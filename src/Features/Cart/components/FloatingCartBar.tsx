@@ -17,13 +17,12 @@ export const FloatingCartBar: React.FC = () => {
                     </div>
                     <div>
                         <p className="text-xs text-gray-400 font-bold">{cartCount} Items in cart</p>
-                        <p className="font-bold text-lg">NRP {cartTotal}</p>
+                        <p className="font-bold text-lg">NPR {cartTotal}</p>
                     </div>
                 </div>
                 <button
                     onClick={toggleCart}
-                    className="bg-white text-black font-bold px-6 py-3 rounded-xl active:scale-95 transition-all text-sm"
-                >
+                    className="bg-white text-black font-bold px-6 py-3 rounded-xl active:scale-95 transition-all text-sm">
                     View Cart
                 </button>
             </div>

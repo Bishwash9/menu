@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { CartProvider } from '../Features/Cart';
-import { Header } from '../Components/layout/Header';
+import { Header } from '../components/layout/Header';
 import { CategoryFilter } from '../Features/Menu/components/CategoryFilter';
 import { FoodCard } from '../Features/Menu/components/MenuCard';
 import { CartSidebar } from '../Features/Cart/components/CartSidebar';
