@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { SIDEBAR_CONFIG } from "../../config/sidebarConfig";
 import type { Role } from "../../lib/roles";
 
@@ -70,7 +70,7 @@ export function SideBar({ role }: SideBarProps) {
               className={`group flex items-center cursor-pointer 
                 transition-all duration-300 ease-in-out border-l-4 border-transparent
                 hover:bg-white/10 hover:border-[#D4AF37] hover:text-[#D4AF37]
-                animate-in slide-in-from-left duration-500
+                animate-in slide-in-from-left
                 ${collapsed ? "justify-center px-0 py-4" : "px-6 py-4 gap-4"}`}
               style={{
                 animationDelay: `${index * 75}ms`,
