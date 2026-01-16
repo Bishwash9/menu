@@ -1,4 +1,5 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { SIDEBAR_CONFIG } from "../../config/sidebarConfig";
 import type { Role } from "../../lib/roles";
 
@@ -12,6 +13,12 @@ export function SideBar({ role }: SideBarProps) {
   //  ADD: collapse state
   const [collapsed, setCollapsed] = useState(false);
 
+  // GSAP refs
+  const sidebarRef = useRef<HTMLElement>(null);
+  const headerTextRef = useRef<HTMLHeadingElement>(null);
+  const headerIconRef = useRef<HTMLSpanElement>(null);
+  const menuItemsRef = useRef<(HTMLSpanElement | null)[]>([]);
+
   //  ADD: auto-collapse on small screens
   useEffect(() => {
     const handleResize = () => {
@@ -24,72 +31,105 @@ export function SideBar({ role }: SideBarProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // GSAP animation effect for collapse/expand
+  useEffect(() => {
+    const timeline = gsap.timeline();
+    const textElements = [headerTextRef.current, headerIconRef.current, ...menuItemsRef.current].filter(Boolean);
+
+    if (collapsed) {
+      // Collapse animation - fade out text first, then shrink
+      timeline
+        .to(textElements, {
+          opacity: 0,
+          duration: 0.15,
+          ease: "power1.out",
+        })
+        .to(sidebarRef.current, {
+          width: "4rem", // w-16
+          duration: 0.4,
+          ease: "power2.inOut",
+        }, 0.1);
+    } else {
+      // Expand animation - expand first, then fade in text
+      timeline
+        .to(sidebarRef.current, {
+          width: "16rem", // w-64
+          duration: 0.4,
+          ease: "power2.inOut",
+        })
+        .to(textElements, {
+          opacity: 1,
+          duration: 0.25,
+          ease: "power1.in",
+        }, 0.2);
+    }
+
+    return () => {
+      timeline.kill();
+    };
+  }, [collapsed]);
+
   return (
     <aside
-      //  ORIGINAL (commented, not removed)
-      // className="w-64 h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans"
-
-      //  UPDATED (collapsible + animated)
-      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans transition-all duration-300 ease-in-out overflow-hidden
-      ${collapsed ? "w-16" : "w-64"}`}
+      ref={sidebarRef}
+      className="h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden"
+      style={{ width: collapsed ? "4rem" : "16rem" }}
       >
       {/* Header */}
-      <div
-        className={`p-6 flex items-center border-b border-yellow-600/20 mb-4
-        ${collapsed ? "justify-center gap-0" : "gap-3"}`}
-      >
-        {/* 🔹 ADD: toggle button */}
+      <div className="p-6 flex items-center border-b border-yellow-600/20 mb-4">
+        {/* Toggle button */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="text-[#D4AF37] text-xl focus:outline-none"
+          className="text-[#D4AF37] text-xl focus:outline-none hover:scale-110 transition-transform shrink-0"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
-          ☰
+          {collapsed ? "☰" : "✕"}
         </button>
-        {!collapsed && (
-          <span className="text-2xl animate-pulse flex items-center justify-center w-8">
+        
+        {/* Header content - hidden when collapsed */}
+        <div className="flex items-center gap-3 overflow-hidden">
+          <span 
+            ref={headerIconRef}
+            className="text-2xl animate-pulse shrink-0"
+            style={{ opacity: collapsed ? 0 : 1, pointerEvents: collapsed ? 'none' : 'auto' }}
+          >
             ✨
           </span>
-        )}
 
-        {/*  ORIGINAL */}
-        {/* <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">ROYAL HMS</h2> */}
-
-        {/*  UPDATED (text hides on collapse) */}
-        {!collapsed && (
-          <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">
+          <h2 
+            ref={headerTextRef}
+            className="text-[#D4AF37] font-bold tracking-widest text-lg whitespace-nowrap"
+            style={{ opacity: collapsed ? 0 : 1, pointerEvents: collapsed ? 'none' : 'auto' }}
+          >
             ROYAL BLUE
           </h2>
-        )}
+        </div>
       </div>
 
-      <nav className="flex-1">
+      <nav className="flex-1 overflow-hidden">
         <ul className="space-y-1">
           {menuItems.map((item, index) => (
             <li
               key={item.label}
               className={`group flex items-center cursor-pointer 
-                transition-all duration-300 ease-in-out border-l-4 border-transparent
+                transition-all duration-200 ease-in-out border-l-4 border-transparent
                 hover:bg-white/10 hover:border-[#D4AF37] hover:text-[#D4AF37]
-                animate-in slide-in-from-left
-                ${collapsed ? "justify-center px-0 py-4" : "px-6 py-4 gap-4"}`}
-              style={{
-                animationDelay: `${index * 75}ms`,
-                animationFillMode: "backwards",
-              }}
+                ${collapsed ? "justify-center px-4 py-4" : "px-6 py-4 gap-4"}`}
             >
-              <span className="text-[#D4AF37] group-hover:scale-110 transition-transform duration-300">
+              <span className="text-[#D4AF37] group-hover:scale-110 transition-transform duration-200 shrink-0">
                 {item.icon}
               </span>
 
-              {/*  ORIGINAL */}
-              {/* <span className="text-sm font-medium tracking-wide">{item.label}</span> */}
-
-              {/*  UPDATED (hide label when collapsed) */}
-              {!collapsed && (
-                <span className="text-sm font-medium tracking-wide">
-                  {item.label}
-                </span>
-              )}
+              <span 
+                ref={(el) => { menuItemsRef.current[index] = el; }}
+                className="text-sm font-medium tracking-wide whitespace-nowrap overflow-hidden"
+                style={{ 
+                  opacity: collapsed ? 0 : 1,
+                  pointerEvents: collapsed ? 'none' : 'auto'
+                }}
+              >
+                {item.label}
+              </span>
             </li>
           ))}
         </ul>
