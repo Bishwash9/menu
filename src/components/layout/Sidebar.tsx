@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { SIDEBAR_CONFIG } from "../../config/sidebarConfig";
 import type { Role } from "../../lib/roles";
+import { SIDEBAR_CONFIG } from "../../Config/SidebarConfig";
 
 interface SideBarProps {
   role: Role;
@@ -41,27 +41,27 @@ export function SideBar({ role }: SideBarProps) {
       timeline
         .to(textElements, {
           opacity: 0,
-          duration: 0.15,
-          ease: "power1.out",
+          duration: 0.25,
+          ease: "power2.out",
         })
         .to(sidebarRef.current, {
           width: "4rem", // w-16
-          duration: 0.4,
-          ease: "power2.inOut",
+          duration: 0.6,
+          ease: "expo.inOut",
         }, 0.1);
     } else {
       // Expand animation - expand first, then fade in text
       timeline
         .to(sidebarRef.current, {
           width: "16rem", // w-64
-          duration: 0.4,
-          ease: "power2.inOut",
+          duration: 0.6,
+          ease: "expo.inOut",
         })
         .to(textElements, {
           opacity: 1,
-          duration: 0.25,
-          ease: "power1.in",
-        }, 0.2);
+          duration: 0.4,
+          ease: "power2.in",
+        }, 0.3);
     }
 
     return () => {
@@ -72,7 +72,7 @@ export function SideBar({ role }: SideBarProps) {
   return (
     <aside
       ref={sidebarRef}
-      className="h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden"
+      className="h-full bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden"
       style={{ width: collapsed ? "4rem" : "16rem" }}
       >
       {/* Header */}

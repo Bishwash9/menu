@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ROLES, type Role } from '../lib/roles';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../components/Layout/Sidebar';
 
 
 function Testsidebar() {

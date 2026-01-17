@@ -33,5 +33,18 @@
     "tailwindcss": "^4.1.18",
     "typescript": "~5.8.3",
     "vite": "^7.0.4"
-  }
+  },
+  "description": "This template should help get you started developing with Tauri, React and Typescript in Vite.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chetan079bca005-code/menu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chetan079bca005-code/menu/issues"
+  },
+  "homepage": "https://github.com/chetan079bca005-code/menu#readme"
 }
