@@ -1,13 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MOCK_ORDER_DATA } from '../lib/orderdata'
 import type { OrderModel, OrderType } from '../Types/order'
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 const OrderModelPage: React.FC = () => {
 
+    const location = useLocation();
 
+    useEffect(()=>{
+        const typeFromSidebar = location.state?.orderType as OrderType | undefined;
 
+        if(typeFromSidebar){
+        handleTypeChange(typeFromSidebar)
+        }
+    },[location.state]);
+
+  
     const [formData, setFormData] = useState<OrderModel>({
         fullname: '',
         orderType: 'table',
