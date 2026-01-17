@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SIDEBAR_CONFIG } from "../../config/sidebarConfig";
 import type { Role } from "../../lib/roles";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 interface SideBarProps {
   role: Role;
@@ -11,6 +12,13 @@ export function SideBar({ role }: SideBarProps) {
 
   //  ADD: collapse state
   const [collapsed, setCollapsed] = useState(false);
+
+  //this is for dropdown
+  const [openMenus, setOpenMenus] = useState<string | null>(null);
+
+  const toggleMenu = (label: string) => {
+    setOpenMenus(openMenus === label ? null : label);
+  };
 
   //  ADD: auto-collapse on small screens
   useEffect(() => {
@@ -26,75 +34,92 @@ export function SideBar({ role }: SideBarProps) {
 
   return (
     <aside
-      //  ORIGINAL (commented, not removed)
-      // className="w-64 h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans"
-
-      //  UPDATED (collapsible + animated)
+  
       className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans transition-all duration-300 ease-in-out overflow-hidden
       ${collapsed ? "w-16" : "w-64"}`}
-      >
+    >
       {/* Header */}
       <div
         className={`p-6 flex items-center border-b border-yellow-600/20 mb-4
         ${collapsed ? "justify-center gap-0" : "gap-3"}`}
       >
         {/* 🔹 ADD: toggle button */}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="text-[#D4AF37] text-xl focus:outline-none"
-        >
-          ☰
-        </button>
-        {!collapsed && (
-          <span className="text-2xl animate-pulse flex items-center justify-center w-8">
-            ✨
-          </span>
-        )}
+        <div className="text-xl" style={{ height: "4vh" }}>
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-[#D4AF37] text-xl focus:outline-none"
+          >
+            ☰
+          </button>
+        </div>
 
-        {/*  ORIGINAL */}
-        {/* <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">ROYAL HMS</h2> */}
-
-        {/*  UPDATED (text hides on collapse) */}
-        {!collapsed && (
-          <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">
-            ROYAL BLUE
-          </h2>
-        )}
+       
+        <div>
+          {!collapsed && (
+            <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">
+              ROYAL BLUE
+            </h2>
+          )}
+        </div>
       </div>
 
       <nav className="flex-1">
         <ul className="space-y-1">
-          {menuItems.map((item, index) => (
-            <li
-              key={item.label}
-              className={`group flex items-center cursor-pointer 
-                transition-all duration-300 ease-in-out border-l-4 border-transparent
-                hover:bg-white/10 hover:border-[#D4AF37] hover:text-[#D4AF37]
-                animate-in slide-in-from-left duration-500
-                ${collapsed ? "justify-center px-0 py-4" : "px-6 py-4 gap-4"}`}
-              style={{
-                animationDelay: `${index * 75}ms`,
-                animationFillMode: "backwards",
-              }}
-            >
-              <span className="text-[#D4AF37] group-hover:scale-110 transition-transform duration-300">
-                {item.icon}
-              </span>
+          {menuItems.map((item, index) => {
+            const hasSubItems = item.subItems && item.subItems.length > 0;
+            const isOpen = openMenus === item.label
+            return (
+              <li key={item.label} className="flex flex-col">
+                <div
+                  onClick={() => (hasSubItems ? toggleMenu(item.label) : null)}
+                  className={`group flex items-center cursor-pointer transition-all duration-300 ease-in-out 
+                  border-l-4 border-transparent hover:bg-white/10 hover:border-[#D4AF37] hover:text-[#D4AF37]
+                   ${collapsed ? "justify-center px-0 py-4" : "px-6 py-4 gap-4"}`}
+                >
+                  <span className="text-2xl text-[#D4AF37]  transition-transform duration-300">
+                    {item.icon}
+                  </span>
 
-              {/*  ORIGINAL */}
-              {/* <span className="text-sm font-medium tracking-wide">{item.label}</span> */}
+                  {!collapsed && (
+                    <>
+                      <span className="text-sm font-medium flex-1">
+                        {item.label}
+                      </span>
+                      {hasSubItems && (
+                        <span>
+                          {isOpen ? (
+                            <ChevronDown size={16} />
+                          ) : (
+                            <ChevronRight size={16} />
+                          )}
+                        </span>
+                      )}
+                    </>
+                  )}
+                </div>
 
-              {/*  UPDATED (hide label when collapsed) */}
-              {!collapsed && (
-                <span className="text-sm font-medium tracking-wide">
-                  {item.label}
-                </span>
-              )}
-            </li>
-          ))}
+                {/* Render sub-items if menu is open and sidebar is not closed */}
+                {!collapsed && hasSubItems && isOpen && (
+                  <ul className="bg-black/20 pb-2">
+                    {item.subItems!.map((sub) => (
+                      <li
+                        key={sub.label}
+                        className="flex items-center gap-3 px-12 py-3 cursor-pointer
+                          hover:text-[#D4AF37] transition-colors text-xs text-slate-300 group/sub"
+                      >
+                        <span className="scale-75 opacity-70 transition-transform duration-300">
+                          {sub.icon}
+                        </span>
+                        <span>{sub.label}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </aside>
   );
 }
-
