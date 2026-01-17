@@ -61,7 +61,15 @@ export function SideBar({ role }: SideBarProps) {
         <div>
           {!collapsed && (
             <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">
-              ROYAL BLUE
+              Namaste PMS
+            </h2>
+          )}
+        </div>
+
+        <div>
+          {!collapsed && (
+            <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">
+            
             </h2>
           )}
         </div>
