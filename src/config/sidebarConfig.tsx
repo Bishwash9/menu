@@ -24,7 +24,7 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
     { label: 'Bookings', icon: Icons.Bookings },
     { label: 'Rooms', icon: Icons.Rooms },
     { label: 'Guests', icon: Icons.Guests },
-    { label: 'Orders', icon: Icons.Cafe },
+    { label: 'Cafe & Orders', icon: Icons.Cafe },
     { label: 'Settings', icon: Icons.Settings },
   ],
   user: [
