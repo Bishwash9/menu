@@ -9,7 +9,13 @@ import {
   CalendarCheck,
   CalendarX,
   TrendingUp,
+  Sparkles,
+  ArrowUpRight,
   X,
+  Edit2,
+  Trash2,
+  LogIn,
+  LogOut,
   Search,
   Eye
 } from 'lucide-react';
@@ -146,6 +152,11 @@ const Dashboard = () => {
     setActiveModal('none');
   };
 
+  const handleDeleteBooking = (id: string) => {
+    if (confirm('Are you sure you want to delete this booking?')) {
+      setBookings(bookings.filter(b => b.id !== id));
+    }
+  };
 
   const handleConfirmBooking = (id: string) => {
     setBookings(bookings.map(b => b.id === id ? { ...b, status: 'confirmed' } : b));
@@ -249,10 +260,10 @@ const Dashboard = () => {
 
       <div className="flex-1 p-6 bg-gray-50 overflow-y-auto">
         {/* Welcome Banner */}
-        <div className="bg-dashboard-primary rounded-2xl p-8 mb-6 text-white relative overflow-hidden min-h-40 items-center">
+        <div className="bg-[#002366] rounded-2xl p-8 mb-6 text-white relative overflow-hidden min-h-[160px] flex items-center">
           <img
             src={Banner}
-            className="absolute inset-0 w-full h-50 object-cover opacity-40 pointer-events-none z-0"
+            className="absolute inset-0 w-full h-[200px] object-cover opacity-40 pointer-events-none z-0"
             alt="Skyline"
           />
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
@@ -277,7 +288,7 @@ const Dashboard = () => {
           {/* Available Rooms */}
           <div className=" rounded-xl p-5 border border-gray-200  hover:shadow-md transition-shadow">
             <div className="flex  justify-between ">
-              <div className='bg-white h-30'>
+              <div className='bg-white h-[120px]'>
                 <p className="text-gray-500 text-sm mb-1">Available Rooms</p>
                 <p className="text-3xl font-bold text-gray-900">{roomStats.available}</p>
               </div>
@@ -347,7 +358,7 @@ const Dashboard = () => {
         <div className="flex justify-end mb-6 mt-6">
           <button
             onClick={() => setShowBookings(true)}
-            className="px-6 py-2.5 bg-dashboard-primary text-white  rounded-xl font-bold hover:bg-[#001a4d] transition-all shadow-md flex items-center gap-2"
+            className="px-6 py-2.5 bg-[#002366] text-white  rounded-xl font-bold hover:bg-[#001a4d] transition-all shadow-md flex items-center gap-2"
           >
             <Eye size={18} className='hover:text-[#D4AF37]' />
             Show Recent Bookings
@@ -355,7 +366,7 @@ const Dashboard = () => {
         </div>
 
         {showBookings && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-100 p-4 animate-in fade-in duration-200">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
             <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100">
               <div className="grid grid-cols-3 items-center p-6 border-b border-gray-100 bg-white">
                 {/* Left: Title */}
