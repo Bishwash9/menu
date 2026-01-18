@@ -2,6 +2,7 @@ import React from 'react';
 import type { MenuItem } from '../../../lib/data';
 import { useCart } from '../../Cart';
 
+
 interface FoodCardProps {
     item: MenuItem;
 }
@@ -46,14 +47,14 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
                         <div className="flex items-center bg-gray-100 rounded-lg p-1 gap-3">
                             <button
                                 onClick={() => updateQuantity(item.id, -1)}
-                                className="w-8 h-8 flex items-center justify-center bg-white rounded-md text-gray-700 shadow-sm hover:text-primary active:scale-95 transition-all"
+                                className="w-8 h-8 flex items-center justify-center bg-white rounded-md  shadow-sm hover:text-primary active:scale-95 transition-all"
                             >
                                 -
                             </button>
                             <span className="font-bold text-gray-800 text-sm w-4 text-center">{quantity}</span>
                             <button
                                 onClick={() => updateQuantity(item.id, 1)}
-                                className="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-md shadow-sm hover:bg-primary-hover active:scale-95 transition-all"
+                                className="w-8 h-8 flex items-center justify-center bg-primary  rounded-md shadow-sm hover:bg-primary-hover active:scale-95 transition-all"
                             >
                                 +
                             </button>
@@ -61,7 +62,7 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
                     ) : (
                         <button
                             onClick={() => addToCart(item)}
-                            className="bg-primary/10 text-primary hover:bg-primary hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 active:scale-95 flex items-center gap-2"
+                            className="cursor-pointer bg-primary/10 text-primary hover:bg-primary hover:text-[#ffd700] px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 active:scale-95 flex items-center gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

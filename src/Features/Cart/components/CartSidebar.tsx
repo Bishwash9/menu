@@ -25,7 +25,7 @@ export const CartSidebar: React.FC = () => {
 
     // Calculate tax and total
     const taxAmount = cartTotal * 0.13; // 13% tax
-    const grandTotal = cartTotal + taxAmount + 50; // subtotal + tax + delivery fee
+    const grandTotal = cartTotal + taxAmount; // subtotal + tax + delivery fee
 
     return (
         <>
@@ -144,16 +144,16 @@ export const CartSidebar: React.FC = () => {
                                                 <div className="flex items-center bg-gray-50 rounded-full p-0.5 border border-gray-100 shadow-inner">
                                                     <button
                                                         onClick={() => updateQuantity(item.id, -1)}
-                                                        className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm text-gray-400 hover:text-primary active:scale-95 disabled:opacity-50"
+                                                        className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm  hover:text-primary active:scale-95 disabled:opacity-50"
                                                     >
                                                         -
                                                     </button>
-                                                    <span className="text-sm font-bold text-gray-800 min-w-8 text-center">
+                                                    <span className="text-sm font-bold min-w-8 text-center">
                                                         {item.quantity}
                                                     </span>
                                                     <button
                                                         onClick={() => updateQuantity(item.id, 1)}
-                                                        className="w-8 h-8 flex items-center justify-center bg-primary rounded-full shadow-sm text-white hover:bg-primary-hover active:scale-95"
+                                                        className="w-8 h-8 flex items-center justify-center bg-primary rounded-full shadow-sm  hover:bg-primary-hover active:scale-95"
                                                     >
                                                         +
                                                     </button>
@@ -179,10 +179,6 @@ export const CartSidebar: React.FC = () => {
                                 <div className="flex justify-between text-gray-500 text-sm">
                                     <span>Tax (13%)</span>
                                     <span>NPR {taxAmount.toFixed(0)}</span>
-                                </div>
-                                <div className="flex justify-between text-gray-500 text-sm">
-                                    <span>Delivery Fee</span>
-                                    <span>NPR 50</span>
                                 </div>
                                 <div className="flex justify-between text-gray-900 font-bold text-lg pt-4 mt-2 border-t border-gray-100">
                                     <span>Total Amount</span>

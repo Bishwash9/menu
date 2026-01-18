@@ -2,6 +2,7 @@
 
 @layer base {
   :root {
+    
   --color-primary: #F97316;
   /* Orange-500 */
   --color-primary-hover: #EA580C;
@@ -9,7 +10,7 @@
   --color-primary-light: #FFEDD5;
   /* Orange-100 */
 
-
+  
   --color-dashboard-bg : #F3F4F6;
 
   --color-dashboard-primary: #002366;

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { CartProvider } from '../Features/Cart';
-import { Header } from '../components/layout/Header';
+import { Header } from '../Components/layout/Header';
 import { CategoryFilter } from '../Features/Menu/components/CategoryFilter';
 import { FoodCard } from '../Features/Menu/components/MenuCard';
 import { CartSidebar } from '../Features/Cart/components/CartSidebar';
@@ -39,11 +39,8 @@ function MenuPage() {
                     <main className="px-4 md:px-8 py-6">
                         <div className="mb-6">
                             <h2 className="text-2xl font-bold text-gray-800">
-                                {activeCategory === 'all' ? 'Explore Our Menu' : CATEGORIES.find(c => c.id === activeCategory)?.name}
+                                {activeCategory === 'all' ? '' : CATEGORIES.find(c => c.id === activeCategory)?.name}
                             </h2>
-                            <p className="text-gray-500 text-sm mt-1">
-                                {filteredItems.length} items found
-                            </p>
                         </div>
 
                         {filteredItems.length > 0 ? (

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../Features/Cart/context/CartContext';
 
 export const CartSidebar: React.FC = () => {
     const { isCartOpen, toggleCart, cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();

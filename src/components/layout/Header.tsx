@@ -144,7 +144,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                             </svg>
 
                             {cartCount > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm animate-bounce">
+                                <span className="absolute -top-1 -right-1 bg-[#002366] text-[#ffd700] text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm animate-bounce">
                                     {cartCount}
                                 </span>
                             )}
