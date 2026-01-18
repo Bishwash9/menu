@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { SIDEBAR_CONFIG } from "../../config/sidebarConfig";
 import type { Role } from "../../lib/roles";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight} from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Logo from "../../Assets/Logo.svg";
+import Namaste from "../../Assets/Namaste.svg";
+
 
 interface SideBarProps {
   role: Role;
@@ -42,37 +45,45 @@ export function SideBar({ role }: SideBarProps) {
       className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans transition-all duration-300 ease-in-out overflow-hidden
       ${collapsed ? "w-16" : "w-64"}`}
     >
+      
+         
       {/* Header */}
       <div
-        className={`p-6 flex items-center border-b border-yellow-600/20 mb-4
-        ${collapsed ? "justify-center gap-0" : "gap-3"}`}
+        className={`bg-white flex items-center border-b border-yellow-600 h-[8vh]
+        ${collapsed ? "justify-center" : "justify-between"}`}
       >
-        {/* 🔹 ADD: toggle button */}
-        <div className="text-xl" style={{ height: "4vh" }}>
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="text-[#D4AF37] text-xl focus:outline-none"
-          >
-            ☰
-          </button>
-        </div>
+        {/* hiding sidebar when collapsed */}
+        
+        {collapsed && (
+          
+           <button onClick={()=>setCollapsed(!collapsed)} className="focus:outline-none">
 
+            <div className="">
+            <img src={Logo} className="h-auto w-auto object-contain bg-blue-400"/>
+            </div>
+           </button>
+          
+        )}
        
-        <div>
+        
           {!collapsed && (
-            <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">
-              Namaste PMS
-            </h2>
-          )}
-        </div>
+            <button onClick={()=> setCollapsed(!collapsed)} className="focus:outline-none">
+              <div className="flex justify-between">
+                <div className="h-[7vh] w-auto object-contain">
+                  <img src={Logo} className="h-[3vh] w-[2vw] object-contain"/>
+                </div>
+                <div>
 
-        <div>
-          {!collapsed && (
-            <h2 className="text-[#D4AF37] font-bold tracking-widest text-lg">
-            
-            </h2>
+                <img src={Namaste} className="h-[3vh] w-[3vw] object-contain"/>
+                </div>
+              </div>
+               
+            </button>
+           
           )}
-        </div>
+
+     
+
       </div>
 
       <nav className="flex-1">
