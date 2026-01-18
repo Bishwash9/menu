@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Banner from '../../assets/Banner.svg';
-import { SideBar } from '../../components/Layout/Sidebar';
+import { SideBar } from '../../Components/layout/Sidebar';
+
 import {
   BedDouble,
   Users,
@@ -8,12 +9,11 @@ import {
   CalendarCheck,
   CalendarX,
   TrendingUp,
-  ArrowUpRight,
   X,
   Search,
   Eye
 } from 'lucide-react';
-// Types for dashboard
+// Types for Dashboard
 type ModalType = 'none' | 'newBooking' | 'checkIn' | 'checkOut' | 'addGuest' | 'viewBooking' | 'editBooking';
 type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'checked-in' | 'checked-out';
 
@@ -80,6 +80,8 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
+
+
   // Data State
   const [bookings, setBookings] = useState<Booking[]>(initialBookings);
 
@@ -143,6 +145,7 @@ const Dashboard = () => {
     setSelectedBooking(null);
     setActiveModal('none');
   };
+
 
   const handleConfirmBooking = (id: string) => {
     setBookings(bookings.map(b => b.id === id ? { ...b, status: 'confirmed' } : b));
@@ -237,49 +240,52 @@ const Dashboard = () => {
   const [showBookings, setShowBookings] = useState<boolean>(false);
 
   return (
-    <div className="flex h-full overflow-hidden">
-      <SideBar role='admin' />
-      <div className="flex-1 p-4 overflow-y-auto">
+    <div className="flex h-screen overflow-hidden">
+
+      <div>
+            <SideBar role="admin" />
+      </div>
+  
+
+      <div className="flex-1 p-6 bg-gray-50 overflow-y-auto">
         {/* Welcome Banner */}
-        <div className="bg-[#002366] rounded-2xl p-4 mb-4 text-white relative overflow-hidden min-h-40 flex items-center">
+        <div className="bg-dashboard-primary rounded-2xl p-8 mb-6 text-white relative overflow-hidden min-h-40 items-center">
           <img
-            src={Banner}  
-            className="absolute inset-0 w-full h-45 object-cover opacity-20 pointer-events-none z-1"
+            src={Banner}
+            className="absolute inset-0 w-full h-50 object-cover opacity-40 pointer-events-none z-0"
             alt="Skyline"
           />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-1/2 w-32 h-32 bg-white/5 rounded-full translate-y-1/2"></div>
           <div className="relative z-10 w-full">
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-3xl font-bold mb-2">Good {currentTime.getHours() < 12 ? 'Morning' : currentTime.getHours() < 17 ? 'Afternoon' : 'Evening'}!</h2>
-                <p className="text-yellow-400 text-sm font-medium mb-1">John</p>
-                
+                <p className="text-white/70 font-medium text-lg leading-tight max-w-sm">John</p>
               </div>
               <div className="text-right">
                 <div className="text-4xl text-yellow-400 font-bold tracking-tight mb-2">{formatTime(currentTime).split(':')[0]}:{formatTime(currentTime).split(':')[1]}</div>
                 <p className="text-yellow-400 text-sm font-medium mb-1">{formatDate(currentTime)}</p>
+
               </div>
             </div>
           </div>
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
           {/* Available Rooms */}
-          <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between">
-              <div>
+          <div className=" rounded-xl p-5 border border-gray-200  hover:shadow-md transition-shadow">
+            <div className="flex  justify-between ">
+              <div className='bg-white h-30'>
                 <p className="text-gray-500 text-sm mb-1">Available Rooms</p>
                 <p className="text-3xl font-bold text-gray-900">{roomStats.available}</p>
-                <p className="text-xs text-gray-400 mt-1">of {roomStats.total} total rooms</p>
               </div>
-              <div className="p-3 bg-green-100 rounded-xl">
-                <BedDouble size={24} className="text-green-600" />
-              </div>
+
+              <BedDouble size={46} className="text-green-600 p-3  bg-green-100 rounded-xl" />
+
             </div>
-            <div className="mt-4 flex gap-2">
-              <span className="text-xs px-2 py-1 bg-green-50 text-green-600 rounded-full">{roomStats.available} Available</span>
-              <span className="text-xs px-2 py-1 bg-orange-50 text-orange-600 rounded-full">{roomStats.cleaning} Cleaning</span>
-            </div>
+
           </div>
 
           {/* Occupied Rooms */}
@@ -288,7 +294,7 @@ const Dashboard = () => {
               <div>
                 <p className="text-gray-500 text-sm mb-1">Occupied Rooms</p>
                 <p className="text-3xl font-bold text-gray-900">{roomStats.occupied}</p>
-                <p className="text-xs text-gray-400 mt-1">{roomStats.occupancyRate}% occupancy rate</p>
+
               </div>
               <div className="p-3 bg-blue-100 rounded-xl">
                 <Users size={24} className="text-blue-600" />
@@ -310,16 +316,13 @@ const Dashboard = () => {
               <div>
                 <p className="text-gray-500 text-sm mb-1">Today's Check-ins</p>
                 <p className="text-3xl font-bold text-gray-900">{todayActivity.checkIns}</p>
-                <p className="text-xs text-gray-400 mt-1">{todayActivity.checkOuts} check-outs</p>
+
               </div>
               <div className="p-3 bg-purple-100 rounded-xl">
                 <CalendarCheck size={24} className="text-purple-600" />
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-2">
-              <ArrowUpRight size={14} className="text-green-500" />
-              <span className="text-xs text-green-600 font-medium">+{todayActivity.newBookings} new bookings</span>
-            </div>
+
           </div>
 
           {/* Today's Revenue */}
@@ -328,7 +331,7 @@ const Dashboard = () => {
               <div>
                 <p className="text-gray-500 text-sm mb-1">Today's Revenue</p>
                 <p className="text-3xl font-bold text-gray-900">₹{(totalRevenue).toLocaleString()}</p>
-                <p className="text-xs text-gray-400 mt-1">Growth: +15%</p>
+
               </div>
               <div className="p-3 bg-orange-100 rounded-xl">
                 <DollarSign size={24} className="text-orange-600" />
@@ -341,12 +344,12 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="flex justify-end mb-6">
+        <div className="flex justify-end mb-6 mt-6">
           <button
             onClick={() => setShowBookings(true)}
-            className="px-6 py-2.5 bg-orange-500 text-white rounded-xl font-bold hover:bg-orange-600 transition-all shadow-md flex items-center gap-2"
+            className="px-6 py-2.5 bg-dashboard-primary text-white  rounded-xl font-bold hover:bg-[#001a4d] transition-all shadow-md flex items-center gap-2"
           >
-            <Eye size={18} />
+            <Eye size={18} className='hover:text-[#D4AF37]' />
             Show Recent Bookings
           </button>
         </div>
@@ -400,7 +403,7 @@ const Dashboard = () => {
                       {recentBookingsList
                         .filter(b =>
                           b.guestName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          b.id.toLowerCase().includes(searchQuery.toLowerCase())
+                          b.roomId.toLowerCase().includes(searchQuery.toLowerCase())
                         )
                         .map((booking) => (
                           <tr key={booking.id} className="hover:bg-orange-50/30 transition-colors group">
@@ -970,7 +973,6 @@ const Dashboard = () => {
 
     </div>
   );
-
 };
 
 export default Dashboard;
