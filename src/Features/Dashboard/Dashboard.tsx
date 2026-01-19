@@ -10,17 +10,9 @@ import {
   CalendarCheck,
   CalendarX,
   TrendingUp,
-  Sparkles,
-  ArrowUpRight,
   X,
-  Edit2,
-  Trash2,
-  LogIn,
-  LogOut,
   Search,
-  Eye,
-  Bell
-} from 'lucide-react';
+  Eye} from 'lucide-react';
 // Types for Dashboard
 type ModalType = 'none' | 'newBooking' | 'checkIn' | 'checkOut' | 'addGuest' | 'viewBooking' | 'editBooking';
 type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'checked-in' | 'checked-out';
@@ -154,11 +146,6 @@ const Dashboard = () => {
     setActiveModal('none');
   };
 
-  const handleDeleteBooking = (id: string) => {
-    if (confirm('Are you sure you want to delete this booking?')) {
-      setBookings(bookings.filter(b => b.id !== id));
-    }
-  };
 
   const handleConfirmBooking = (id: string) => {
     setBookings(bookings.map(b => b.id === id ? { ...b, status: 'confirmed' } : b));
@@ -305,7 +292,7 @@ const Dashboard = () => {
           {/* Available Rooms */}
           <div className=" rounded-xl p-5 border border-gray-200  hover:shadow-md transition-shadow">
             <div className="flex  justify-between ">
-              <div className='bg-white h-[120px]'>
+              <div className='bg-white h-30'>
                 <p className="text-gray-500 text-sm mb-1">Available Rooms</p>
                 <p className="text-3xl font-bold text-gray-900">{roomStats.available}</p>
               </div>
@@ -383,7 +370,7 @@ const Dashboard = () => {
         </div>
 
         {showBookings && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-100 p-4 animate-in fade-in duration-200">
             <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100">
               <div className="grid grid-cols-3 items-center p-6 border-b border-gray-100 bg-white">
                 {/* Left: Title */}
