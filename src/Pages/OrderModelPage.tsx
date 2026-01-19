@@ -37,7 +37,7 @@ const OrderModelPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        <div className="h-full bg-gray-50 flex items-center justify-center p-6 overflow-y-auto">
             <div className="bg-white rounded-2xl p-8 w-full max-w-105 shadow-[0_20px_50px_rgba(0,35,102,0.1)] border border-gray-100 ">
                 <h2 className="text-2xl font-bold mb-8 text-[#002366] text-center tracking-tight">
                     Create Order

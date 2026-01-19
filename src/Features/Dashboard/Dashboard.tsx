@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Banner from '../../assets/Banner.svg';
 import { SideBar } from '../../Components/layout/Sidebar';
+import { useWebSocket } from '../../lib/useWebSocket';
 
 import {
   BedDouble,
@@ -10,12 +11,7 @@ import {
   CalendarX,
   TrendingUp,
   Sparkles,
-  ArrowUpRight,
   X,
-  Edit2,
-  Trash2,
-  LogIn,
-  LogOut,
   Search,
   Eye
 } from 'lucide-react';
@@ -85,6 +81,19 @@ const Dashboard = () => {
   const [activeModal, setActiveModal] = useState<ModalType>('none');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  
+  const { status, lastMessage } = useWebSocket();
+  const [notifications, setNotifications] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (lastMessage) {
+      setNotifications((prev: string[]) => [...prev, `${lastMessage.event}: ${JSON.stringify(lastMessage.payload)}`]);
+      // Auto-remove notification after 5s
+      setTimeout(() => {
+        setNotifications((prev: string[]) => prev.slice(1));
+      }, 5000);
+    }
+  }, [lastMessage]);
 
 
 
@@ -150,12 +159,6 @@ const Dashboard = () => {
     setBookings(bookings.map(b => b.id === selectedBooking.id ? selectedBooking : b));
     setSelectedBooking(null);
     setActiveModal('none');
-  };
-
-  const handleDeleteBooking = (id: string) => {
-    if (confirm('Are you sure you want to delete this booking?')) {
-      setBookings(bookings.filter(b => b.id !== id));
-    }
   };
 
   const handleConfirmBooking = (id: string) => {
@@ -251,7 +254,7 @@ const Dashboard = () => {
   const [showBookings, setShowBookings] = useState<boolean>(false);
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-full overflow-hidden">
 
       <div>
             <SideBar role="admin" />
@@ -271,15 +274,40 @@ const Dashboard = () => {
           <div className="relative z-10 w-full">
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-3xl font-bold mb-2">Good {currentTime.getHours() < 12 ? 'Morning' : currentTime.getHours() < 17 ? 'Afternoon' : 'Evening'}!</h2>
+                <div className="flex items-center gap-3 mb-2">
+                  <h2 className="text-3xl font-bold">Good {currentTime.getHours() < 12 ? 'Morning' : currentTime.getHours() < 17 ? 'Afternoon' : 'Evening'}!</h2>
+                  <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                    status === 'connected' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 
+                    status === 'connecting' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' : 
+                    'bg-red-500/20 text-red-400 border border-red-500/30'
+                  }`}>
+                    <div className={`w-1.5 h-1.5 rounded-full ${
+                      status === 'connected' ? 'bg-green-400 animate-pulse' : 
+                      status === 'connecting' ? 'bg-yellow-400 animate-pulse' : 
+                      'bg-red-400'
+                    }`}></div>
+                    {status}
+                  </div>
+                </div>
                 <p className="text-white/70 font-medium text-lg leading-tight max-w-sm">John</p>
               </div>
               <div className="text-right">
                 <div className="text-4xl text-yellow-400 font-bold tracking-tight mb-2">{formatTime(currentTime).split(':')[0]}:{formatTime(currentTime).split(':')[1]}</div>
                 <p className="text-yellow-400 text-sm font-medium mb-1">{formatDate(currentTime)}</p>
-
               </div>
             </div>
+            
+            {/* Real-time Notifications */}
+            {notifications.length > 0 && (
+              <div className="absolute bottom-4 right-8 z-20 flex flex-col gap-2">
+                {notifications.map((note, i) => (
+                  <div key={i} className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-lg text-sm flex items-center gap-2 animate-in slide-in-from-right-full">
+                    <Sparkles size={14} className="text-yellow-400" />
+                    <span>{note.length > 40 ? note.substring(0, 40) + "..." : note}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -366,7 +394,7 @@ const Dashboard = () => {
         </div>
 
         {showBookings && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-100 p-4 animate-in fade-in duration-200">
             <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100">
               <div className="grid grid-cols-3 items-center p-6 border-b border-gray-100 bg-white">
                 {/* Left: Title */}

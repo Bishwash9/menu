@@ -42,7 +42,7 @@ export function SideBar({ role }: SideBarProps) {
    
     <aside
   
-      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
+      className={`h-full bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
       ${collapsed ? "w-16" : "w-64"}`}
     >
       

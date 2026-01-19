@@ -25,7 +25,7 @@ function MenuPage() {
 
     return (
         <CartProvider>
-            <div className="min-h-screen bg-gray-50/50 pb-20">
+            <div className="h-full bg-gray-50/50 pb-20 overflow-y-auto">
                 <Header onSearch={setSearchQuery} />
 
                 <div className="max-w-7xl mx-auto">
