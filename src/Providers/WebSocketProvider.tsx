@@ -58,12 +58,23 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     useEffect(() => {
         isComponentMounted.current = true;
-        connect();
+        
+        // Give the Rust server a tiny bit of time to start up before connecting
+        // This prevents the "Connection Refused" error on app launch
+        const startupTimeout = setTimeout(() => {
+            connect();
+        }, 500);
 
         return () => {
             isComponentMounted.current = false;
+            clearTimeout(startupTimeout);
+            
             if (wsRef.current) {
-                wsRef.current.close();
+                // If it's still connecting, closing it causes a noisy browser error.
+                // We only close if it's actually OPEN or CLOSING.
+                if (wsRef.current.readyState === WebSocket.OPEN) {
+                    wsRef.current.close();
+                }
             }
             if (reconnectTimeoutRef.current) {
                 clearTimeout(reconnectTimeoutRef.current);
