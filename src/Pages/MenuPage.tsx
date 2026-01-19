@@ -4,7 +4,7 @@ import { Header } from '../Components/layout/Header';
 import { CategoryFilter } from '../Features/Menu/components/CategoryFilter';
 import { FoodCard } from '../Features/Menu/components/MenuCard';
 import { CartSidebar } from '../Features/Cart/components/CartSidebar';
-import { MOCK_MENU_ITEMS, CATEGORIES } from '../lib/data';
+import { MOCK_MENU_ITEMS, CATEGORIES } from '../Lib/data';
 import { FloatingCartBar } from '../Features/Cart/components/FloatingCartBar';
 
 function MenuPage() {

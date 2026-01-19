@@ -265,12 +265,19 @@ const Dashboard = () => {
           <DashboardHeader initials='SA' />
         </div>
         {/* Welcome Banner */}
-        <div className="rounded-2xl shadow-2xl mb-6 text-white relative overflow-hidden h-[20vh] w-full flex items-center">
+        <div className="rounded-2xl shadow-2xl mb-6 text-white relative overflow-hidden h-[20vh] w-full flex items-center ">
           <img
             src={Banner}
-            className="absolute inset-0 rounded-2xl w-full h-full object-cover opacity pointer-events-none z-0"
+            className="absolute inset-0 rounded-2xl w-full h-full object-cover  pointer-events-none z-0"
             alt="Skyline"
           />
+            {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/30 z-10"></div>
+
+            {/* Content */}
+          <div className="relative z-20">
+            {/* your text/content here */}
+          </div>
 
           <div className="relative z-10 w-full px-6">
             <div className="flex justify-between items-center">

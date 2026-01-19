@@ -38,7 +38,7 @@ export type Role = 'user' | 'admin' | 'staff';
 export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
   admin: [
     { label: 'Dashboard', icon: Icons.Dashboard},
-    { label: 'Bookings', icon: Icons.Bookings,subItems:[{label:'New Booking', icon:Icons.Bookings,path:"/orderForm",defaultType:'room' }]},
+    { label: 'Bookings', icon: Icons.Bookings,subItems:[{label:'New Booking', icon:Icons.Bookings,path:"/orderForm",defaultType:'room' },{label:'Show',icon:Icons.Bookings}]},
     { label: 'Rooms', icon: Icons.Rooms,},
     { label: 'Users', icon: Icons.Users,subItems:[{label:"Total Users", icon:Icons.Users}] },
     {label: 'Menu', icon: Icons.Menu, subItems:[{label:"Menu Items", icon:Icons.Menu, path:"/menu"}]},

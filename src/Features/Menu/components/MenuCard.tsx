@@ -1,5 +1,5 @@
 import React from 'react';
-import type { MenuItem } from '../../../lib/data';
+import type { MenuItem } from '../../../Lib/data';
 import { useCart } from '../../Cart';
 
 

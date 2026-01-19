@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { SIDEBAR_CONFIG } from "../../config/sidebarConfig";
-import type { Role } from "../../lib/roles";
+import { SIDEBAR_CONFIG } from "../../Config/sidebarConfig";
+import type { Role } from "../../Lib/roles";
 import { ChevronDown, ChevronRight} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../Assets/Logo.svg";
@@ -42,7 +42,7 @@ export function SideBar({ role }: SideBarProps) {
    
     <aside
   
-      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
+      className={`h-screen bg-[#4d6999] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
       ${collapsed ? "w-16" : "w-64"}`}
     >
       
