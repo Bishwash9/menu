@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { SIDEBAR_CONFIG } from "../../config/sidebarConfig";
+import { SIDEBAR_CONFIG } from "../../Config/sidebarConfig";
 import type { Role } from "../../lib/roles";
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ChevronDown, ChevronRight} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Logo from "../../Assets/Logo.svg";
 import Namaste from "../../Assets/Namaste.svg";
 
@@ -13,8 +13,6 @@ interface SideBarProps {
 
 export function SideBar({ role }: SideBarProps) {
   const menuItems = SIDEBAR_CONFIG[role] || [];
-  const navigate = useNavigate();
-  const location = useLocation();
 
   //  ADD: collapse state
   const [collapsed, setCollapsed] = useState(false);
@@ -38,31 +36,42 @@ export function SideBar({ role }: SideBarProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return (
+  const navigate = useNavigate();
 
+  return (
+   
     <aside
-      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
-      transition-all duration-300 ease-in-out
+  
+      className={`h-screen bg-[#4d6999] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
       ${collapsed ? "w-16" : "w-64"}`}
     >
-
-
-      {/* Header */}
+      
+         
+       {/* Header */}
       <div
-        className={`bg-white flex items-center justify-center border-b border-yellow-600 height: clamp(48px, 6vh, 96px) px-3
-        transition-all duration-300 ease-in-out ${collapsed ? 'justify-center' : 'justify-start'}`}
+        className={`bg-white flex items-center border-b border-yellow-600 h-[6vh]
+        ${collapsed ? "justify-center" : ""}`}
       >
-        <button onClick={() => setCollapsed(!collapsed)} className={`focus:outline-none h-full flex items-center transition-all duration-300 ease-in-out ${collapsed ? 'justify-center w-full' : 'gap-3'}`}>
-          {/* Logo - Always visible, stays fixed */}
-          <div className="shrink-0 transition-all duration-300 ease-in-out">
-            <img src={Logo} className={`object-contain transition-all duration-300 ease-in-out ${collapsed ? 'h-[7vh] w-[7vh]' : 'h-[8vh] w-[8vh]'}`} />
-          </div>
-
-          {/* Namaste Text - Fades out when collapsed */}
-          <div className={`flex items-center transition-all duration-300 ease-in-out overflow-hidden ${collapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto flex-1'}`}>
-            <img src={Namaste} className="h-[10vh] w-[14vw] object-contain" />
-          </div>
-        </button>
+        {collapsed ? (
+          /* Collapsed State */
+          <button onClick={() => setCollapsed(!collapsed)} className="focus:outline-none w-full flex justify-center">
+             <img src={Logo} className="h-[8vh] w-[8vh] object-contain"/>
+          </button>
+        ) : (
+          /* Expanded State */
+          <button onClick={() => setCollapsed(!collapsed)} className="focus:outline-none w-full flex items-center">
+             
+           
+             <div className="shrink-0">
+                <img src={Logo} className="h-[8vh] w-[8vh] object-contain"/>
+             </div>
+            
+             <div className="flex-1 flex items-center -ml-6">
+                <img src={Namaste} className="h-[10vh] w-[14vw] object-contain"/>
+             </div>
+             
+          </button>
+        )}
       </div>
 
       <nav className="flex-1">
@@ -70,45 +79,33 @@ export function SideBar({ role }: SideBarProps) {
           {menuItems.map((item) => {
             const hasSubItems = item.subItems && item.subItems.length > 0;
             const isOpen = openMenus === item.label;
-            
-            // Check if current item is active
-            const isActive = item.path === location.pathname;
-            
-            // Check if any sub-item is active (for parent highlighting)
-            const isParentActive = hasSubItems && item.subItems!.some(sub => sub.path === location.pathname);
-            
-            // Combined active state for parent
-            const isItemActive = isActive || isParentActive;
-            
             return (
               <li key={item.label} className="flex flex-col">
                 <div
                   onClick={() => {
-                    if (item.path) {
-                      navigate(item.path);
-                    }
                     if (hasSubItems) {
                       toggleMenu(item.label);
+                    }else if(item.path){
+                      navigate(item.path)
                     }
                   }}
-                  className={`group flex items-center cursor-pointer transition-all duration-300
-                  border-l-4 ${isItemActive ? 'border-[#D4AF37] bg-white/10' : 'border-transparent hover:bg-white/10 hover:border-[#D4AF37]'} 
-                  ${isItemActive ? 'text-[#D4AF37]' : 'hover:text-[#D4AF37]'}
+                  className={`group flex items-center cursor-pointer 
+                  border-l-4 border-transparent hover:bg-white/10 hover:border-[#D4AF37] hover:text-[#D4AF37]
                    ${collapsed ? "justify-center py-4" : "py-4 pr-4"}`}
                 >
                   {/* ICON CONTAINER: Fixed w-16 matches the collapsed sidebar width exactly */}
                   <div className="w-16 flex justify-center shrink-0">
-                    <span className={`text-2xl transition-transform duration-300 ${isItemActive ? 'text-[#D4AF37]' : 'text-[#D4AF37]'}`}>
+                    <span className="text-2xl text-[#D4AF37] transition-transform duration-300">
                       {item.icon}
                     </span>
                   </div>
                   {!collapsed && (
-                    <div className="flex-1 flex items-center justify-between transition-all duration-300 ease-in-out">
-                      <span className={`text-sm font-medium flex-1 whitespace-nowrap transition-all duration-300 ease-in-out ${isItemActive ? 'text-[#D4AF37]' : ''}`}>
+                    <div className="flex-1 flex items-center justify-between">
+                      <span className="text-sm font-medium flex-1 whitespace-nowrap">
                         {item.label}
                       </span>
                       {hasSubItems && (
-                        <span className="transition-transform duration-300 ease-in-out">
+                        <span>
                           {isOpen ? (
                             <ChevronDown size={16} />
                           ) : (
@@ -119,30 +116,27 @@ export function SideBar({ role }: SideBarProps) {
                     </div>
                   )}
                 </div>
-                {/* Render sub-items with smooth transition */}
-                {hasSubItems && (
-                  <ul className={`bg-black/20 overflow-hidden transition-all duration-300 ease-in-out ${isOpen && !collapsed ? 'max-h-96 pb-2' : 'max-h-0'}`}>
-                    {item.subItems!.map((sub) => {
-                      const isSubActive = sub.path === location.pathname;
-                      return (
-                        <li
-                          onClick={() => {
-                            if (sub.path) {
-                              navigate(sub.path, { state: { orderType: sub.defaultType } });
-                            }
-                          }}
-                          key={sub.label}
-                          /* pl-16 aligns sub-items with the main text (past the icon width) */
-                          className={`flex items-center gap-3 pl-16 py-3 cursor-pointer transition-colors text-xs
-                          ${isSubActive ? 'text-[#D4AF37] font-medium' : 'text-slate-300 hover:text-[#D4AF37]'} group/sub`}
-                        >
-                          <span className="scale-75 opacity-70 transition-transform duration-300">
-                            {sub.icon}
-                          </span>
-                          <span>{sub.label}</span>
-                        </li>
-                      );
-                    })}
+                {/* Render sub-items */}
+                {!collapsed && hasSubItems && isOpen && (
+                  <ul className="bg-black/20 pb-2">
+                    {item.subItems!.map((sub) => (
+                      <li
+                        onClick={() => {
+                          if (sub.path) {
+                            navigate(sub.path, { state: { orderType: sub.defaultType } });
+                          }
+                        }}
+                        key={sub.label}
+                        /* pl-16 aligns sub-items with the main text (past the icon width) */
+                        className="flex items-center gap-3 pl-16 py-3 cursor-pointer
+                          hover:text-[#D4AF37] transition-colors text-xs text-slate-300 group/sub"
+                      >
+                        <span className="scale-75 opacity-70 transition-transform duration-300">
+                          {sub.icon}
+                        </span>
+                        <span>{sub.label}</span>
+                      </li>
+                    ))}
                   </ul>
                 )}
               </li>
