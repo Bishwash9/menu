@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
 import { CartProvider } from '../Features/Cart';
-import { Header } from '../Components/layout/Header';
+import { Header } from '../components/layout/Header';
 import { CategoryFilter } from '../Features/Menu/components/CategoryFilter';
 import { FoodCard } from '../Features/Menu/components/MenuCard';
 import { CartSidebar } from '../Features/Cart/components/CartSidebar';
-import { MOCK_MENU_ITEMS, CATEGORIES } from '../Lib/data';
+import { MOCK_MENU_ITEMS, CATEGORIES } from '../lib/data';
 import { FloatingCartBar } from '../Features/Cart/components/FloatingCartBar';
 
 function MenuPage() {
@@ -25,7 +25,7 @@ function MenuPage() {
 
     return (
         <CartProvider>
-            <div className="min-h-screen bg-gray-50/50 pb-20">
+            <div className="min-h-screen bg-gray-50 pb-20">
                 <Header onSearch={setSearchQuery} />
 
                 <div className="max-w-7xl mx-auto">
@@ -60,7 +60,7 @@ function MenuPage() {
                                 <p className="text-gray-400">Try changing your search or category.</p>
                                 <button
                                     onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
-                                    className="mt-4 text-primary font-bold hover:underline"
+                                    className="mt-4 text-[#002366] font-bold hover:underline hover:text-[#D4AF37] transition-colors"
                                 >
                                     Clear Filters
                                 </button>

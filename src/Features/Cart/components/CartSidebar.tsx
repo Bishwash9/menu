@@ -57,7 +57,7 @@ export const CartSidebar: React.FC = () => {
                             </button>
                             <h2 className="text-xl font-bold text-gray-800">Your Cart</h2>
                         </div>
-                        <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
+                        <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full text-[#D4AF37]">
                             {cartItems.length} items
                         </span>
                     </div>
@@ -187,7 +187,7 @@ export const CartSidebar: React.FC = () => {
                             </div>
 
 
-                            <button className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary-hover active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                            <button className="w-full bg-[#002366] text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-[#001a4d] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                                 Order
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

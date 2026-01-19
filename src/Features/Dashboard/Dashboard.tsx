@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Banner from '../../assets/Banner.svg';
-import { SideBar, DashboardHeader } from '../../Components/layout';
-
+import { SideBar } from '../../components/layout/Sidebar';
 
 import {
   BedDouble,
@@ -12,7 +11,8 @@ import {
   TrendingUp,
   X,
   Search,
-  Eye} from 'lucide-react';
+  Eye
+} from 'lucide-react';
 // Types for Dashboard
 type ModalType = 'none' | 'newBooking' | 'checkIn' | 'checkOut' | 'addGuest' | 'viewBooking' | 'editBooking';
 type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'checked-in' | 'checked-out';
@@ -95,15 +95,6 @@ const Dashboard = () => {
     amount: '',
   });
 
-  const [newGuestForm, setNewGuestForm] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    idType: 'Aadhar',
-    idNumber: '',
-    address: '',
-  });
-
   // Available rooms for booking (Mock)
   const availableRooms = ['101', '102', '110', '203', '205', '301', '308', '401', '405'];
 
@@ -146,7 +137,6 @@ const Dashboard = () => {
     setActiveModal('none');
   };
 
-
   const handleConfirmBooking = (id: string) => {
     setBookings(bookings.map(b => b.id === id ? { ...b, status: 'confirmed' } : b));
   };
@@ -154,33 +144,6 @@ const Dashboard = () => {
   const handleCancelBooking = (id: string) => {
     setBookings(bookings.map(b => b.id === id ? { ...b, status: 'cancelled' } : b));
   };
-
-  const handleCheckIn = (id: string) => {
-    setBookings(bookings.map(b => b.id === id ? { ...b, status: 'checked-in' } : b));
-    alert(`Guest for booking ${id} has been checked in successfully!`);
-    setActiveModal('none');
-  };
-
-  const handleCheckOut = (id: string) => {
-    setBookings(bookings.map(b => b.id === id ? { ...b, status: 'checked-out' } : b));
-    alert(`Guest for booking ${id} has been checked out successfully!`);
-    setActiveModal('none');
-  };
-
-  const handleAddGuest = () => {
-    if (!newGuestForm.name || !newGuestForm.phone) {
-      alert('Please fill all required fields');
-      return;
-    }
-    // In a real app, this would call guestService.createGuest
-    alert(`Guest ${newGuestForm.name} has been added successfully!`);
-    setNewGuestForm({ name: '', phone: '', email: '', idType: 'Aadhar', idNumber: '', address: '' });
-    setActiveModal('none');
-  };
-
-  // Filter bookings for check-in/check-out
-  const confirmedBookings = bookings.filter(b => b.status === 'confirmed');
-  const checkedInBookings = bookings.filter(b => b.status === 'checked-in');
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', {
@@ -239,47 +202,25 @@ const Dashboard = () => {
 
   const [showBookings, setShowBookings] = useState<boolean>(false);
 
-
-
-
   return (
     <div className="flex h-screen overflow-hidden">
-
 
       <div>
         <SideBar role="admin" />
       </div>
 
-      <div className='space-y-6'>
-        <div className='flex '>
-
-        </div>
-
-      </div>
-
 
       <div className="flex-1 p-6 bg-gray-50 overflow-y-auto">
-
-
-        <div>
-          <DashboardHeader initials='SA' />
-        </div>
         {/* Welcome Banner */}
-        <div className="rounded-2xl shadow-2xl mb-6 text-white relative overflow-hidden h-[20vh] w-full flex items-center ">
+        <div className="bg-[#002366] rounded-2xl p-8 mb-6 text-white relative overflow-hidden min-h-[160px] flex items-center">
           <img
             src={Banner}
-            className="absolute inset-0 rounded-2xl w-full h-full object-cover  pointer-events-none z-0"
+            className="absolute inset-0 w-full h-[200px] object-cover opacity-40 pointer-events-none z-0"
             alt="Skyline"
           />
-            {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/30 z-10"></div>
-
-            {/* Content */}
-          <div className="relative z-20">
-            {/* your text/content here */}
-          </div>
-
-          <div className="relative z-10 w-full px-6">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-1/2 w-32 h-32 bg-white/5 rounded-full translate-y-1/2"></div>
+          <div className="relative z-10 w-full">
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-3xl font-bold mb-2">Good {currentTime.getHours() < 12 ? 'Morning' : currentTime.getHours() < 17 ? 'Afternoon' : 'Evening'}!</h2>
@@ -299,7 +240,7 @@ const Dashboard = () => {
           {/* Available Rooms */}
           <div className=" rounded-xl p-5 border border-gray-200  hover:shadow-md transition-shadow">
             <div className="flex  justify-between ">
-              <div className='bg-white h-30'>
+              <div className='bg-white h-[120px]'>
                 <p className="text-gray-500 text-sm mb-1">Available Rooms</p>
                 <p className="text-3xl font-bold text-gray-900">{roomStats.available}</p>
               </div>
@@ -377,8 +318,8 @@ const Dashboard = () => {
         </div>
 
         {showBookings && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-100 p-4 animate-in fade-in duration-200">
-            <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
+            <div className="bg-white rounded-2xl w-full max-w-4xl max-height: clamp(600px, 90vh, 900px) overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100">
               <div className="grid grid-cols-3 items-center p-6 border-b border-gray-100 bg-white">
                 {/* Left: Title */}
                 <div>
@@ -539,13 +480,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
       </div>
 
       {/* Modal Overlay */}
       {activeModal !== 'none' && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl w-full max-w-lg max-height: clamp(600px, 90vh, 900px) overflow-y-auto">
 
             {/* New Booking Modal */}
             {activeModal === 'newBooking' && (
@@ -812,188 +752,9 @@ const Dashboard = () => {
                 </div>
               </>
             )}
-
-            {/* Check-in Modal */}
-            {activeModal === 'checkIn' && (
-              <>
-                <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                  <h3 className="text-lg font-semibold text-gray-900">Guest Check-in</h3>
-                  <button onClick={() => setActiveModal('none')} className="p-2 hover:bg-gray-100 rounded-lg">
-                    <X size={20} className="text-gray-500" />
-                  </button>
-                </div>
-                <div className="p-5">
-                  <p className="text-sm text-gray-500 mb-4">Select a booking to check-in the guest:</p>
-                  <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {confirmedBookings.length === 0 ? (
-                      <p className="text-center text-gray-400 py-8">No confirmed bookings available for check-in</p>
-                    ) : (
-                      confirmedBookings.map(booking => (
-                        <div
-                          key={booking.id}
-                          className="p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 cursor-pointer transition-colors"
-                          onClick={() => handleCheckIn(booking.id)}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <span className="text-green-700 font-medium">{booking.guestName.charAt(0)}</span>
-                              </div>
-                              <div>
-                                <p className="font-medium text-gray-900">{booking.guestName}</p>
-                                <p className="text-xs text-gray-500">Room {typeof booking.room === 'string' ? booking.room : booking.room.name}</p>
-                              </div>
-                            </div>
-                            <span className="text-sm font-semibold text-gray-900">{booking.checkIn}</span>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* Check-out Modal */}
-            {activeModal === 'checkOut' && (
-              <>
-                <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                  <h3 className="text-lg font-semibold text-gray-900">Guest Check-out</h3>
-                  <button onClick={() => setActiveModal('none')} className="p-2 hover:bg-gray-100 rounded-lg">
-                    <X size={20} className="text-gray-500" />
-                  </button>
-                </div>
-                <div className="p-5">
-                  <p className="text-sm text-gray-500 mb-4">Select a booking to check-out the guest:</p>
-                  <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {checkedInBookings.length === 0 ? (
-                      <p className="text-center text-gray-400 py-8">No guests currently checked in</p>
-                    ) : (
-                      checkedInBookings.map(booking => (
-                        <div
-                          key={booking.id}
-                          className="p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 cursor-pointer transition-colors"
-                          onClick={() => handleCheckOut(booking.id)}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <span className="text-blue-700 font-medium">{booking.guestName.charAt(0)}</span>
-                              </div>
-                              <div>
-                                <p className="font-medium text-gray-900">{booking.guestName}</p>
-                                <p className="text-xs text-gray-500">Room {typeof booking.room === 'string' ? booking.room : booking.room.name}</p>
-                              </div>
-                            </div>
-                            <span className="text-sm font-semibold text-gray-900">{booking.checkOut}</span>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-
-            Add Guest Modal
-            {activeModal === 'addGuest' && (
-              <>
-                <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                  <h3 className="text-lg font-semibold text-gray-900">Add New Guest</h3>
-                  <button onClick={() => setActiveModal('none')} className="p-2 hover:bg-gray-100 rounded-lg">
-                    <X size={20} className="text-gray-500" />
-                  </button>
-                </div>
-                <div className="p-5 space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                    <input
-                      type="text"
-                      value={newGuestForm.name}
-                      onChange={(e) => setNewGuestForm({ ...newGuestForm, name: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                      placeholder="Enter guest name"
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
-                      <input
-                        type="tel"
-                        value={newGuestForm.phone}
-                        onChange={(e) => setNewGuestForm({ ...newGuestForm, phone: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                        placeholder="+91 98765 43210"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                      <input
-                        type="email"
-                        value={newGuestForm.email}
-                        onChange={(e) => setNewGuestForm({ ...newGuestForm, email: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                        placeholder="guest@email.com"
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">ID Type</label>
-                      <select
-                        value={newGuestForm.idType}
-                        onChange={(e) => setNewGuestForm({ ...newGuestForm, idType: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                      >
-                        <option value="Aadhar">Aadhar Card</option>
-                        <option value="Passport">Passport</option>
-                        <option value="Driving License">Driving License</option>
-                        <option value="Voter ID">Voter ID</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">ID Number</label>
-                      <input
-                        type="text"
-                        value={newGuestForm.idNumber}
-                        onChange={(e) => setNewGuestForm({ ...newGuestForm, idNumber: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                        placeholder="XXXX XXXX XXXX"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                    <textarea
-                      value={newGuestForm.address}
-                      onChange={(e) => setNewGuestForm({ ...newGuestForm, address: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                      rows={3}
-                      placeholder="Enter full address"
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-3 p-5 border-t border-gray-100">
-                  <button
-                    onClick={() => setActiveModal('none')}
-                    className="flex-1 py-2.5 px-4 border border-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-50"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleAddGuest}
-                    className="flex-1 py-2.5 px-4 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
-                  >
-                    Add Guest
-                  </button>
-                </div>
-              </>
-            )}
-
           </div>
         </div>
       )}
-
     </div>
   );
 };
