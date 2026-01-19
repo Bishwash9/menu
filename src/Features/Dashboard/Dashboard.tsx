@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Banner from '../../assets/Banner.svg';
-import { SideBar } from '../../Components/layout/Sidebar';
+import { SideBar, DashboardHeader } from '../../Components/layout';
+
 
 import {
   BedDouble,
@@ -17,7 +18,8 @@ import {
   LogIn,
   LogOut,
   Search,
-  Eye
+  Eye,
+  Bell
 } from 'lucide-react';
 // Types for Dashboard
 type ModalType = 'none' | 'newBooking' | 'checkIn' | 'checkOut' | 'addGuest' | 'viewBooking' | 'editBooking';
@@ -250,25 +252,40 @@ const Dashboard = () => {
 
   const [showBookings, setShowBookings] = useState<boolean>(false);
 
+
+
+
   return (
     <div className="flex h-screen overflow-hidden">
 
+
       <div>
-            <SideBar role="admin" />
+        <SideBar role="admin" />
       </div>
-  
+
+      <div className='space-y-6'>
+        <div className='flex '>
+
+        </div>
+
+      </div>
+
 
       <div className="flex-1 p-6 bg-gray-50 overflow-y-auto">
+
+
+        <div>
+          <DashboardHeader initials='SA' />
+        </div>
         {/* Welcome Banner */}
-        <div className="bg-[#002366] rounded-2xl p-8 mb-6 text-white relative overflow-hidden min-h-[160px] flex items-center">
+        <div className="rounded-2xl shadow-2xl mb-6 text-white relative overflow-hidden h-[20vh] w-full flex items-center">
           <img
             src={Banner}
-            className="absolute inset-0 w-full h-[200px] object-cover opacity-40 pointer-events-none z-0"
+            className="absolute inset-0 rounded-2xl w-full h-full object-cover opacity pointer-events-none z-0"
             alt="Skyline"
           />
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-1/2 w-32 h-32 bg-white/5 rounded-full translate-y-1/2"></div>
-          <div className="relative z-10 w-full">
+
+          <div className="relative z-10 w-full px-6">
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-3xl font-bold mb-2">Good {currentTime.getHours() < 12 ? 'Morning' : currentTime.getHours() < 17 ? 'Afternoon' : 'Evening'}!</h2>
@@ -528,6 +545,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
       </div>
 
       {/* Modal Overlay */}
