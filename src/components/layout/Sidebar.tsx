@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
-import { SIDEBAR_CONFIG } from "../../config/sidebarConfig";
-import type { Role } from "../../lib/roles";
+import { SIDEBAR_CONFIG } from "../../Config/sidebarConfig";
+import { ROLES, type Role } from "../../Lib/roles";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../Assets/Logo.svg";
 import Namaste from "../../Assets/Namaste.svg";
+import { useAuth } from "../../Context/AuthContext";
 
 
-interface SideBarProps {
-  role: Role;
-}
 
-export function SideBar({ role }: SideBarProps) {
+// interface SideBarProps {
+//   role: Role;
+// }
+
+export function SideBar() {
+  //first ma get role and setrole from context
+  const{role,setRole} = useAuth();
   const menuItems = SIDEBAR_CONFIG[role] || [];
   const navigate = useNavigate();
   const location = useLocation();
@@ -49,21 +53,48 @@ export function SideBar({ role }: SideBarProps) {
 
       {/* Header */}
       <div
-        className={`bg-white flex items-center justify-center border-b border-yellow-600 height: clamp(48px, 6vh, 96px) px-3
-        transition-all duration-300 ease-in-out ${collapsed ? 'justify-center' : 'justify-start'}`}
+        className={`bg-white flex items-center justify-center border-b border-yellow-600 h-[7vh] 
+       ${collapsed ? 'justify-center' : 'justify-start'}`}
       >
-        <button onClick={() => setCollapsed(!collapsed)} className={`focus:outline-none h-full flex items-center transition-all duration-300 ease-in-out ${collapsed ? 'justify-center w-full' : 'gap-3'}`}>
+        <button onClick={() => setCollapsed(!collapsed)} className={`focus:outline-none h-full flex ease-in-out ${collapsed ? 'justify-center w-full' : 'gap-3'}`}>
           {/* Logo - Always visible, stays fixed */}
-          <div className="shrink-0 transition-all duration-300 ease-in-out">
-            <img src={Logo} className={`object-contain transition-all duration-300 ease-in-out ${collapsed ? 'h-[7vh] w-[7vh]' : 'h-[8vh] w-[8vh]'}`} />
+          <div className="shrink-0">
+            <img src={Logo} className={`object-contain  ${collapsed ? 'h-[7vh] w-[7vh]' : 'h-[vh] w-[8vh]'}`} />
           </div>
 
           {/* Namaste Text - Fades out when collapsed */}
-          <div className={`flex items-center transition-all duration-300 ease-in-out overflow-hidden ${collapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto flex-1'}`}>
+          <div className={`flex items-center  overflow-hidden ${collapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto flex-1'}`}>
             <img src={Namaste} className="h-[10vh] w-[14vw] object-contain" />
           </div>
         </button>
       </div>
+
+
+      {!collapsed && (
+        <div className="px-3 py-2 bg-white border-b border-yellow-500">
+          <select 
+          value={role}
+          onChange={(e)=>setRole(e.target.value as Role)}
+          className="w-full text-sm bg-[#002366] text-white border border-[#D4AF37] rounded px-2 py-1.5 
+                    focus:outline-none focus:ring-1 ring-[#D4AF37]"
+          >
+            <option value={ROLES.ADMIN}>Admin</option>
+            <option value={ROLES.STAFF}>Staff</option>
+            <option value={ROLES.USER}>User</option>
+          </select>
+
+        </div>
+      )}
+
+      {!collapsed &&(
+        <div className="px-3 py-2 bg-white border-b border-yellow-500">
+          <select name="" id="" className="w-full text-sm bg-[#002366] text-white border border-[#D4AF37] rounded px-2 py-1.5 
+                    focus:outline-none focus:ring-1 ring-[#D4AF37]">
+            <option value="">Abc</option>
+            <option value="">Def</option>
+          </select>
+        </div>
+      )}
 
       <nav className="flex-1">
         <ul className="space-y-1">
@@ -96,6 +127,7 @@ export function SideBar({ role }: SideBarProps) {
                   ${isItemActive ? 'text-[#D4AF37]' : 'hover:text-[#D4AF37]'}
                    ${collapsed ? "justify-center py-4" : "py-4 pr-4"}`}
                 >
+                
                   {/* ICON CONTAINER: Fixed w-16 matches the collapsed sidebar width exactly */}
                   <div className="w-16 flex justify-center shrink-0">
                     <span className={`text-2xl transition-transform duration-300 ${isItemActive ? 'text-[#D4AF37]' : 'text-[#D4AF37]'}`}>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, DollarSign, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../Components/Layout/Sidebar';
 import { InvoiceTable, InvoiceModal, initialInvoices } from '../Features/Billing';
 import type { Invoice, BillingStats } from '../Features/Billing/types';
 
@@ -29,7 +29,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, icon, iconBgColor, va
 const BillingPage: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>(initialInvoices);
     const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
-    const [invoiceStatusFilter, setInvoiceStatusFilter] = useState<'All' | 'Paid' | 'Pending' | 'Overdue'>('All');
+    const [invoiceStatusFilter] = useState<'All' | 'Paid' | 'Pending' | 'Overdue'>('All');
 
     // Calculate stats
     const stats: BillingStats = {
@@ -128,7 +128,7 @@ const BillingPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar role="admin" />
+            <SideBar/>
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}

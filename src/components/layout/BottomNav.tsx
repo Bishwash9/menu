@@ -1,5 +1,5 @@
 import React from "react";
-import { useCart } from "../../Features/Cart/context/CartContext";
+import { useCart } from "../../Features/Cart/Context/CartContext";
 
 export const BottomNav: React.FC = () => {
     const { cartCount, toggleCart } = useCart();

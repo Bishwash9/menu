@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Download, Clock, Users, DollarSign, Timer, SquareMenu } from 'lucide-react';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../Components/Layout/Sidebar';
 import {
     CafeStatCard,
     OrderModal,
@@ -84,7 +84,7 @@ const CafeOrdersPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar role="admin" />
+            <SideBar />
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}

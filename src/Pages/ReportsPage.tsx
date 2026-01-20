@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Download, ChevronDown, TrendingUp, Percent, Wallet, PiggyBank } from 'lucide-react';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../Components/Layout/Sidebar';
 import {
     ReportStatCard,
     RevenueChart,
@@ -21,7 +21,7 @@ const ReportsPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar role="admin" />
+            <SideBar/>
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
@@ -45,7 +45,7 @@ const ReportsPage: React.FC = () => {
                                     <ChevronDown size={16} />
                                 </button>
                                 {showFilterDropdown && (
-                                    <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-[150px] z-10">
+                                    <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-37.5 z-10">
                                         {TIME_FILTERS.map(filter => (
                                             <button
                                                 key={filter}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, CalendarDays, Users } from 'lucide-react';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../Components/Layout/Sidebar';
 import { TableModal, TableCard, initialTables, TABLE_AREAS } from '../Features/Tables';
 import type { Table, TableArea } from '../Features/Tables/types';
 
@@ -63,7 +63,7 @@ const TablesPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar role="admin" />
+            <SideBar/>
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
@@ -153,7 +153,7 @@ const TablesPage: React.FC = () => {
                         {/* Add Table Card */}
                         <div
                             onClick={handleAddTable}
-                            className="bg-white rounded-xl border-2 border-dashed border-slate-300 hover:border-[#002366] cursor-pointer p-5 flex flex-col items-center justify-center min-h-[140px] transition-all hover:shadow-md group"
+                            className="bg-white rounded-xl border-2 border-dashed border-slate-300 hover:border-[#002366] cursor-pointer p-5 flex flex-col items-center justify-center min-h-35 transition-all hover:shadow-md group"
                         >
                             <Plus size={24} className="text-slate-400 group-hover:text-[#002366] mb-2" />
                             <span className="text-sm text-slate-500 group-hover:text-[#002366]">Add Table</span>

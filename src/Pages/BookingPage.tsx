@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../Components/Layout/Sidebar';
 import { X } from 'lucide-react';
 import {
     Users,
@@ -91,12 +91,12 @@ function BookingPage() {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC] overflow-hidden font-sans">
-            <SideBar role="admin" />
+            <SideBar/>
 
             {/* Main Content Area */}
             <main className="flex-1 overflow-hidden flex flex-col w-full">
                 {/* Header Section - Fixed */}
-                <div className="bg-white border-b border-slate-200 px-6 py-4 flex-shrink-0">
+                <div className="bg-white border-b border-slate-200 px-6 py-4 shrink-0">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
                             <h1 className="text-2xl md:text-3xl font-bold text-[#1E3A8A] mb-1">
@@ -109,7 +109,7 @@ function BookingPage() {
 
                         <button 
                             onClick={handleExport}
-                            className="flex items-center gap-2 px-6 py-2 rounded-lg border-2 border-[#1E3A8A] text-[#1E3A8A] font-bold hover:bg-[#1E3A8A] hover:text-white transition-all duration-300 shadow-sm active:scale-95 min-h-[44px] cursor-pointer"
+                            className="flex items-center gap-2 px-6 py-2 rounded-lg border-2 border-[#1E3A8A] text-[#1E3A8A] font-bold hover:bg-[#1E3A8A] hover:text-white transition-all duration-300 shadow-sm active:scale-95 min-h-11 cursor-pointer"
                         >
                             <Download size={18} />
                             Export

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, BedDouble, CheckCircle, Users, Wrench } from 'lucide-react';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../Components/Layout/Sidebar';
 import { 
     RoomStatCard, 
     RoomModal, 
@@ -64,7 +64,7 @@ const RoomsPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar role="admin" />
+            <SideBar/>
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}

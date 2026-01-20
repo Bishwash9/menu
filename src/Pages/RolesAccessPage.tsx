@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Shield, Users, Edit2, Trash2, MoreVertical } from 'lucide-react';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../Components/Layout/Sidebar';
 import { RoleModal, initialRoles, allPermissions } from '../Features/RolesAccess';
 import type { Role } from '../Features/RolesAccess/types';
 
@@ -45,7 +45,7 @@ const RolesAccessPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar role="admin" />
+            <SideBar/>
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
@@ -131,7 +131,7 @@ const RolesAccessPage: React.FC = () => {
                                                 <MoreVertical size={16} className="text-slate-400" />
                                             </button>
                                             {activeMenu === role.id && (
-                                                <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-[100px] z-10">
+                                                <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-25 z-10">
                                                     <button
                                                         onClick={() => { handleEditRole(role); setActiveMenu(null); }}
                                                         className="w-full px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2"
@@ -186,7 +186,7 @@ const RolesAccessPage: React.FC = () => {
                         {/* Add Role Card */}
                         <div
                             onClick={handleAddRole}
-                            className="bg-white rounded-xl border-2 border-dashed border-slate-300 hover:border-[#002366] cursor-pointer p-5 flex flex-col items-center justify-center min-h-[200px] transition-all hover:shadow-md"
+                            className="bg-white rounded-xl border-2 border-dashed border-slate-300 hover:border-[#002366] cursor-pointer p-5 flex flex-col items-center justify-center min-h-50 transition-all hover:shadow-md"
                         >
                             <Plus size={32} className="text-slate-400 mb-2" />
                             <span className="font-medium text-slate-500">Create New Role</span>

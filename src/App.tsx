@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import MenuPage from './Pages/MenuPage'
-import Testsidebar from './Pages/TestingSidebar'
 import OrderModelPage from './Pages/OrderModelPage'
-import Dashboard from './Features/Dashboard/Dashboard'
 import BookingPage from './Pages/BookingPage'
 import MenuManagementPage from './Pages/MenuManagementPage'
 import StaffManagementPage from './Pages/StaffManagementPage'
@@ -14,6 +12,7 @@ import SettingsPage from './Pages/SettingsPage'
 import GuestsPage from './Pages/GuestsPage'
 import BillingPage from './Pages/BillingPage'
 import RolesAccessPage from './Pages/RolesAccessPage'
+import DashboardPage from './Pages/DashboardPage'
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
         <Routes>
           <Route path='/orderForm' element={<OrderModelPage />} />
           <Route path='/menu' element={<MenuPage />} />
-          <Route path='/sidebar' element={<Testsidebar />} />
           <Route path='/bookings' element={<BookingPage />} />
           <Route path='/menu-management' element={<MenuManagementPage />} />
           <Route path='/staff-management' element={<StaffManagementPage />} />
@@ -34,7 +32,7 @@ function App() {
           <Route path='/guests' element={<GuestsPage />} />
           <Route path='/billing' element={<BillingPage />} />
           <Route path='/roles-access' element={<RolesAccessPage />} />
-          <Route path='/' element={<Dashboard />} />
+          <Route path='/' element={<DashboardPage />} />
         </Routes>
       </BrowserRouter>
     </>

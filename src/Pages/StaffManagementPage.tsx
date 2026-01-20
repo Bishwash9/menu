@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SideBar } from '../components/layout/Sidebar';
+import { SideBar } from '../Components/Layout/Sidebar';
 import { Download, Plus } from 'lucide-react';
 import {
     StaffStatCard,
@@ -69,7 +69,7 @@ function StaffManagementPage() {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC] overflow-hidden font-sans">
-            <SideBar role="admin" />
+            <SideBar/>
 
             <main className="flex-1 overflow-hidden flex flex-col w-full">
                 {/* Header - Blank Space */}
@@ -90,7 +90,7 @@ function StaffManagementPage() {
                             <div className="flex gap-2">
                                 <button
                                     onClick={handleExport}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-[#1E3A8A] text-[#1E3A8A] font-bold hover:bg-[#1E3A8A]/10 transition-colors min-h-[44px] text-sm md:text-base"
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-[#1E3A8A] text-[#1E3A8A] font-bold hover:bg-[#1E3A8A]/10 transition-colors min-h-11 text-sm md:text-base"
                                 >
                                     <Download size={18} />
                                     Export
@@ -100,7 +100,7 @@ function StaffManagementPage() {
                                         setEditingEmployee(null);
                                         setIsModalOpen(true);
                                     }}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1E3A8A] text-white font-bold hover:bg-[#D4AF37] transition-colors min-h-[44px] text-sm md:text-base cursor-pointer"
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1E3A8A] text-white font-bold hover:bg-[#D4AF37] transition-colors min-h-11 text-sm md:text-base cursor-pointer"
                                 >
                                     <Plus size={18} />
                                     Add Staff
