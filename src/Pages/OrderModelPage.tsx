@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { MOCK_ORDER_DATA } from '../Lib/orderdata'
+import { MOCK_ORDER_DATA } from '../lib/orderdata'
 import type { OrderModel, OrderType } from '../Types/order'
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';

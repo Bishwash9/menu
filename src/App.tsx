@@ -6,6 +6,14 @@ import Dashboard from './Features/Dashboard/Dashboard'
 import BookingPage from './Pages/BookingPage'
 import MenuManagementPage from './Pages/MenuManagementPage'
 import StaffManagementPage from './Pages/StaffManagementPage'
+import RoomsPage from './Pages/RoomsPage'
+import TablesPage from './Pages/TablesPage'
+import CafeOrdersPage from './Pages/CafeOrdersPage'
+import ReportsPage from './Pages/ReportsPage'
+import SettingsPage from './Pages/SettingsPage'
+import GuestsPage from './Pages/GuestsPage'
+import BillingPage from './Pages/BillingPage'
+import RolesAccessPage from './Pages/RolesAccessPage'
 
 function App() {
   return (
@@ -18,6 +26,14 @@ function App() {
           <Route path='/bookings' element={<BookingPage />} />
           <Route path='/menu-management' element={<MenuManagementPage />} />
           <Route path='/staff-management' element={<StaffManagementPage />} />
+          <Route path='/rooms' element={<RoomsPage />} />
+          <Route path='/tables' element={<TablesPage />} />
+          <Route path='/cafe-orders' element={<CafeOrdersPage />} />
+          <Route path='/reports' element={<ReportsPage />} />
+          <Route path='/settings' element={<SettingsPage />} />
+          <Route path='/guests' element={<GuestsPage />} />
+          <Route path='/billing' element={<BillingPage />} />
+          <Route path='/roles-access' element={<RolesAccessPage />} />
           <Route path='/' element={<Dashboard />} />
         </Routes>
       </BrowserRouter>

@@ -147,7 +147,7 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                                         </span>
                                     </td>
                                     <td className="px-4 py-3 text-slate-800 font-bold">
-                                        ₹{employee.salary.toLocaleString()}<br />
+                                        RS{employee.salary.toLocaleString()}<br />
                                         <span className="text-xs text-slate-600">Monthly</span>
                                     </td>
                                     <td className="px-4 py-3">

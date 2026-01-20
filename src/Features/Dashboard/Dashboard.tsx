@@ -293,7 +293,7 @@ const Dashboard = () => {
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-gray-500 text-sm mb-1">Today's Revenue</p>
-                <p className="text-3xl font-bold text-gray-900">₹{(totalRevenue).toLocaleString()}</p>
+                <p className="text-3xl font-bold text-gray-900">RS{(totalRevenue).toLocaleString()}</p>
 
               </div>
               <div className="p-3 bg-orange-100 rounded-xl">
@@ -399,7 +399,7 @@ const Dashboard = () => {
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <span className="text-base font-bold text-gray-900">₹{booking.amount}</span>
+                              <span className="text-base font-bold text-gray-900">RS{booking.amount}</span>
                             </td>
                           </tr>
                         ))}

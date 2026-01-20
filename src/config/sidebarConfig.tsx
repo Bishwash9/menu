@@ -8,7 +8,11 @@ import {
   Coffee,
   CreditCard,
   SquareMenu,
-  FileText
+  FileText,
+  BarChart3,
+  Utensils,
+  UserCheck,
+  Shield
 } from 'lucide-react';
 
 // Common Icons (Lucide-style SVGs)
@@ -22,7 +26,10 @@ const Icons = {
   Orders: <Coffee size={20} />,
   Billing: <CreditCard size={20} />,
   FileText: <FileText size={20} />,
-
+  Reports: <BarChart3 size={20} />,
+  Tables: <Utensils size={20} />,
+  Guests: <UserCheck size={20} />,
+  Roles: <Shield size={20} />,
 };
 
 export type SidebarItem = {
@@ -39,21 +46,27 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
   admin: [
     { label: 'Dashboard', icon: Icons.Dashboard, path: '/' },
     { label: 'Bookings', icon: Icons.Bookings, path: '/bookings', subItems: [{ label: 'New Booking', icon: Icons.Bookings, path: "/orderForm", defaultType: 'room' }] },
-    { label: 'Rooms', icon: Icons.Rooms, },
-    { label: 'Users', icon: Icons.Users, subItems: [{ label: "Total Users", icon: Icons.Users }, { label: "Staff Management", icon: Icons.Users, path: "/staff-management" }] },
+    { label: 'Rooms', icon: Icons.Rooms, path: '/rooms' },
+    { label: 'Guests', icon: Icons.Guests, path: '/guests' },
     { label: 'Menu', icon: Icons.Menu, subItems: [{ label: "Menu Items", icon: Icons.Menu, path: "/menu" }, { label: "Menu Management", icon: Icons.Menu, path: "/menu-management" }] },
-    { label: 'Cafe & Orders', icon: Icons.Orders, subItems: [{ label: "Add Order", icon: Icons.Orders, path: "/orderForm", defaultType: 'table' }] },
-    { label: 'Settings', icon: Icons.Settings, subItems: [{ label: "PAN/VAT", icon: Icons.FileText }, { label: "Email", icon: Icons.FileText }, { label: "Name", icon: Icons.Users }, { label: "Contact", icon: Icons.Billing }] },
+    { label: 'Cafe & Orders', icon: Icons.Orders, path: '/cafe-orders', subItems: [{ label: "All Orders", icon: Icons.Orders, path: "/cafe-orders" }, { label: "Add Order", icon: Icons.Orders, path: "/orderForm", defaultType: 'table' }] },
+    { label: 'Tables', icon: Icons.Tables, path: '/tables' },
+    { label: 'Billing', icon: Icons.Billing, path: '/billing' },
+    { label: 'Staff', icon: Icons.Users, subItems: [{ label: "Staff Management", icon: Icons.Users, path: "/staff-management" }, { label: "Roles & Access", icon: Icons.Roles, path: "/roles-access" }] },
+    { label: 'Reports', icon: Icons.Reports, path: '/reports' },
+    { label: 'Settings', icon: Icons.Settings, path: '/settings' },
   ],
   user: [
     { label: 'Home', icon: Icons.Dashboard, path: '/' },
+    { label: 'Menu', icon: Icons.Menu, path: '/menu' },
     { label: 'Profile', icon: Icons.Users },
     { label: 'Settings', icon: Icons.Settings },
   ],
   staff: [
     { label: 'Dashboard', icon: Icons.Dashboard, path: '/' },
-    { label: 'Kitchen', icon: Icons.Orders },
-    { label: 'Guests', icon: Icons.Users },
+    { label: 'Kitchen', icon: Icons.Orders, path: '/cafe-orders' },
+    { label: 'Tables', icon: Icons.Tables, path: '/tables' },
+    { label: 'Guests', icon: Icons.Guests, path: '/guests' },
     { label: 'Settings', icon: Icons.Settings },
   ]
 };
