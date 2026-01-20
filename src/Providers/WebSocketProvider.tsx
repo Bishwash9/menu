@@ -26,7 +26,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (!isComponentMounted.current) return;
 
         console.log('Connecting to internal WebSocket server...');
-        const ws = new WebSocket('ws://127.0.0.1:8080');
+        const ws = new WebSocket('ws://127.0.0.1:3012');
         wsRef.current = ws;
 
         ws.onopen = () => {

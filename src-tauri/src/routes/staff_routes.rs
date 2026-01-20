@@ -68,3 +68,17 @@ pub async fn update_staff(
         staff: data,
     })
 }
+
+#[tauri::command]
+pub async fn get_staff(
+    db: State<'_, Arc<DbService>>
+) -> Result<Vec<StaffUpdate>, String> {
+    let staff = sqlx::query_as::<_, StaffUpdate>(
+        "SELECT id, business_id, role_id, shift_id, status_id, name, phone, password FROM staff"
+    )
+    .fetch_all(&db.local_pool)
+    .await
+    .map_err(|e| e.to_string())?;
+
+    Ok(staff)
+}

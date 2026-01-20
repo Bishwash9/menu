@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Banner from '../../assets/Banner.svg';
-import { SideBar } from '../../Components/layout/Sidebar';
-import { useWebSocket } from '../../lib/useWebSocket';
+import { SideBar, DashboardHeader } from '../../components/layout';
+
 
 import {
   BedDouble,
@@ -10,11 +10,9 @@ import {
   CalendarCheck,
   CalendarX,
   TrendingUp,
-  Sparkles,
   X,
   Search,
-  Eye
-} from 'lucide-react';
+  Eye} from 'lucide-react';
 // Types for Dashboard
 type ModalType = 'none' | 'newBooking' | 'checkIn' | 'checkOut' | 'addGuest' | 'viewBooking' | 'editBooking';
 type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'checked-in' | 'checked-out';
@@ -81,19 +79,6 @@ const Dashboard = () => {
   const [activeModal, setActiveModal] = useState<ModalType>('none');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
-  
-  const { status, lastMessage } = useWebSocket();
-  const [notifications, setNotifications] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (lastMessage) {
-      setNotifications((prev: string[]) => [...prev, `${lastMessage.event}: ${JSON.stringify(lastMessage.payload)}`]);
-      // Auto-remove notification after 5s
-      setTimeout(() => {
-        setNotifications((prev: string[]) => prev.slice(1));
-      }, 5000);
-    }
-  }, [lastMessage]);
 
 
 
@@ -160,6 +145,7 @@ const Dashboard = () => {
     setSelectedBooking(null);
     setActiveModal('none');
   };
+
 
   const handleConfirmBooking = (id: string) => {
     setBookings(bookings.map(b => b.id === id ? { ...b, status: 'confirmed' } : b));
@@ -253,61 +239,51 @@ const Dashboard = () => {
 
   const [showBookings, setShowBookings] = useState<boolean>(false);
 
+
+
+
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex h-screen overflow-hidden">
+
 
       <div>
-            <SideBar role="admin" />
+        <SideBar role="admin" />
       </div>
-  
+
+      <div className='space-y-6'>
+        <div className='flex '>
+
+        </div>
+
+      </div>
+
 
       <div className="flex-1 p-6 bg-gray-50 overflow-y-auto">
+
+
+        <div>
+          <DashboardHeader initials='SA' />
+        </div>
         {/* Welcome Banner */}
-        <div className="bg-[#002366] rounded-2xl p-8 mb-6 text-white relative overflow-hidden min-h-[160px] flex items-center">
+        <div className="rounded-2xl shadow-2xl mb-6 text-white relative overflow-hidden h-[20vh] w-full flex items-center">
           <img
             src={Banner}
-            className="absolute inset-0 w-full h-[200px] object-cover opacity-40 pointer-events-none z-0"
+            className="absolute inset-0 rounded-2xl w-full h-full object-cover opacity pointer-events-none z-0"
             alt="Skyline"
           />
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-1/2 w-32 h-32 bg-white/5 rounded-full translate-y-1/2"></div>
-          <div className="relative z-10 w-full">
+
+          <div className="relative z-10 w-full px-6">
             <div className="flex justify-between items-center">
               <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h2 className="text-3xl font-bold">Good {currentTime.getHours() < 12 ? 'Morning' : currentTime.getHours() < 17 ? 'Afternoon' : 'Evening'}!</h2>
-                  <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                    status === 'connected' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 
-                    status === 'connecting' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' : 
-                    'bg-red-500/20 text-red-400 border border-red-500/30'
-                  }`}>
-                    <div className={`w-1.5 h-1.5 rounded-full ${
-                      status === 'connected' ? 'bg-green-400 animate-pulse' : 
-                      status === 'connecting' ? 'bg-yellow-400 animate-pulse' : 
-                      'bg-red-400'
-                    }`}></div>
-                    {status}
-                  </div>
-                </div>
+                <h2 className="text-3xl font-bold mb-2">Good {currentTime.getHours() < 12 ? 'Morning' : currentTime.getHours() < 17 ? 'Afternoon' : 'Evening'}!</h2>
                 <p className="text-white/70 font-medium text-lg leading-tight max-w-sm">John</p>
               </div>
               <div className="text-right">
                 <div className="text-4xl text-yellow-400 font-bold tracking-tight mb-2">{formatTime(currentTime).split(':')[0]}:{formatTime(currentTime).split(':')[1]}</div>
                 <p className="text-yellow-400 text-sm font-medium mb-1">{formatDate(currentTime)}</p>
+
               </div>
             </div>
-            
-            {/* Real-time Notifications */}
-            {notifications.length > 0 && (
-              <div className="absolute bottom-4 right-8 z-20 flex flex-col gap-2">
-                {notifications.map((note, i) => (
-                  <div key={i} className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-lg text-sm flex items-center gap-2 animate-in slide-in-from-right-full">
-                    <Sparkles size={14} className="text-yellow-400" />
-                    <span>{note.length > 40 ? note.substring(0, 40) + "..." : note}</span>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
@@ -316,7 +292,7 @@ const Dashboard = () => {
           {/* Available Rooms */}
           <div className=" rounded-xl p-5 border border-gray-200  hover:shadow-md transition-shadow">
             <div className="flex  justify-between ">
-              <div className='bg-white h-[120px]'>
+              <div className='bg-white h-30'>
                 <p className="text-gray-500 text-sm mb-1">Available Rooms</p>
                 <p className="text-3xl font-bold text-gray-900">{roomStats.available}</p>
               </div>
@@ -556,6 +532,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
       </div>
 
       {/* Modal Overlay */}

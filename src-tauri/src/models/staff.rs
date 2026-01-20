@@ -27,7 +27,7 @@ pub struct StaffDeleteResponse {
     pub message: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, sqlx::FromRow)]
 pub struct StaffUpdate {
     pub id: i32,
     pub business_id: i32,

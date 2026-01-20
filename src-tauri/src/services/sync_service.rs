@@ -49,7 +49,11 @@ impl SyncService {
             let success = match table.as_str() {
                 "staff" => self.sync_staff(cloud_pool, &data, &op).await,
                 "orders" => self.sync_order(cloud_pool, &data, &op).await,
-                _ => Ok(()), // Unknown table, ignore for now
+                "guests" => self.sync_guest(cloud_pool, &data, &op).await,
+                "food_items" => self.sync_food_item(cloud_pool, &data, &op).await,
+                "tables" => self.sync_table(cloud_pool, &data, &op).await,
+                "order_items" => self.sync_order_item(cloud_pool, &data, &op).await,
+                _ => Ok(()),
             };
 
             if let Ok(_) = success {
@@ -113,6 +117,90 @@ impl SyncService {
             .bind(order.total_amount)
             .bind(&order.notes)
             .bind(order.served_by)
+            .execute(pool)
+            .await
+            .map_err(|e| e.to_string())?;
+        }
+        Ok(())
+    }
+
+    async fn sync_guest(&self, pool: &MySqlPool, data: &str, op: &str) -> Result<(), String> {
+        let item: serde_json::Value = serde_json::from_str(data).map_err(|e| e.to_string())?;
+        
+        if op == "INSERT" {
+            sqlx::query(
+                "INSERT INTO guests (business_id, name, phone, verify_id, status_id) VALUES (?, ?, ?, ?, ?)"
+            )
+            .bind(item["business_id"].as_i64())
+            .bind(item["name"].as_str())
+            .bind(item["phone"].as_str())
+            .bind(item["verify_id"].as_i64())
+            .bind(item["status_id"].as_i64())
+            .execute(pool)
+            .await
+            .map_err(|e| e.to_string())?;
+        }
+        Ok(())
+    }
+
+    async fn sync_food_item(&self, pool: &MySqlPool, data: &str, op: &str) -> Result<(), String> {
+        let item: serde_json::Value = serde_json::from_str(data).map_err(|e| e.to_string())?;
+        if op == "INSERT" {
+            sqlx::query(
+                "INSERT INTO food_items (business_id, category_id, name, description, price, preparation_time, spice_level_id, is_available, image_url) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            )
+            .bind(item["business_id"].as_i64())
+            .bind(item["category_id"].as_i64())
+            .bind(item["name"].as_str())
+            .bind(item["description"].as_str())
+            .bind(item["price"].as_f64())
+            .bind(item["preparation_time"].as_i64())
+            .bind(item["spice_level_id"].as_i64())
+            .bind(item["is_available"].as_bool())
+            .bind(item["image_url"].as_str())
+            .execute(pool)
+            .await
+            .map_err(|e| e.to_string())?;
+        }
+        Ok(())
+    }
+
+    async fn sync_table(&self, pool: &MySqlPool, data: &str, op: &str) -> Result<(), String> {
+        let item: serde_json::Value = serde_json::from_str(data).map_err(|e| e.to_string())?;
+        if op == "INSERT" {
+            sqlx::query(
+                "INSERT INTO tables (business_id, table_number, capacity, location, status_id, reserved_by, qr_code) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)"
+            )
+            .bind(item["business_id"].as_i64())
+            .bind(item["table_number"].as_str())
+            .bind(item["capacity"].as_i64())
+            .bind(item["location"].as_str())
+            .bind(item["status_id"].as_i64())
+            .bind(item["reserved_by"].as_i64())
+            .bind(item["qr_code"].as_str())
+            .execute(pool)
+            .await
+            .map_err(|e| e.to_string())?;
+        }
+        Ok(())
+    }
+
+    async fn sync_order_item(&self, pool: &MySqlPool, data: &str, op: &str) -> Result<(), String> {
+        let item: serde_json::Value = serde_json::from_str(data).map_err(|e| e.to_string())?;
+        if op == "INSERT" {
+            sqlx::query(
+                "INSERT INTO order_items (order_id, food_item_id, quantity, unit_price, total_price, status_id, special_instructions) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)"
+            )
+            .bind(item["order_id"].as_i64())
+            .bind(item["food_item_id"].as_i64())
+            .bind(item["quantity"].as_i64())
+            .bind(item["unit_price"].as_f64())
+            .bind(item["total_price"].as_f64())
+            .bind(item["status_id"].as_i64())
+            .bind(item["special_instructions"].as_str())
             .execute(pool)
             .await
             .map_err(|e| e.to_string())?;

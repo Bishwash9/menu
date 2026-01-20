@@ -14,12 +14,16 @@ pub struct SignupRequest {
 
 #[derive(Serialize, Deserialize)]
 pub struct SignupResponse {
-    pub message: String,
+    pub id: i32,
+    pub email: String,
+    pub username: String,
+    pub access_token: String,
+    pub token_type: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct LoginRequest {
-    pub phone_number: String,
+    pub username: String, // Helper for email/username login
     pub password: String,
 }
 
@@ -31,8 +35,9 @@ pub struct Tokens {
 
 #[derive(Serialize, Deserialize)]
 pub struct LoginResponse {
-    pub message: String,
-    pub tokens: Tokens,
+    pub access_token: String,
+    pub token_type: String,
+    pub username: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -42,5 +47,6 @@ pub struct RefreshRequest {
 
 #[derive(Serialize, Deserialize)]
 pub struct RefreshResponse {
-    pub access: String,
+    pub access_token: String,
+    pub token_type: String,
 }

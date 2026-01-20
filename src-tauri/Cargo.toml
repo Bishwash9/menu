@@ -23,11 +23,14 @@ tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 reqwest = { version = "0.13.1", features = ["json"] }
-sqlx = { version = "0.8", features = ["mysql", "sqlite", "runtime-tokio-rustls"] }
+sqlx = { version = "0.8", features = ["mysql", "sqlite", "runtime-tokio-rustls", "macros"] }
 dotenvy = "0.15"
 tokio = { version = "1", features = ["full"] }
 url = "2.5"
 tokio-tungstenite = { version = "0.26", features = ["connect", "handshake"] }
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+bcrypt = "0.15"
+jsonwebtoken = "9"
+chrono = { version = "0.4", features = ["serde"] }
 
 
