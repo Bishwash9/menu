@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef, useLayoutEffect } from "react";
 import { SIDEBAR_CONFIG } from "../../Config/sidebarConfig";
 import type { Role } from "../../lib/roles";
 import { ChevronDown, ChevronRight} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../Assets/Logo.svg";
 import Namaste from "../../Assets/Namaste.svg";
+import gsap from 'gsap';
 
 
 interface SideBarProps {
@@ -17,6 +18,8 @@ export function SideBar({ role }: SideBarProps) {
   //  ADD: collapse state
   const [collapsed, setCollapsed] = useState(false);
 
+  const sidebarRef =  useRef<HTMLElement | null>(null);
+
   //this is for dropdown
   const [openMenus, setOpenMenus] = useState<string | null>(null);
 
@@ -25,32 +28,32 @@ export function SideBar({ role }: SideBarProps) {
   };
 
   //  ADD: auto-collapse on small screens
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setCollapsed(true);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  useLayoutEffect(() => {
+    if(!sidebarRef.current) return;
+
+    gsap.to(sidebarRef.current,{
+      width: collapsed? 64 : 256,
+      duration:0.4,
+      ease:"power2.out"
+    });
+   
+  }, [collapsed]);
 
   const navigate = useNavigate();
 
   return (
    
     <aside
-  
-      className={`h-screen bg-[#4d6999] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
-      ${collapsed ? "w-16" : "w-64"}`}
+      ref={sidebarRef}
+      className={`h-screen bg-[#4d6999] text-white flex flex-col shadow-2xl font-sans overflow-hidden `}
+      style={{width:255}}
     >
       
          
        {/* Header */}
       <div
-        className={`bg-white flex items-center border-b border-yellow-600 h-[6vh]
-        ${collapsed ? "justify-center" : ""}`}
+        className={`bg-white flex items-center border-b border-yellow-600 h-[6vh] `}
+
       >
         {collapsed ? (
           /* Collapsed State */
