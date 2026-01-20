@@ -3,7 +3,7 @@ import type {Role} from '../Lib/roles';
 import {ROLES} from '../Lib/roles'
 
 
-//defining what the contex will hold
+//defining what the context will hold
 interface AuthContextType {
     role : Role;
     setRole : (role:Role) => void;

@@ -45,7 +45,7 @@ export function SideBar() {
   return (
 
     <aside
-      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
+      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl  overflow-hidden 
       transition-all duration-300 ease-in-out
       ${collapsed ? "w-16" : "w-64"}`}
     >
