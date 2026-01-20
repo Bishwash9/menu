@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useMemo } from 'react';
+import { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { MenuItem } from '../../../lib/data';
 
@@ -31,8 +31,16 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+        const savedCart = localStorage.getItem('cartItems');
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
     const [isCartOpen, setIsCartOpen] = useState(false);
+
+    // EFFECT: Save to localStorage whenever cart changes
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }, [cartItems]);
 
     // ACTION: Add an item to the cart
     const addToCart = (item: MenuItem) => {

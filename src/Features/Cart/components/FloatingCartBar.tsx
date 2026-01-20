@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../Context/CartContext';
 
 export const FloatingCartBar: React.FC = () => {
     const { cartCount, cartTotal, toggleCart } = useCart();

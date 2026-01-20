@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useCart } from '../../Features/Cart/context/CartContext';
+import { useCart } from '../../Features/Cart/Context/CartContext';
 
 export const CartSidebar: React.FC = () => {
     const { isCartOpen, toggleCart, cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
@@ -29,7 +29,7 @@ export const CartSidebar: React.FC = () => {
                         <h2 className="text-xl font-bold text-gray-800">Your Cart</h2>
                         <button
                             onClick={toggleCart}
-                            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500"
+                            className="p-2 hover:bg-orange rounded-full transition-colors text-gray-500"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -94,7 +94,6 @@ export const CartSidebar: React.FC = () => {
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                     </svg>
-                                                    
                                                 </button>
                                             </div>
                                         </div>
@@ -111,21 +110,29 @@ export const CartSidebar: React.FC = () => {
                                     <span>Subtotal</span>
                                     <span>NPR {cartTotal}</span>
                                 </div>
-                                <div className="flex justify-between text-gray-500 text-sm">
+                                {/* <div className="flex justify-between text-gray-500 text-sm">
                                     <span>Tax (13%)</span>
                                     <span>NPR {taxAmount.toFixed(0)}</span>
+                                </div> */}
+                                <div className="flex justify-between text-gray-500 text-sm">
+                                    <span>Delivery Fee</span>
+                                    <span>NPR 50</span>
                                 </div>
-                               
                                 <div className="flex justify-between text-gray-900 font-bold text-lg pt-2 border-t border-gray-200">
                                     <span>Total Amount</span>
                                     <span>NPR {grandTotal}</span>
                                 </div>
                             </div>
 
-                           
+                            <div className="flex items-center gap-2 text-primary text-xs font-bold bg-primary/5 p-2 rounded-lg border border-primary/10">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+                                </svg>
+                                1 Coupon Applied
+                            </div>
 
-                            <button className="w-full bg-primary text-[#002366] py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/30 hover:text-[#ffd700] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-                                Order
+                            <button className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/30 hover:bg-primary-hover active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                                Proceed to Checkout
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                 </svg>

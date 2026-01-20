@@ -20,8 +20,8 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, 
                         className={`
               whitespace-nowrap px-6 py-2 rounded-full text-sm font-medium transition-all duration-200
               ${isActive
-                                ? 'bg-white text-[#002366] border border-[#002366] shadow-md shadow-primary/30 transform scale-105'
-                                : 'bg-white text-gray-600 border border-gray-100 hover:bg-gray-50 hover:border-primary/20'
+                                ? 'bg-[#002366] text-[#D4AF37] border border-[#002366] shadow-md shadow-primary/30 transform scale-105'
+                                : 'bg-white text-gray-600 border border-gray-100 hover:bg-gray-50 hover:border-[#002366]/20'
                             }
             `}
                     >

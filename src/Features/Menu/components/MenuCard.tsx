@@ -62,7 +62,7 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
                     ) : (
                         <button
                             onClick={() => addToCart(item)}
-                            className="cursor-pointer bg-primary/10 text-primary hover:bg-primary hover:text-[#ffd700] px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 active:scale-95 flex items-center gap-2"
+                            className="cursor-pointer bg-[#002366]/10 text-[#002366] hover:bg-[#002366] hover:text-[#D4AF37] px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 active:scale-95 flex items-center gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
