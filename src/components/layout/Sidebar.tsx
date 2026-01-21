@@ -74,7 +74,9 @@ export function SideBar() {
         <div className="px-3 py-2 bg-white border-b border-yellow-500">
           <select 
           value={role}
-          onChange={(e)=>setRole(e.target.value as Role)}
+          onChange={(e) => {
+            setRole(e.target.value as Role);
+            }}
           className="w-full text-sm bg-[#002366] text-white border border-[#D4AF37] rounded px-2 py-1.5 
                     focus:outline-none focus:ring-1 ring-[#D4AF37]"
           >

@@ -1,7 +1,7 @@
-export { BookingHeader } from './components/BookingHeader';
-export { StatCard } from './components/StatCard';
-export { StatusBadge, PaymentBadge } from './components/Badges';
-export { BookingContent } from './components/BookingContent';
-export { AddBookingModal } from './components/AddBookingModal';
+export { BookingHeader } from './Components/BookingHeader';
+export { StatCard } from './Components/StatCard';
+export { StatusBadge, PaymentBadge } from './Components/Badges';
+export { BookingContent } from './Components/BookingContent';
+export { AddBookingModal } from './Components/AddBookingModal';
 export type { Booking, BookingStatus, PaymentStatus } from './types';
 export { MOCK_BOOKINGS } from './data';

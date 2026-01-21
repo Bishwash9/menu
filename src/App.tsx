@@ -13,26 +13,44 @@ import GuestsPage from './Pages/GuestsPage'
 import BillingPage from './Pages/BillingPage'
 import RolesAccessPage from './Pages/RolesAccessPage'
 import DashboardPage from './Pages/DashboardPage'
+import { RoleGaurd } from './Components/RoleGaurd/RoleGaurd'
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/orderForm' element={<OrderModelPage />} />
-          <Route path='/menu' element={<MenuPage />} />
-          <Route path='/bookings' element={<BookingPage />} />
+
+          {/* Public Dashboard */}
+          <Route path='/' element={<DashboardPage />} />
+
+          {/* Adimin only pages */}
+        <Route element = {<RoleGaurd allowedRoles={['admin']}/>}>
           <Route path='/menu-management' element={<MenuManagementPage />} />
           <Route path='/staff-management' element={<StaffManagementPage />} />
+          <Route path='/settings' element={<SettingsPage />} />
+          <Route path='/roles-access' element={<RolesAccessPage />} />
           <Route path='/rooms' element={<RoomsPage />} />
+          <Route path='/reports' element={<ReportsPage />} />
+        </Route>
+
+          {/* Reception only pages */}
+        <Route element = {<RoleGaurd allowedRoles={['staff']}/>}>
+          <Route path='/bookings' element={<BookingPage />} />
+          <Route path='/menu' element={<MenuPage />} />
+          <Route path='/guests' element={<GuestsPage />} />
           <Route path='/tables' element={<TablesPage />} />
           <Route path='/cafe-orders' element={<CafeOrdersPage />} />
-          <Route path='/reports' element={<ReportsPage />} />
-          <Route path='/settings' element={<SettingsPage />} />
-          <Route path='/guests' element={<GuestsPage />} />
           <Route path='/billing' element={<BillingPage />} />
-          <Route path='/roles-access' element={<RolesAccessPage />} />
-          <Route path='/' element={<DashboardPage />} />
+        </Route>  
+          
+  
+         
+          {/* User only pages */}
+        <Route element={<RoleGaurd allowedRoles={['user']}/>}>
+          <Route path='/orderForm' element={<OrderModelPage />} />
+          <Route path='/menu' element={<MenuPage />} />
+        </Route>  
         </Routes>
       </BrowserRouter>
     </>
