@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Filter, Eye, Download, MoreVertical, Send, Trash2 } from 'lucide-react';
-import type { Invoice, InvoiceStatus } from '../types';
+import type { Invoice, InvoiceStatus } from '../Types';
 import { INVOICE_STATUSES } from '../data';
 
 interface InvoiceTableProps {

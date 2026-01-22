@@ -12,7 +12,7 @@ import {
     initialStats,
     topPerformingRooms,
 } from '../Features/Reports';
-import type { TimeFilter } from '../Features/Reports/types';
+import type { TimeFilter } from '../Features/Reports/Types';
 
 const ReportsPage: React.FC = () => {
     const [timeFilter, setTimeFilter] = useState<TimeFilter>('This Month');

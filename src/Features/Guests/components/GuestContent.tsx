@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, MoreVertical, Mail, Phone, Eye, Edit2, Trash2, Star } from 'lucide-react';
-import type { Guest, GuestStatus } from '../types';
+import type { Guest, GuestStatus } from '../Types';
 
 interface GuestContentProps {
     guests: Guest[];

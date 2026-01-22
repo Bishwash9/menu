@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Check } from 'lucide-react';
-import type { Role } from '../types';
+import type { Role } from '../Types';
 import { allPermissions, PERMISSION_MODULES } from '../data';
 
 interface RoleModalProps {

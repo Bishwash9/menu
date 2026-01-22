@@ -1,4 +1,4 @@
-import type { Room, RoomStatus, RoomType, FloorType } from './types';
+import type { Room, RoomStatus, RoomType, FloorType } from './Types';
 
 export const ROOM_STATUSES: RoomStatus[] = ['Available', 'Occupied', 'Cleaning', 'Maintenance'];
 export const ROOM_TYPES: RoomType[] = ['Single', 'Double', 'Suite', 'Deluxe', 'Family'];

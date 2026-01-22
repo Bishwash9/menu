@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import type { MenuItem } from '../types';
+import type { MenuItem } from '../Types';
 import { MENU_CATEGORIES, DIET_OPTIONS, STATUS_OPTIONS } from '../data';
 
 interface MenuModalProps {

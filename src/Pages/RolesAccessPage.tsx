@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Shield, Users, Edit2, Trash2, MoreVertical } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { RoleModal, initialRoles, allPermissions } from '../Features/RolesAccess';
-import type { Role } from '../Features/RolesAccess/types';
+import type { Role } from '../Features/RolesAccess/Types';
 
 const RolesAccessPage: React.FC = () => {
     const [roles, setRoles] = useState<Role[]>(initialRoles);

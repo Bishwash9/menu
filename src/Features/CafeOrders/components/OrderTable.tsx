@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Filter, Eye, MoreVertical } from 'lucide-react';
-import type { CafeOrder, OrderStatus, OrderType } from '../types';
+import type { CafeOrder, OrderStatus, OrderType } from '../Types';
 import { ORDER_STATUSES, ORDER_TYPES } from '../data';
 
 interface OrderTableProps {

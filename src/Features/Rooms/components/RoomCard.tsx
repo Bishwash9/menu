@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoreVertical, Eye, Edit2, Trash2 } from 'lucide-react';
-import type { Room } from '../types';
+import type { Room } from '../Types';
 
 interface RoomCardProps {
     room: Room;

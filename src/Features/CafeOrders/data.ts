@@ -1,4 +1,4 @@
-import type { CafeOrder, CafeNotification, OrderStatus, OrderType, Priority } from './types';
+import type { CafeOrder, CafeNotification, OrderStatus, OrderType, Priority } from './Types';
 
 export const ORDER_STATUSES: OrderStatus[] = ['Pending', 'Preparing', 'Ready', 'Served', 'Completed', 'Cancelled'];
 export const ORDER_TYPES: OrderType[] = ['Dine In', 'Takeaway', 'Room Service'];

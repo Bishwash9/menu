@@ -7,7 +7,7 @@ import {
     RoomContent,
     initialRooms 
 } from '../Features/Rooms';
-import type { Room, RoomStats } from '../Features/Rooms/types';
+import type { Room, RoomStats } from '../Features/Rooms/Types';
 
 const RoomsPage: React.FC = () => {
     const [rooms, setRooms] = useState<Room[]>(initialRooms);

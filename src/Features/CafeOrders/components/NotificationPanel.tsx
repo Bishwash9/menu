@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bell, X } from 'lucide-react';
-import type { CafeNotification } from '../types';
+import type { CafeNotification } from '../Types';
 
 interface NotificationPanelProps {
     notifications: CafeNotification[];

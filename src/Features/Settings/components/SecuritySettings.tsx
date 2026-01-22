@@ -1,6 +1,6 @@
 import React from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import type { SecuritySettings as SecuritySettingsType } from '../types';
+import type { SecuritySettings as SecuritySettingsType } from '../Types';
 
 interface SecuritySettingsProps {
     data: SecuritySettingsType;

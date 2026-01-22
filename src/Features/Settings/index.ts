@@ -1,4 +1,4 @@
-export * from './types';
+export * from './Types';
 export * from './data';
 export { GeneralSettings } from './Components/GeneralSettings';
 export { SecuritySettingsComponent } from './Components/SecuritySettings';

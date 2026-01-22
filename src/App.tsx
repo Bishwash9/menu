@@ -37,7 +37,6 @@ function App() {
           {/* Reception only pages */}
         <Route element = {<RoleGaurd allowedRoles={['staff']}/>}>
           <Route path='/bookings' element={<BookingPage />} />
-          <Route path='/menu' element={<MenuPage />} />
           <Route path='/guests' element={<GuestsPage />} />
           <Route path='/tables' element={<TablesPage />} />
           <Route path='/cafe-orders' element={<CafeOrdersPage />} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoreVertical } from 'lucide-react';
-import type { RevenueData } from '../types';
+import type { RevenueData } from '../Types';
 
 interface RevenueChartProps {
     data: RevenueData[];

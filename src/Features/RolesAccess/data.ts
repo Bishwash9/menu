@@ -1,4 +1,4 @@
-import type { Role, Permission, PermissionModule } from './types';
+import type { Role, Permission, PermissionModule } from './Types';
 
 export const PERMISSION_MODULES: PermissionModule[] = [
     'Dashboard', 'Bookings', 'Rooms', 'Guests', 'Cafe', 'Menu', 'Tables', 'Billing', 'Staff', 'Reports', 'Settings'

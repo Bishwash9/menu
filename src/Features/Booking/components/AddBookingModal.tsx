@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import type { Booking } from '../types';
+import type { Booking } from '../Types';
 
 interface AddBookingModalProps {
     isOpen: boolean;

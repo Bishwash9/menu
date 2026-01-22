@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
-import type { Invoice, InvoiceItem } from '../types';
+import type { Invoice, InvoiceItem } from '../Types';
 import { PAYMENT_METHODS } from '../data';
 
 interface InvoiceModalProps {

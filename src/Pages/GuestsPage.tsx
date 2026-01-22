@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Users, UserCheck, CalendarCheck, Star } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { GuestModal, GuestContent, initialGuests } from '../Features/Guests';
-import type { Guest, GuestStats } from '../Features/Guests/types';
+import type { Guest, GuestStats } from '../Features/Guests/Types';
 
 interface StatCardProps {
     title: string;

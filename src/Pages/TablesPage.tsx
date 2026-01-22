@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, CalendarDays, Users } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { TableModal, TableCard, initialTables, TABLE_AREAS } from '../Features/Tables';
-import type { Table, TableArea } from '../Features/Tables/types';
+import type { Table, TableArea } from '../Features/Tables/Types';
 
 const TablesPage: React.FC = () => {
     const [tables, setTables] = useState<Table[]>(initialTables);

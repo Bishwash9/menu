@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, DollarSign, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { InvoiceTable, InvoiceModal, initialInvoices } from '../Features/Billing';
-import type { Invoice, BillingStats } from '../Features/Billing/types';
+import type { Invoice, BillingStats } from '../Features/Billing/Types';
 
 interface StatCardProps {
     title: string;

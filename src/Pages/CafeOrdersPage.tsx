@@ -9,7 +9,7 @@ import {
     initialOrders,
     initialNotifications,
 } from '../Features/CafeOrders';
-import type { CafeOrder, CafeNotification, OrderStatus } from '../Features/CafeOrders/types';
+import type { CafeOrder, CafeNotification, OrderStatus } from '../Features/CafeOrders/Types';
 
 const CafeOrdersPage: React.FC = () => {
     const [orders, setOrders] = useState<CafeOrder[]>(initialOrders);

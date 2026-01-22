@@ -1,4 +1,4 @@
-import type { Employee } from './types';
+import type { Employee } from './Types';
 
 export const MOCK_EMPLOYEES: Employee[] = [
     {
@@ -67,4 +67,4 @@ export const ROLES: EmployeeRole[] = ['Manager', 'Chef', 'Receptionist', 'Housek
 export const SHIFTS: ShiftType[] = ['Morning Shift', 'Evening Shift', 'Night Shift'];
 export const STATUSES: EmployeeStatus[] = ['Active', 'On Leave', 'Inactive'];
 
-import type { EmployeeRole, ShiftType, EmployeeStatus } from './types';
+import type { EmployeeRole, ShiftType, EmployeeStatus } from './Types';

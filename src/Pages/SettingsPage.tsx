@@ -11,7 +11,7 @@ import {
     initialSecuritySettings,
     initialAppearanceSettings,
 } from '../Features/Settings';
-import type { SettingsTab, HotelInfo, NotificationSettings, SecuritySettings, AppearanceSettings } from '../Features/Settings/types';
+import type { SettingsTab, HotelInfo, NotificationSettings, SecuritySettings, AppearanceSettings } from '../Features/Settings/Types';
 
 const SettingsPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<SettingsTab>('general');

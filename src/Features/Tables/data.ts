@@ -1,4 +1,4 @@
-import type { Table, TableStatus, TableArea } from './types';
+import type { Table, TableStatus, TableArea } from './Types';
 
 export const TABLE_STATUSES: TableStatus[] = ['Available', 'Occupied', 'Reserved'];
 export const TABLE_AREAS: TableArea[] = ['Main Hall', 'Garden', 'Rooftop', 'Private'];

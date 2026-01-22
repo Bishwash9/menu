@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Eye, PenSquare, Trash2 } from 'lucide-react';
-import type { MenuItem } from '../types';
+import type { MenuItem } from '../Types';
 
 interface MenuContentProps {
     items: MenuItem[];

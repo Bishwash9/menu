@@ -57,7 +57,7 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
     { label: 'Menu', icon: Icons.Menu, path: '/menu' },
     { label: 'Profile', icon: Icons.Users },
     { label: 'Settings', icon: Icons.Settings },
-    { label: 'Cafe & Orders', icon: Icons.Orders, path: '/cafe-orders',defaultType :'table' },
+    { label: 'Add Orders', icon: Icons.Orders, path: '/orderForm',defaultType :'table' },
     { label: 'New Booking', icon: Icons.Bookings, path: "/orderForm", defaultType: 'room' }
   ],
   staff: [

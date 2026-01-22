@@ -1,6 +1,6 @@
 import React from 'react';
 import { Users, Receipt, MoreVertical, Edit2, Trash2 } from 'lucide-react';
-import type { Table } from '../types';
+import type { Table } from '../Types';
 
 interface TableCardProps {
     table: Table;

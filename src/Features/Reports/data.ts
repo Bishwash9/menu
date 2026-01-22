@@ -1,4 +1,4 @@
-import type { RevenueData, CategoryRevenue, ReportStats } from './types';
+import type { RevenueData, CategoryRevenue, ReportStats } from './Types';
 
 export const TIME_FILTERS = ['Today', 'This Week', 'This Month', 'This Quarter', 'This Year'];
 

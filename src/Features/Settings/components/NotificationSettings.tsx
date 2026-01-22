@@ -1,5 +1,5 @@
 import React from 'react';
-import type { NotificationSettings as NotificationSettingsType } from '../types';
+import type { NotificationSettings as NotificationSettingsType } from '../Types';
 
 interface NotificationSettingsProps {
     data: NotificationSettingsType;

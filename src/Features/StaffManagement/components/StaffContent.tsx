@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, PenSquare, Trash2 } from 'lucide-react';
-import type { Employee, EmployeeStatus } from '../types';
+import type { Employee, EmployeeStatus } from '../Types';
 import { STATUSES } from '../data';
 
 interface StaffContentProps {
