@@ -54,7 +54,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({
                                 <MoreVertical size={16} className="text-slate-400" />
                             </button>
                             {showMenu && (
-                                <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-[120px] z-10">
+                                <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-30 z-10">
                                     <button
                                         onClick={() => { onView?.(room); setShowMenu(false); }}
                                         className="w-full px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2"

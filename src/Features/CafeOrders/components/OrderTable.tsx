@@ -194,7 +194,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                                                     <MoreVertical size={16} className="text-slate-500" />
                                                 </button>
                                                 {activeMenu === order.id && (
-                                                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-[140px] z-10">
+                                                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-35 z-10">
                                                         <button
                                                             onClick={() => { onEdit?.(order); setActiveMenu(null); }}
                                                             className="w-full px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50"

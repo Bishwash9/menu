@@ -60,7 +60,7 @@ export const TableCard: React.FC<TableCardProps> = ({
                     <MoreVertical size={14} className="text-slate-400" />
                 </button>
                 {showMenu && (
-                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-[100px] z-10">
+                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-25 z-10">
                         <button
                             onClick={(e) => { e.stopPropagation(); onEdit?.(table); setShowMenu(false); }}
                             className="w-full px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2"

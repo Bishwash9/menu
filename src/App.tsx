@@ -14,6 +14,7 @@ import BillingPage from './Pages/BillingPage'
 import RolesAccessPage from './Pages/RolesAccessPage'
 import DashboardPage from './Pages/DashboardPage'
 import { RoleGaurd } from './Components/RoleGaurd/RoleGaurd'
+import WebSocketComponent from './WebSocketComponent'
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
           <Route path='/billing' element={<BillingPage />} />
         </Route>  
           
+
+          <Route path = '/socket' element = {<WebSocketComponent/>}/>
   
          
           {/* User only pages */}

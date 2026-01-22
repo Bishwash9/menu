@@ -35,7 +35,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                     {notifications.length} new
                 </span>
             </div>
-            <div className="divide-y divide-slate-100 max-h-[300px] overflow-y-auto">
+            <div className="divide-y divide-slate-100 max-h-75 overflow-y-auto">
                 {notifications.map((notification) => (
                     <div
                         key={notification.id}
