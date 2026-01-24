@@ -1,4 +1,4 @@
 export * from './Types';
-export * from './data';
-export * from './Components/TableModal';
-export * from './Components/TableCard';
+export {TABLE_AREAS, TABLE_STATUSES, initialTables}  from './data';
+export {TableModal} from './Components/TableModal';
+export {TableCard} from './Components/TableCard';

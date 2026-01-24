@@ -3,6 +3,7 @@ import { Plus, Shield, Users, Edit2, Trash2, MoreVertical } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { RoleModal, initialRoles, allPermissions } from '../Features/RolesAccess';
 import type { Role } from '../Features/RolesAccess/Types';
+import { DashboardHeader } from '../Components/Layout';
 
 const RolesAccessPage: React.FC = () => {
     const [roles, setRoles] = useState<Role[]>(initialRoles);
@@ -49,15 +50,14 @@ const RolesAccessPage: React.FC = () => {
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200"></div>
+                <div className="h-16 bg-white border-b border-slate-200">
+                     <DashboardHeader/>
+                </div>
                 
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div>
-                            <h1 className="text-2xl font-bold text-[#002366]">Roles & Access Control</h1>
-                            <p className="text-slate-500">Manage user roles and permissions</p>
-                        </div>
+                    
                         <button
                             onClick={handleAddRole}
                             className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"

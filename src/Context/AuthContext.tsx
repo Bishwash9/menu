@@ -19,13 +19,26 @@ interface AuthProviderProps{
 
 export function AuthProvider({children}:AuthProviderProps){
     //define state
-    const [role, setRole] =useState<Role>(ROLES.ADMIN);
 
-    return(
+
+    //initialize state from localstorage for making it saving the role even if refreshing pages
+    const [role,setRoleState] = useState<Role>(()=>{
+        const saveRole = localStorage.getItem('userRole');
+        return (saveRole as Role) || ROLES.ADMIN;
+    });
+
+    const setRole = (newRole : Role) => {
+        localStorage.setItem('userRole',newRole);
+        setRoleState(newRole);
+    }
+
+    return (
         <AuthContext.Provider value={{role,setRole}}>
             {children}
         </AuthContext.Provider>
     )
+
+  
 }
 
 //creating a custom hook for easy access

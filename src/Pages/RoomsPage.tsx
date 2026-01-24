@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, BedDouble, CheckCircle, Users, Wrench } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
+import { DashboardHeader } from '../Components/Layout';
 import { 
     RoomStatCard, 
     RoomModal, 
@@ -68,15 +69,15 @@ const RoomsPage: React.FC = () => {
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200"></div>
+
+                <div className="h-16 bg-white border-b border-slate-200">
+                     <DashboardHeader/>
+                </div>
                 
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div>
-                            <h1 className="text-2xl font-bold text-[#002366]">Rooms Management</h1>
-                            <p className="text-slate-500">Manage room status, types, and pricing</p>
-                        </div>
+                     
                         <div className="flex gap-3 flex-wrap">
                             <div className="flex gap-2 flex-wrap">
                                 {['All', 'Available', 'Occupied', 'Cleaning', 'Maintenance'].map(status => (

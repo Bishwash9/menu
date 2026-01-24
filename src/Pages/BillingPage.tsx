@@ -3,6 +3,7 @@ import { Plus, DollarSign, Clock, CheckCircle, AlertTriangle } from 'lucide-reac
 import { SideBar } from '../Components/Layout/Sidebar';
 import { InvoiceTable, InvoiceModal, initialInvoices } from '../Features/Billing';
 import type { Invoice, BillingStats } from '../Features/Billing/Types';
+import { DashboardHeader } from '../Components/Layout';
 
 interface StatCardProps {
     title: string;
@@ -132,7 +133,9 @@ const BillingPage: React.FC = () => {
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200"></div>
+                <div className="h-16 bg-white border-b border-slate-200">
+                     <DashboardHeader/>
+                </div>
                 
                 <div className="p-6">
                     {/* Page Header */}

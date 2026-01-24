@@ -3,6 +3,7 @@ import { Plus, Users, UserCheck, CalendarCheck, Star } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { GuestModal, GuestContent, initialGuests } from '../Features/Guests';
 import type { Guest, GuestStats } from '../Features/Guests/Types';
+import { DashboardHeader } from '../Components/Layout';
 
 interface StatCardProps {
     title: string;
@@ -80,15 +81,14 @@ const GuestsPage: React.FC = () => {
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200"></div>
+                <div className="h-16 bg-white border-b border-slate-200">
+                     <DashboardHeader/>
+                </div>
                 
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div>
-                            <h1 className="text-2xl font-bold text-[#002366]">Guest Management</h1>
-                            <p className="text-slate-500">Manage guest information and reservations</p>
-                        </div>
+                     
                         <div className="flex gap-3 flex-wrap">
                             <div className="flex gap-2 flex-wrap">
                                 {['All', 'Checked In', 'Reserved', 'VIP', 'Checked Out'].map(status => (

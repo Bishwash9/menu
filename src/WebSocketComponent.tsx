@@ -7,7 +7,7 @@ const WebSocketComponent = () => {
     const [isWebSocketConnected, setIsWebSocketConnected] = useState(false); // Track WebSocket connection status
     const socketRef = useRef<WebSocket | null>(null);
 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY5MTAzNDczLCJpYXQiOjE3NjkxMDE2NzMsImp0aSI6ImRlZmM3YzlhNjA2NjQ4MGVhNGI3NGM1MzMxMjAzYzY5IiwidXNlcl9pZCI6IjMifQ.Om1Rfsd4gOGdDhPb22DH9tDkNcrwWhqJQ2HuOIsLyaM';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY5MTA1MzY3LCJpYXQiOjE3NjkxMDM1NjcsImp0aSI6IjBmZDc2ZTNlMmZhZjRkYTQ5Yzg0NTIzZTE5Y2EwNjNkIiwidXNlcl9pZCI6IjMifQ.XN2N92uePZGSM5HgHowLVw6GTAUPOrCOi45wSAn0hB8';
     interface TableData {
         id: number;
         business_id: number;

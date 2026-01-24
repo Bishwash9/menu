@@ -3,6 +3,7 @@ export type OrderType = 'Dine In' | 'Takeaway' | 'Room Service';
 export type PaymentStatus = 'Pending' | 'Paid' | 'Partial';
 export type Priority = 'Low' | 'Normal' | 'High' | 'Urgent';
 
+
 export interface OrderItem {
     id: string;
     name: string;

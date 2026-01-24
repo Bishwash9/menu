@@ -12,6 +12,7 @@ import {
     initialAppearanceSettings,
 } from '../Features/Settings';
 import type { SettingsTab, HotelInfo, NotificationSettings, SecuritySettings, AppearanceSettings } from '../Features/Settings/Types';
+import { DashboardHeader } from '../Components/Layout';
 
 const SettingsPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<SettingsTab>('general');
@@ -148,7 +149,9 @@ const SettingsPage: React.FC = () => {
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200"></div>
+                <div className="h-16 bg-white border-b border-slate-200">
+                     <DashboardHeader/>
+                </div>
                 
                 <div className="p-6">
                     <div className="flex flex-col lg:flex-row gap-6">

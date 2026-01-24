@@ -12,7 +12,8 @@ import {
   BarChart3,
   Utensils,
   UserCheck,
-  Shield
+  Shield,
+  Wallet
 } from 'lucide-react';
 
 // Common Icons (Lucide-style SVGs)
@@ -30,6 +31,7 @@ const Icons = {
   Tables: <Utensils size={20} />,
   Guests: <UserCheck size={20} />,
   Roles: <Shield size={20} />,
+  Wallet: <Wallet size={20}/>,
 };
 
 export type SidebarItem = {
@@ -49,6 +51,7 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
     { label: 'Menu-Management', icon: Icons.Menu, path: "/menu-management" },
     { label: 'Staff-Management', icon: Icons.Users, path: "/staff-management" },
     { label: "Roles & Access", icon: Icons.Roles, path: "/roles-access" },
+    { label:  "Subscription", icon: Icons.Wallet ,path: "/subscription"},
     { label: 'Settings', icon: Icons.Settings, path: '/settings' },
   ],
   user: [

@@ -5,19 +5,17 @@ import {
     CafeStatCard,
     OrderModal,
     OrderTable,
-    NotificationPanel,
     initialOrders,
-    initialNotifications,
+
 } from '../Features/CafeOrders';
-import type { CafeOrder, CafeNotification, OrderStatus } from '../Features/CafeOrders/Types';
+import type { CafeOrder, OrderStatus } from '../Features/CafeOrders/Types';
+import { DashboardHeader } from '../Components/Layout';
 
 const CafeOrdersPage: React.FC = () => {
     const [orders, setOrders] = useState<CafeOrder[]>(initialOrders);
-    const [notifications, setNotifications] = useState<CafeNotification[]>(initialNotifications);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedOrder, setSelectedOrder] = useState<CafeOrder | null>(null);
-    const [activeTab, setActiveTab] = useState<'orders' | 'kitchen' | 'tables' | 'analytics'>('orders');
     const [statusFilter, setStatusFilter] = useState<OrderStatus | 'All'>('All');
     const [showQuickMenu, setShowQuickMenu] = useState(false);
 
@@ -65,22 +63,13 @@ const CafeOrdersPage: React.FC = () => {
                 ...orderData,
                 id: Date.now().toString(),
                 orderNumber: `ORD${String(orders.length + 1).padStart(3, '0')}`,
-                createdAt: new Date().toISOString(),
             };
             setOrders([newOrder, ...orders]);
         }
     };
 
-    const handleDismissNotification = (id: string) => {
-        setNotifications(notifications.filter(n => n.id !== id));
-    };
 
-    const tabs = [
-        { id: 'orders', label: 'All Orders' },
-        { id: 'kitchen', label: 'Kitchen View' },
-        { id: 'tables', label: 'Table Status' },
-        { id: 'analytics', label: 'Analytics' },
-    ];
+
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
@@ -88,15 +77,14 @@ const CafeOrdersPage: React.FC = () => {
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200"></div>
+                <div className="h-16 bg-white border-b border-slate-200">
+                     <DashboardHeader/>
+                </div>
                 
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div>
-                            <h1 className="text-2xl font-bold text-[#002366]">Cafe & Restaurant</h1>
-                            <p className="text-slate-500">Real-time order management and kitchen operations</p>
-                        </div>
+                     
                         <div className="flex gap-3 flex-wrap">
                             <button 
                                 onClick={() => {
@@ -108,7 +96,7 @@ const CafeOrdersPage: React.FC = () => {
                                     a.download = `orders_${new Date().toISOString().split('T')[0]}.csv`;
                                     a.click();
                                 }}
-                                className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+                                className="flex items-center gap-2 px-4 py-2.5 border-2 rounded-lg   border-[#1E3A8A] text-[#1E3A8A] font-bold hover:bg-[#1E3A8A]/10  transition-colors"
                             >
                                 <Download size={18} />
                                 Export
@@ -189,38 +177,7 @@ const CafeOrdersPage: React.FC = () => {
                         />
                     </div>
 
-                    {/* Tabs and Filters */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-200">
-                        <div className="flex gap-2 overflow-x-auto flex-wrap">
-                            {tabs.map(tab => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id as any)}
-                                    className={`px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
-                                        activeTab === tab.id
-                                            ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
-                                            : 'text-slate-500 hover:text-slate-700'
-                                    }`}
-                                >
-                                    {tab.label}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="flex gap-2 flex-wrap">
-                            <select 
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value as any)}
-                                className="px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#002366]/20"
-                            >
-                                <option>All</option>
-                                <option>Pending</option>
-                                <option>Preparing</option>
-                                <option>Ready</option>
-                                <option>Completed</option>
-                                <option>Cancelled</option>
-                            </select>
-                        </div>
-                    </div>
+                  
 
                     {/* Main Content */}
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -231,12 +188,6 @@ const CafeOrdersPage: React.FC = () => {
                                 onEdit={handleEditOrder}
                                 onDelete={handleDeleteOrder}
                                 onStatusChange={handleStatusChange}
-                            />
-                        </div>
-                        <div className="lg:col-span-1">
-                            <NotificationPanel
-                                notifications={notifications}
-                                onDismiss={handleDismissNotification}
                             />
                         </div>
                     </div>

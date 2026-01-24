@@ -1,8 +1,9 @@
-import type { CafeOrder, CafeNotification, OrderStatus, OrderType, Priority } from './Types';
+import type { CafeOrder, OrderStatus, OrderType, Priority } from './Types';
 
 export const ORDER_STATUSES: OrderStatus[] = ['Pending', 'Preparing', 'Ready', 'Served', 'Completed', 'Cancelled'];
 export const ORDER_TYPES: OrderType[] = ['Dine In', 'Takeaway', 'Room Service'];
 export const PRIORITIES: Priority[] = ['Low', 'Normal', 'High', 'Urgent'];
+
 
 export const initialOrders: CafeOrder[] = [
     {
@@ -27,6 +28,7 @@ export const initialOrders: CafeOrder[] = [
         orderNumber: 'ORD002',
         customer: 'John Doe',
         type: 'Room Service',
+        tableNumber: 'T2',
         roomNumber: '201',
         items: [
             { id: '3', name: 'Club Sandwich', quantity: 1, price: 280 },
@@ -44,6 +46,7 @@ export const initialOrders: CafeOrder[] = [
         orderNumber: 'ORD003',
         customer: 'Jane Smith',
         type: 'Takeaway',
+        tableNumber: 'T5',
         items: [
             { id: '5', name: 'Chicken Biryani', quantity: 2, price: 350 },
         ],
@@ -55,23 +58,4 @@ export const initialOrders: CafeOrder[] = [
     },
 ];
 
-export const initialNotifications: CafeNotification[] = [
-    {
-        id: '1',
-        message: 'Table 5 waiting for 10min',
-        time: '5 min ago',
-        type: 'warning',
-    },
-    {
-        id: '2',
-        message: 'Order #C123 completed',
-        time: '8 min ago',
-        type: 'success',
-    },
-    {
-        id: '3',
-        message: 'New reservation in 30min',
-        time: '15 min ago',
-        type: 'info',
-    },
-];
+
