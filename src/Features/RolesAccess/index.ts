@@ -1,3 +1,4 @@
-export * from './Types';
-export * from './data';
-export * from './Components/RoleModal';
+export type {Permission} from './Types';
+export type {PermissionModule} from './Types';
+export {PERMISSION_MODULES,allPermissions} from './data';
+export {RoleModal} from './Components/RoleModal';
