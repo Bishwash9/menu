@@ -1,4 +1,4 @@
-import type { Employee } from './types';
+import type { Employee } from './Types';
 
 export const MOCK_EMPLOYEES: Employee[] = [
     {
@@ -9,7 +9,6 @@ export const MOCK_EMPLOYEES: Employee[] = [
         role: 'Manager',
         shift: 'Morning Shift',
         status: 'Active',
-        salary: 50000,
         joinDate: '2022-01-15',
         avatarColor: 'royal',
     },
@@ -21,7 +20,6 @@ export const MOCK_EMPLOYEES: Employee[] = [
         role: 'Receptionist',
         shift: 'Morning Shift',
         status: 'Active',
-        salary: 25000,
         joinDate: '2022-03-20',
         avatarColor: 'golden',
     },
@@ -33,7 +31,6 @@ export const MOCK_EMPLOYEES: Employee[] = [
         role: 'Chef',
         shift: 'Evening Shift',
         status: 'Active',
-        salary: 35000,
         joinDate: '2022-02-10',
         avatarColor: 'royal',
     },
@@ -45,7 +42,6 @@ export const MOCK_EMPLOYEES: Employee[] = [
         role: 'Housekeeping',
         shift: 'Morning Shift',
         status: 'On Leave',
-        salary: 15000,
         joinDate: '2022-05-15',
         avatarColor: 'golden',
     },
@@ -57,7 +53,6 @@ export const MOCK_EMPLOYEES: Employee[] = [
         role: 'Security',
         shift: 'Night Shift',
         status: 'Active',
-        salary: 20000,
         joinDate: '2022-04-01',
         avatarColor: 'royal',
     },
@@ -67,4 +62,4 @@ export const ROLES: EmployeeRole[] = ['Manager', 'Chef', 'Receptionist', 'Housek
 export const SHIFTS: ShiftType[] = ['Morning Shift', 'Evening Shift', 'Night Shift'];
 export const STATUSES: EmployeeStatus[] = ['Active', 'On Leave', 'Inactive'];
 
-import type { EmployeeRole, ShiftType, EmployeeStatus } from './types';
+import type { EmployeeRole, ShiftType, EmployeeStatus } from './Types';

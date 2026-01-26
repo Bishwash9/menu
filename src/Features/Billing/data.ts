@@ -1,4 +1,4 @@
-import type { Invoice, InvoiceStatus, PaymentMethod } from './types';
+import type { Invoice, InvoiceStatus, PaymentMethod } from './Types';
 
 export const INVOICE_STATUSES: InvoiceStatus[] = ['Paid', 'Pending', 'Overdue', 'Cancelled'];
 export const PAYMENT_METHODS: PaymentMethod[] = ['Cash', 'Card', 'UPI', 'Bank Transfer', 'Partial'];

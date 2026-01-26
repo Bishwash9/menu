@@ -1,4 +1,4 @@
-import type { Guest, GuestStatus } from './types';
+import type { Guest, GuestStatus } from './Types';
 
 export const GUEST_STATUSES: GuestStatus[] = ['Checked In', 'Checked Out', 'Reserved', 'VIP'];
 export const ID_TYPES = ['Passport', 'National ID', 'Driving License', 'Voter ID'];

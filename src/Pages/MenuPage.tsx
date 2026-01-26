@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
 import { CartProvider } from '../Features/Cart';
 import { Header } from '../Components/Layout/Header';
-import { CategoryFilter } from '../Features/Menu/components/CategoryFilter';
-import { FoodCard } from '../Features/Menu/components/MenuCard';
+import { CategoryFilter } from '../Features/Menu/Components/CategoryFilter';
+import { FoodCard } from '../Features/Menu/Components/MenuCard';
 import { CartSidebar } from '../Features/Cart/Components/CartSidebar';
 import { MOCK_MENU_ITEMS, CATEGORIES } from '../Lib/data';
 import { FloatingCartBar } from '../Features/Cart/Components/FloatingCartBar';

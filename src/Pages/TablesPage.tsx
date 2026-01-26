@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Plus, CalendarDays, Users } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { TableModal, TableCard, initialTables, TABLE_AREAS } from '../Features/Tables';
-import type { Table, TableArea } from '../Features/Tables/types';
+import type { Table, TableArea } from '../Features/Tables/Types';
+import { DashboardHeader } from '../Components/Layout';
 
 const TablesPage: React.FC = () => {
     const [tables, setTables] = useState<Table[]>(initialTables);
@@ -67,15 +68,14 @@ const TablesPage: React.FC = () => {
             
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200"></div>
+                <div className="h-16 bg-white border-b border-slate-200">
+                     <DashboardHeader/>
+                </div>
                 
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div>
-                            <h1 className="text-2xl font-bold text-[#002366]">Table Management</h1>
-                            <p className="text-slate-500">Real-time restaurant floor plan</p>
-                        </div>
+                      
                         <div className="flex gap-3">
                             <button className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium hover:bg-slate-50 transition-colors">
                                 <CalendarDays size={18} />

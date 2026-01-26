@@ -13,26 +13,48 @@ import GuestsPage from './Pages/GuestsPage'
 import BillingPage from './Pages/BillingPage'
 import RolesAccessPage from './Pages/RolesAccessPage'
 import DashboardPage from './Pages/DashboardPage'
+import SubscriptionPage from './Pages/SubscriptionPage'
+import { RoleGaurd } from './Components/RoleGaurd/RoleGaurd'
+import WebSocketComponent from './WebSocketComponent'
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/orderForm' element={<OrderModelPage />} />
-          <Route path='/menu' element={<MenuPage />} />
-          <Route path='/bookings' element={<BookingPage />} />
-          <Route path='/menu-management' element={<MenuManagementPage />} />
-          <Route path='/staff-management' element={<StaffManagementPage />} />
-          <Route path='/rooms' element={<RoomsPage />} />
-          <Route path='/tables' element={<TablesPage />} />
-          <Route path='/cafe-orders' element={<CafeOrdersPage />} />
-          <Route path='/reports' element={<ReportsPage />} />
-          <Route path='/settings' element={<SettingsPage />} />
-          <Route path='/guests' element={<GuestsPage />} />
-          <Route path='/billing' element={<BillingPage />} />
-          <Route path='/roles-access' element={<RolesAccessPage />} />
+
+          {/* Public Dashboard */}
           <Route path='/' element={<DashboardPage />} />
+
+          {/* Adimin only pages */}
+          <Route element={<RoleGaurd allowedRoles={['admin']} />}>
+            <Route path='/menu-management' element={<MenuManagementPage />} />
+            <Route path='/staff-management' element={<StaffManagementPage />} />
+            <Route path='/settings' element={<SettingsPage />} />
+            <Route path='/roles-access' element={<RolesAccessPage />} />
+            <Route path='/rooms' element={<RoomsPage />} />
+            <Route path='/reports' element={<ReportsPage />} />
+            <Route path='/subscription' element={<SubscriptionPage />} />
+          </Route>
+
+          {/* Reception only pages */}
+          <Route element={<RoleGaurd allowedRoles={['staff']} />}>
+            <Route path='/bookings' element={<BookingPage />} />
+            <Route path='/guests' element={<GuestsPage />} />
+            <Route path='/tables' element={<TablesPage />} />
+            <Route path='/cafe-orders' element={<CafeOrdersPage />} />
+            <Route path='/billing' element={<BillingPage />} />
+          </Route>
+
+
+          <Route path='/socket' element={<WebSocketComponent />} />
+
+
+          {/* User only pages */}
+          <Route element={<RoleGaurd allowedRoles={['user']} />}>
+            <Route path='/orderForm' element={<OrderModelPage />} />
+            <Route path='/menu' element={<MenuPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

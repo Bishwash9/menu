@@ -1,4 +1,4 @@
-import type { HotelInfo, NotificationSettings, SecuritySettings, AppearanceSettings, SettingsTab } from './types';
+import type { HotelInfo, NotificationSettings, SecuritySettings, AppearanceSettings, SettingsTab } from './Types';
 
 export const SETTINGS_TABS: { id: SettingsTab; label: string; icon: string }[] = [
     { id: 'general', label: 'General Info', icon: '🏨' },
