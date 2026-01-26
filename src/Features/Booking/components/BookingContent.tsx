@@ -7,7 +7,7 @@ import {
     PenSquare,
     Trash2,
 } from 'lucide-react';
-import type { Booking } from '../types';
+import type { Booking } from '../Types';
 import { StatusBadge, PaymentBadge } from './Badges';
 
 interface BookingContentProps {

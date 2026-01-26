@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import type { Guest, GuestStatus } from '../types';
+import type { Guest, GuestStatus } from '../Types';
 import { GUEST_STATUSES, ID_TYPES, NATIONALITIES } from '../data';
 
 interface GuestModalProps {

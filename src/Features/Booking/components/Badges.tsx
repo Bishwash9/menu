@@ -1,5 +1,5 @@
 import React from 'react';
-import type { BookingStatus, PaymentStatus } from '../types';
+import type { BookingStatus, PaymentStatus } from '../Types';
 
 export const StatusBadge: React.FC<{ status: BookingStatus }> = ({ status }) => {
     const styles = {

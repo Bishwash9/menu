@@ -12,7 +12,8 @@ import {
   BarChart3,
   Utensils,
   UserCheck,
-  Shield
+  Shield,
+  Wallet
 } from 'lucide-react';
 
 // Common Icons (Lucide-style SVGs)
@@ -30,6 +31,7 @@ const Icons = {
   Tables: <Utensils size={20} />,
   Guests: <UserCheck size={20} />,
   Roles: <Shield size={20} />,
+  Wallet: <Wallet size={20}/>,
 };
 
 export type SidebarItem = {
@@ -40,33 +42,39 @@ export type SidebarItem = {
   defaultType?: 'room' | 'table';
 };
 
-export type Role = 'user' | 'admin' | 'staff' ;
+export type Role = 'user' | 'admin' | 'reception' | 'housekeeping' ;
 
 export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
   admin: [
     { label: 'Dashboard', icon: Icons.Dashboard, path: '/' },
-    { label: 'Bookings', icon: Icons.Bookings, path: '/bookings', subItems: [{ label: 'New Booking', icon: Icons.Bookings, path: "/orderForm", defaultType: 'room' }] },
     { label: 'Rooms', icon: Icons.Rooms, path: '/rooms' },
-    { label: 'Guests', icon: Icons.Guests, path: '/guests' },
-    { label: 'Menu', icon: Icons.Menu, subItems: [{ label: "Menu Items", icon: Icons.Menu, path: "/menu" }, { label: "Menu Management", icon: Icons.Menu, path: "/menu-management" }] },
-    { label: 'Cafe & Orders', icon: Icons.Orders, path: '/cafe-orders', subItems: [{ label: "All Orders", icon: Icons.Orders, path: "/cafe-orders" }, { label: "Add Order", icon: Icons.Orders, path: "/orderForm", defaultType: 'table' }] },
-    { label: 'Tables', icon: Icons.Tables, path: '/tables' },
-    { label: 'Staff', icon: Icons.Users, subItems: [{ label: "Staff Management", icon: Icons.Users, path: "/staff-management" }, { label: "Roles & Access", icon: Icons.Roles, path: "/roles-access" }] },
+    { label: 'Menu-Management', icon: Icons.Menu, path: "/menu-management" },
+    { label: 'Staff-Management', icon: Icons.Users, path: "/staff-management" },
+    { label: "Roles & Access", icon: Icons.Roles, path: "/roles-access" },
+    { label:  "Subscription", icon: Icons.Wallet ,path: "/subscription"},
     { label: 'Settings', icon: Icons.Settings, path: '/settings' },
   ],
   user: [
-    { label: 'Home', icon: Icons.Dashboard, path: '/' },
+    { label: 'Dashboard', icon: Icons.Dashboard, path: '/' },
     { label: 'Menu', icon: Icons.Menu, path: '/menu' },
     { label: 'Profile', icon: Icons.Users },
     { label: 'Settings', icon: Icons.Settings },
+    { label: 'Add Orders', icon: Icons.Orders, path: '/orderForm',defaultType :'table' },
+    { label: 'New Booking', icon: Icons.Bookings, path: "/orderForm", defaultType: 'room' }
   ],
-  staff: [
+  reception: [
     { label: 'Dashboard', icon: Icons.Dashboard, path: '/' },
-    { label: 'Kitchen', icon: Icons.Orders, path: '/cafe-orders' },
+    { label: 'Cafe & Orders', icon: Icons.Orders, path: '/cafe-orders' },
     { label: 'Tables', icon: Icons.Tables, path: '/tables' },
     { label: 'Guests', icon: Icons.Guests, path: '/guests' },
+    { label: 'Bookings', icon: Icons.Bookings, path: '/bookings'},
     { label: 'Settings', icon: Icons.Settings },
+    
+  
   ],
+  housekeeping : [
+    {label : 'Dashboard', icon: Icons.Dashboard, path:'/'},
+  ]
 
 
 

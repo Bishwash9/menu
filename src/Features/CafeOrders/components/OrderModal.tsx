@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Minus, Trash2 } from 'lucide-react';
-import type { CafeOrder, OrderItem, OrderType, OrderStatus, Priority } from '../types';
+import type { CafeOrder, OrderItem, OrderType, OrderStatus, Priority } from '../Types';
 import { ORDER_TYPES, ORDER_STATUSES, PRIORITIES } from '../data';
 
 interface OrderModalProps {

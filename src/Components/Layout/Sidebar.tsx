@@ -82,8 +82,9 @@ export function SideBar() {
                     focus:outline-none focus:ring-1 ring-[#D4AF37]"
           >
             <option value={ROLES.ADMIN}>Admin</option>
-            <option value={ROLES.STAFF}>Staff</option>
+            <option value={ROLES.RECEPTION}>Reception</option>
             <option value={ROLES.USER}>User</option>
+            <option value={ROLES.HOUSEKEEPING}>Housekeeping</option>
           </select>
 
         </div>

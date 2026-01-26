@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, MoreVertical, Mail, Phone, Eye, Edit2, Trash2, Star } from 'lucide-react';
-import type { Guest, GuestStatus } from '../types';
+import type { Guest, GuestStatus } from '../Types';
 
 interface GuestContentProps {
     guests: Guest[];
@@ -79,7 +79,7 @@ export const GuestContent: React.FC<GuestContentProps> = ({
                                     <MoreVertical size={16} className="text-slate-400" />
                                 </button>
                                 {activeMenu === guest.id && (
-                                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-[100px] z-10">
+                                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-25 z-10">
                                         <button
                                             onClick={() => { onView?.(guest); setActiveMenu(null); }}
                                             className="w-full px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2"

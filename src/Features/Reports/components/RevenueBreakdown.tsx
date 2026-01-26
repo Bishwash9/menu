@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoreVertical } from 'lucide-react';
-import type { CategoryRevenue } from '../types';
+import type { CategoryRevenue } from '../Types';
 
 interface RevenueBreakdownProps {
     data: CategoryRevenue[];

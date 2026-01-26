@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
-import type { Room, RoomStatus } from '../types';
+import type { Room, RoomStatus } from '../Types';
 import { ROOM_STATUSES } from '../data';
 import { RoomCard } from './RoomCard';
 

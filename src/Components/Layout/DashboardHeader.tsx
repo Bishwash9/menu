@@ -5,13 +5,13 @@ type HeaderProps = {
   initials?: string;
 };
 
-export default function DashboardHeader({ initials = "SA" }: HeaderProps) {
+export default function DashboardHeader({ initials = "DA" }: HeaderProps) {
 
     const[isSettingsOpen, setIsSetingsOpen] = useState(false);
 
   return (
-    <header className=" h-14 flex items-center justify-end px-4">
-      <div className="flex items-center gap-4 text-black">
+    <header className=" h-14 flex items-center justify-end px-4 sticky top-0 z-40 ">
+      <div className="flex items-center gap-4 text-black ">
       
 
       

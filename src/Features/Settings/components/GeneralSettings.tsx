@@ -1,5 +1,5 @@
 import React from 'react';
-import type { HotelInfo } from '../types';
+import type { HotelInfo } from '../Types';
 import { CURRENCIES, TIMEZONES } from '../data';
 
 interface GeneralSettingsProps {

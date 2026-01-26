@@ -45,7 +45,7 @@ export function SideBar() {
   return (
 
     <aside
-      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl font-sans overflow-hidden 
+      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl  overflow-hidden 
       transition-all duration-300 ease-in-out
       ${collapsed ? "w-16" : "w-64"}`}
     >
@@ -74,13 +74,17 @@ export function SideBar() {
         <div className="px-3 py-2 bg-white border-b border-yellow-500">
           <select 
           value={role}
-          onChange={(e)=>setRole(e.target.value as Role)}
+          onChange={(e) => {
+            setRole(e.target.value as Role);
+            navigate ('/');
+            }}
           className="w-full text-sm bg-[#002366] text-white border border-[#D4AF37] rounded px-2 py-1.5 
                     focus:outline-none focus:ring-1 ring-[#D4AF37]"
           >
             <option value={ROLES.ADMIN}>Admin</option>
-            <option value={ROLES.STAFF}>Staff</option>
+            <option value={ROLES.RECEPTION}>Reception</option>
             <option value={ROLES.USER}>User</option>
+            <option value={ROLES.HOUSEKEEPING}>Housekeeping</option>
           </select>
 
         </div>

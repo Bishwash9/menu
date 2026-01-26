@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import type { MenuItem } from '../../../lib/data';
+import type { MenuItem } from '../../../Lib/data';
 
 
 // TYPES & INTERFACES

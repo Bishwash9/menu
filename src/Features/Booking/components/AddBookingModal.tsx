@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import type { Booking } from '../types';
+import type { Booking } from '../Types';
 
 interface AddBookingModalProps {
     isOpen: boolean;
@@ -78,7 +78,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 min-h-screen md:min-h-[100vh]">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 min-h-screen md:min-h-screen">
             <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="sticky top-0 bg-white p-6 border-b border-slate-200 flex justify-between items-center">
@@ -266,13 +266,13 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 px-6 py-2 md:py-3 rounded-lg border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors min-h-[44px]"
+                            className="flex-1 px-6 py-2 md:py-3 rounded-lg border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors min-h-11"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-6 py-2 md:py-3 rounded-lg bg-[#1E3A8A] text-white font-bold hover:bg-[#1E3A8A]/90 transition-colors min-h-[44px]"
+                            className="flex-1 px-6 py-2 md:py-3 rounded-lg bg-[#1E3A8A] text-white font-bold hover:bg-[#1E3A8A]/90 transition-colors min-h-11"
                         >
                             {editingBooking ? 'Update Booking' : 'Add Booking'}
                         </button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Check } from 'lucide-react';
-import type { Role } from '../types';
+import type { Role } from '../Types';
 import { allPermissions, PERMISSION_MODULES } from '../data';
 
 interface RoleModalProps {
@@ -156,7 +156,7 @@ export const RoleModal: React.FC<RoleModalProps> = ({
                         <label className="block text-sm font-medium text-slate-700 mb-3">
                             Permissions
                         </label>
-                        <div className="space-y-4 max-h-[300px] overflow-y-auto border border-slate-200 rounded-lg p-4">
+                        <div className="space-y-4 max-h-75 overflow-y-auto border border-slate-200 rounded-lg p-4">
                             {PERMISSION_MODULES.map(module => {
                                 const modulePermissions = allPermissions.filter(p => p.module === module);
                                 const selectedCount = modulePermissions.filter(p => formData.permissions.includes(p.id)).length;

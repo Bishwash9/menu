@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Search, Eye, PenSquare, Trash2 } from 'lucide-react';
-import type { MenuItem } from '../types';
+import { Search} from 'lucide-react';
+import type { MenuItem } from '../Types';
 
 interface MenuContentProps {
     items: MenuItem[];
@@ -11,9 +11,7 @@ interface MenuContentProps {
 
 export const MenuContent: React.FC<MenuContentProps> = ({
     items,
-    onEdit,
-    onDelete,
-    onView,
+
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('');
@@ -101,7 +99,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">PREP TIME</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">RATING</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">STATUS</th>
-                                <th className="px-4 py-3 text-center font-bold text-slate-700">ACTIONS</th>
+                              
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -132,35 +130,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                                             {item.status}
                                         </span>
                                     </td>
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center justify-center gap-2">
-                                            <button
-                                                onClick={() => onView?.(item)}
-                                                className="p-1.5 text-[#1E3A8A] hover:bg-blue-50 rounded transition-colors"
-                                                title="View"
-                                            >
-                                                <Eye size={16} />
-                                            </button>
-                                            <button
-                                                onClick={() => onEdit?.(item)}
-                                                className="p-1.5 text-[#1E3A8A] hover:bg-blue-50 rounded transition-colors"
-                                                title="Edit"
-                                            >
-                                                <PenSquare size={16} />
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    if (confirm(`Delete ${item.name}?`)) {
-                                                        onDelete?.(item.id);
-                                                    }
-                                                }}
-                                                className="p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors"
-                                                title="Delete"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </td>
+                                    
                                 </tr>
                             ))}
                         </tbody>

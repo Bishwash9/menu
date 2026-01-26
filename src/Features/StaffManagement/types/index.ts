@@ -10,7 +10,6 @@ export interface Employee {
     role: EmployeeRole;
     shift: ShiftType;
     status: EmployeeStatus;
-    salary: number;
     joinDate: string;
     avatar?: string;
     avatarColor?: string;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import type { Table, TableStatus, TableArea } from '../types';
+import type { Table, TableStatus, TableArea } from '../Types';
 import { TABLE_STATUSES, TABLE_AREAS } from '../data';
 
 interface TableModalProps {

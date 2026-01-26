@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import type { Employee } from '../types';
+import type { Employee } from '../Types';
 import { ROLES, SHIFTS, STATUSES } from '../data';
 
 interface StaffModalProps {

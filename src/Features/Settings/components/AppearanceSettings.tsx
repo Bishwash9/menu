@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AppearanceSettings as AppearanceSettingsType } from '../types';
+import type { AppearanceSettings as AppearanceSettingsType } from '../Types';
 
 interface AppearanceSettingsProps {
     data: AppearanceSettingsType;

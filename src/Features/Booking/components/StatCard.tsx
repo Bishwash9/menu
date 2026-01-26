@@ -29,7 +29,7 @@ export const StatCard: React.FC<StatCardProps> = ({
                     <p className="text-slate-500 text-sm font-medium mb-1">{title}</p>
                     <h3 className="text-[#1E3A8A] text-2xl lg:text-3xl font-bold">{value}</h3>
                 </div>
-                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${bgGradient} flex items-center justify-center text-white shadow-lg shadow-blue-900/10`}>
+                <div className={`w-12 h-12 rounded-full bg-linear-to-br ${bgGradient} flex items-center justify-center text-white shadow-lg shadow-blue-900/10`}>
                     <Icon size={24} />
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Search, PenSquare, Trash2 } from 'lucide-react';
-import type { Employee, EmployeeStatus } from '../types';
+import { Search} from 'lucide-react';
+import type { Employee, EmployeeStatus } from '../Types';
 import { STATUSES } from '../data';
 
 interface StaffContentProps {
@@ -11,8 +11,7 @@ interface StaffContentProps {
 
 export const StaffContent: React.FC<StaffContentProps> = ({
     employees,
-    onEdit,
-    onDelete,
+  
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<EmployeeStatus | 'All'>('All');
@@ -113,8 +112,7 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">ROLE</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">SHIFT</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">STATUS</th>
-                                <th className="px-4 py-3 text-left font-bold text-slate-700">SALARY</th>
-                                <th className="px-4 py-3 text-center font-bold text-slate-700">ACTIONS</th>
+            
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -146,32 +144,7 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                                             {employee.status}
                                         </span>
                                     </td>
-                                    <td className="px-4 py-3 text-slate-800 font-bold">
-                                        RS{employee.salary.toLocaleString()}<br />
-                                        <span className="text-xs text-slate-600">Monthly</span>
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center justify-center gap-2">
-                                            <button
-                                                onClick={() => onEdit?.(employee)}
-                                                className="p-1.5 text-[#1E3A8A] hover:bg-blue-50 rounded transition-colors"
-                                                title="Edit"
-                                            >
-                                                <PenSquare size={16} />
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    if (confirm(`Delete ${employee.name}?`)) {
-                                                        onDelete?.(employee.id);
-                                                    }
-                                                }}
-                                                className="p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors"
-                                                title="Delete"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </td>
+                                    
                                 </tr>
                             ))}
                         </tbody>
