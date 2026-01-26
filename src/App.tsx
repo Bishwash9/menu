@@ -38,7 +38,7 @@ function App() {
           </Route>
 
           {/* Reception only pages */}
-          <Route element={<RoleGaurd allowedRoles={['staff']} />}>
+          <Route element={<RoleGaurd allowedRoles={['reception']} />}>
             <Route path='/bookings' element={<BookingPage />} />
             <Route path='/guests' element={<GuestsPage />} />
             <Route path='/tables' element={<TablesPage />} />
