@@ -202,7 +202,7 @@ function AdminDashboardContent() {
         <div className="absolute inset-0 bg-linear-to-r from-white via-white/80 to-transparent z-10" />
 
         <div className="relative z-20 h-full flex flex-col justify-center px-[5vw]">
-          <div className="flex items-center gap-[1vw] mb-[1.5vh]">
+          <div className="flex items-center gap-[1vw]">
             <span className="text-[#002366] text-[0.8vw] font-light uppercase tracking-widest">
               Admin Panel
             </span>
@@ -214,9 +214,6 @@ function AdminDashboardContent() {
               <h2 className="text-[3vw] font-light text-[#002366] leading-none tracking-tight mb-[1vh]">
                 Welcome back, <span className="font-normal">Admin</span>
               </h2>
-              <p className="text-[1.1vw] text-slate-500 font-light max-w-[35vw]">
-                Oversee operations, manage performance, and guest happiness.
-              </p>
             </div>
 
             <div className="text-right pb-[1vh]">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { MOCK_ORDER_DATA } from '../Lib/orderdata'
 import type { OrderModel, OrderType } from '../Types/order'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 interface OrderModelPageProps {
@@ -12,6 +12,7 @@ interface OrderModelPageProps {
 const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const typeFromSidebar = location.state?.orderType as OrderType | undefined;
@@ -20,6 +21,12 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
             handleTypeChange(typeFromSidebar)
         }
     }, [location.state]);
+
+     const handleNext = () => {
+        console.log("Preparing order for:", formData.identifier);
+
+        navigate(`/menu?type${formData.orderType}&id=${formData.identifier}`)
+    }
 
 
     const [formData, setFormData] = useState<OrderModel>({
@@ -36,9 +43,9 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
         }));
     };
 
-    const handleNext = () => {
-        console.log("Order Submitted");
-    }
+
+
+   
 
     const content = (
         <>
@@ -100,7 +107,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
                 />
             </div>
 
-            <Link to='/menu'>
+         
                 <button
                     onClick={handleNext}
                     disabled={!formData.identifier}
@@ -116,7 +123,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
-            </Link>
+       
         </>
     );
 
