@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SideBar } from '../Components/Layout/Sidebar';
-import { Download, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import {
     StaffStatCard,
     StaffModal,
@@ -40,33 +40,6 @@ function StaffManagementPage() {
         setIsModalOpen(true);
     };
 
-    const handleExport = () => {
-        const headers = ['ID', 'Name', 'Email', 'Phone', 'Role', 'Shift', 'Status', 'Salary', 'Join Date'];
-        const rows = employees.map(emp => [
-            emp.id,
-            emp.name,
-            emp.email,
-            emp.phone,
-            emp.role,
-            emp.shift,
-            emp.status,
-            emp.joinDate,
-        ]);
-
-        const csvContent = [
-            headers.join(','),
-            ...rows.map(row => row.map(cell => `"${cell}"`).join(',')),
-        ].join('\n');
-
-        const blob = new Blob([csvContent], { type: 'text/csv' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `staff_${new Date().toISOString().split('T')[0]}.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
             <SideBar />
@@ -74,20 +47,13 @@ function StaffManagementPage() {
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
                 <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+                    <DashboardHeader />
                 </div>
 
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
                         <div className="flex gap-3">
-                            <button
-                                onClick={handleExport}
-                                className="flex items-center gap-2 px-6 py-2.5 rounded-lg border-2 border-[#1E3A8A] text-[#1E3A8A] font-bold hover:bg-[#1E3A8A]/10 transition-colors shadow-sm"
-                            >
-                                <Download size={18} />
-                                Export
-                            </button>
                             <button
                                 onClick={() => {
                                     setEditingEmployee(null);

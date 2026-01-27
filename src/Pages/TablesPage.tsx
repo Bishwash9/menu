@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, CalendarDays, Users } from 'lucide-react';
+import { CalendarDays, Users } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { TableModal, TableCard, initialTables, TABLE_AREAS } from '../Features/Tables';
 import type { Table, TableArea } from '../Features/Tables/Types';
@@ -21,15 +21,9 @@ const TablesPage: React.FC = () => {
         totalCapacity: tables.reduce((sum, t) => sum + t.seats, 0),
     };
 
-    const filteredTables = tables.filter(t => 
+    const filteredTables = tables.filter(t =>
         areaFilter === 'All' || t.area === areaFilter
     );
-
-    const handleAddTable = () => {
-        setModalMode('add');
-        setSelectedTable(null);
-        setIsModalOpen(true);
-    };
 
     const handleEditTable = (table: Table) => {
         setModalMode('edit');
@@ -56,7 +50,7 @@ const TablesPage: React.FC = () => {
     const handleTableClick = (table: Table) => {
         // Toggle status or open order if occupied
         if (table.status === 'Available') {
-            setTables(tables.map(t => 
+            setTables(tables.map(t =>
                 t.id === table.id ? { ...t, status: 'Occupied' as const } : t
             ));
         }
@@ -64,29 +58,21 @@ const TablesPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar/>
-            
+            <SideBar />
+
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
                 <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+                    <DashboardHeader />
                 </div>
-                
+
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                      
                         <div className="flex gap-3">
                             <button className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium hover:bg-slate-50 transition-colors">
                                 <CalendarDays size={18} />
                                 Reservations
-                            </button>
-                            <button
-                                onClick={handleAddTable}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"
-                            >
-                                <Plus size={18} />
-                                Add Table
                             </button>
                         </div>
                     </div>
@@ -95,11 +81,10 @@ const TablesPage: React.FC = () => {
                     <div className="flex flex-wrap gap-2 mb-4">
                         <button
                             onClick={() => setAreaFilter('All')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                areaFilter === 'All'
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${areaFilter === 'All'
                                     ? 'bg-[#002366] text-white shadow-md'
                                     : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                            }`}
+                                }`}
                         >
                             All
                         </button>
@@ -107,11 +92,10 @@ const TablesPage: React.FC = () => {
                             <button
                                 key={area}
                                 onClick={() => setAreaFilter(area)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                    areaFilter === area
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${areaFilter === area
                                         ? 'bg-[#002366] text-white shadow-md'
                                         : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                                }`}
+                                    }`}
                             >
                                 {area}
                             </button>
@@ -149,18 +133,10 @@ const TablesPage: React.FC = () => {
                                 onClick={handleTableClick}
                             />
                         ))}
-                        
-                        {/* Add Table Card */}
-                        <div
-                            onClick={handleAddTable}
-                            className="bg-white rounded-xl border-2 border-dashed border-slate-300 hover:border-[#002366] cursor-pointer p-5 flex flex-col items-center justify-center min-h-35 transition-all hover:shadow-md group"
-                        >
-                            <Plus size={24} className="text-slate-400 group-hover:text-[#002366] mb-2" />
-                            <span className="text-sm text-slate-500 group-hover:text-[#002366]">Add Table</span>
-                        </div>
                     </div>
                 </div>
             </main>
+
 
             {/* Modal */}
             <TableModal
@@ -175,3 +151,4 @@ const TablesPage: React.FC = () => {
 };
 
 export default TablesPage;
+

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { Check, Zap, Star, Rocket } from 'lucide-react';
 import { DashboardHeader } from '../Components/Layout';
 
 const SubscriptionPage: React.FC = () => {
+  const [selectedPlan, setSelectedPlan] = useState<string>('');
+
   const plans = [
     {
       name: 'Basic Plan',
@@ -16,14 +18,12 @@ const SubscriptionPage: React.FC = () => {
         'Single Device Access',
         'Email Support'
       ],
-      color: 'bg-slate-50',
-      buttonColor: 'bg-[#1E3A8A]',
-      popular: false
+      buttonColor: 'bg-[#1E3A8A]'
     },
     {
       name: 'Normal Plan',
       price: '3,499',
-      icon: <Star size={24} className="text-[#D4AF37]" />,
+      icon: <Star size={24} className="text-slate-400" />,
       features: [
         'Unlimited orders',
         'Premium Analytics',
@@ -32,9 +32,7 @@ const SubscriptionPage: React.FC = () => {
         '24/7 Priority Support',
         'Menu Customization'
       ],
-      color: 'bg-white border-2 border-[#D4AF37]/50',
-      buttonColor: 'bg-[#D4AF37]',
-      popular: true
+      buttonColor: 'bg-[#1E3A8A]'
     },
     {
       name: 'Premium Plan',
@@ -48,9 +46,7 @@ const SubscriptionPage: React.FC = () => {
         'Advanced Security',
         'VIP Feature Requests'
       ],
-      color: 'bg-slate-50',
-      buttonColor: 'bg-[#1E3A8A]',
-      popular: false
+      buttonColor: 'bg-[#1E3A8A]'
     }
   ];
 
@@ -61,7 +57,7 @@ const SubscriptionPage: React.FC = () => {
       <main className="flex-1 overflow-auto">
         {/* Header Space */}
         <div className="h-16 bg-white border-b border-slate-200">
-             <DashboardHeader/>
+          <DashboardHeader />
         </div>
 
         <div className="p-6">
@@ -77,14 +73,12 @@ const SubscriptionPage: React.FC = () => {
               {plans.map((plan) => (
                 <div
                   key={plan.name}
-                  className={`relative rounded-2xl p-8 flex flex-col shadow-sm transition-all hover:shadow-md ${plan.color}`}
+                  onClick={() => setSelectedPlan(plan.name)}
+                  className={`relative rounded-2xl p-8 flex flex-col shadow-sm transition-all hover:shadow-md cursor-pointer border-2 ${selectedPlan === plan.name
+                    ? 'border-[#D4AF37] bg-white ring-4 ring-[#D4AF37]/10'
+                    : 'border-transparent bg-slate-50'
+                    }`}
                 >
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                      Most Popular
-                    </div>
-                  )}
-
                   <div className="flex items-center gap-3 mb-6">
                     <div className="p-3 bg-white rounded-xl shadow-sm">
                       {plan.icon}
@@ -112,7 +106,8 @@ const SubscriptionPage: React.FC = () => {
                   </ul>
 
                   <button
-                    className={`w-full py-3.5 rounded-xl text-white font-bold transition-transform active:scale-95 shadow-lg ${plan.buttonColor}`}
+                    className={`w-full py-3.5 rounded-xl text-white font-bold transition-transform active:scale-95 shadow-lg ${selectedPlan === plan.name ? 'bg-[#D4AF37]' : plan.buttonColor
+                      }`}
                   >
                     Subscribe Now
                   </button>

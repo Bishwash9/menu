@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Search } from 'lucide-react';
 
 interface Room {
   id: number;
@@ -17,86 +18,101 @@ const HouseKeepingDashboardContent = () => {
     { id: 7, roomNo: '107', status: 'pending' },
     { id: 8, roomNo: '108', status: 'pending' },
   ]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleRoomStatus = (id: number): void => {
-    setRooms(rooms.map(room => 
-      room.id === id 
-        ? { ...room, status: room.status === 'pending' ? 'completed' : 'pending' } 
+    setRooms(rooms.map(room =>
+      room.id === id
+        ? { ...room, status: room.status === 'pending' ? 'completed' : 'pending' }
         : room
     ));
   };
 
+  const filteredRooms = rooms.filter(room =>
+    room.roomNo.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const completedRooms: number = rooms.filter(room => room.status === 'completed').length;
   const pendingRooms: number = rooms.filter(room => room.status === 'pending').length;
 
-  const getTransformClass = (status: 'pending' | 'completed'): string => {
-    return status === 'completed' ? 'translate-x-[88px]' : 'translate-x-0';
-  };
-
   return (
-    <div className="min-h-screen bg-slate-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        
+    <div className="min-h-screen bg-slate-50 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
             <h3 className="text-gray-500 text-sm font-medium mb-2">Rooms Completed</h3>
             <p className="text-4xl font-bold text-emerald-600">{completedRooms}</p>
           </div>
-          
-          <div className="bg-white rounded-lg shadow p-6">
+
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
             <h3 className="text-gray-500 text-sm font-medium mb-2">Rooms Pending</h3>
             <p className="text-4xl font-bold text-orange-600">{pendingRooms}</p>
           </div>
         </div>
 
+        {/* Search Bar */}
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-2.5 text-slate-400" size={18} />
+            <input
+              type="text"
+              placeholder="Search by Room No..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+            />
+          </div>
+        </div>
+
         {/* Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Room No
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {rooms.map((room: Room) => (
-                <tr key={room.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {room.roomNo}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                      room.status === 'completed'
-                        ? 'bg-emerald-100 text-emerald-800' 
-                        : 'bg-orange-100 text-orange-800'
-                    }`}>
-                      {room.status === 'completed' ? 'Completed' : 'Pending'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div 
-                      onClick={() => toggleRoomStatus(room.id)}
-                      className={`relative w-44 h-16 border-4 border-gray-300 rounded-full flex items-center p-1.5 cursor-pointer active:scale-95 shadow-lg overflow-hidden transition-colors duration-300 ${
-                        room.status === 'completed' ? 'bg-emerald-500' : 'bg-[#434e5b]'
-                      }`}
-                    >
-                      <div 
-                        className={`w-12 h-12 bg-white rounded-full shadow-2xl transition-transform duration-150 ease-out transform ${getTransformClass(room.status)}`}
-                      />
-                    </div>
-                  </td>
+        <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 border-b border-slate-200">
+                <tr>
+                  <th className="px-4 py-3 text-left font-bold text-slate-700">ROOM NO</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-700">STATUS</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-700">ACTION</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filteredRooms.map((room: Room) => (
+                  <tr key={room.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-4 py-3 font-bold text-slate-800">
+                      {room.roomNo}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={`px-2 py-1 rounded text-xs font-bold ${room.status === 'completed'
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-orange-100 text-orange-700'
+                        }`}>
+                        {room.status === 'completed' ? 'Completed' : 'Pending'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div
+                        onClick={() => room.status !== 'completed' && toggleRoomStatus(room.id)}
+                        className={`relative w-14 h-7 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300 ${room.status === 'completed' ? 'bg-emerald-500 cursor-not-allowed opacity-60' : 'bg-slate-600'
+                          }`}
+                      >
+                        <div
+                          className={`w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform duration-200 ${room.status === 'completed' ? 'translate-x-7' : 'translate-x-0'
+                            }`}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {filteredRooms.length === 0 && (
+            <div className="text-center py-8 text-slate-500">
+              No rooms found for "{searchQuery}".
+            </div>
+          )}
         </div>
       </div>
     </div>

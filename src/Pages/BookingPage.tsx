@@ -6,7 +6,6 @@ import {
     DollarSign,
     Clock,
     TrendingUp,
-    Download,
 } from 'lucide-react';
 import {
     StatCard,
@@ -57,39 +56,6 @@ function BookingPage() {
         setEditingBooking(null);
     };
 
-    const handleExport = () => {
-        // Create CSV content
-        const headers = ['Booking ID', 'Guest', 'Room', 'Check In', 'Check Out', 'Nights', 'Amount', 'Status', 'Payment'];
-        const rows = bookings.map(b => [
-            b.id,
-            b.guest.name,
-            `${b.room.number}-${b.room.type}`,
-            new Date(b.checkIn).toLocaleDateString(),
-            new Date(b.checkOut).toLocaleDateString(),
-            b.nights,
-            `$${b.amount}`,
-            b.status,
-            b.payment,
-        ]);
-
-        // Create CSV string
-        const csvContent = [
-            headers.join(','),
-            ...rows.map(row => row.map(cell => `"${cell}"`).join(',')),
-        ].join('\n');
-
-        // Create blob and download
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `bookings_${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
             <SideBar />
@@ -97,20 +63,13 @@ function BookingPage() {
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
                 <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+                    <DashboardHeader />
                 </div>
 
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
                         <div className="flex gap-3">
-                            <button
-                                onClick={handleExport}
-                                className="flex items-center gap-2 px-6 py-2.5 rounded-lg border-2 border-[#1E3A8A] text-[#1E3A8A] font-bold hover:bg-[#1E3A8A]/10 transition-colors shadow-sm"
-                            >
-                                <Download size={18} />
-                                Export
-                            </button>
                         </div>
                     </div>
 
