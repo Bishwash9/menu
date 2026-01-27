@@ -64,7 +64,7 @@ function StaffDashboardContent() {
                     alt="Background"
                 />
                 <div className="absolute inset-0 bg-linear-to-r from-white via-white/80 to-transparent z-10" />
-                
+
                 <div className="relative z-20 h-full flex flex-col justify-center px-[5vw]">
                     <div className="flex items-center gap-[1vw] mb-[1.5vh]">
                         <span className="text-[#002366] text-[0.8vw] font-light uppercase tracking-widest">
@@ -72,7 +72,7 @@ function StaffDashboardContent() {
                         </span>
                         <div className="h-px w-[5vw] bg-[#002366]/10" />
                     </div>
-                    
+
                     <div className="flex justify-between items-end">
                         <div>
                             <h2 className="text-[3vw] font-light text-[#002366] leading-none tracking-tight mb-[1vh]">
@@ -82,7 +82,7 @@ function StaffDashboardContent() {
                                 Effortlessly manage your guests and room inventory from a single view.
                             </p>
                         </div>
-                        
+
                         <div className="text-right pb-[1vh]">
                             <div className="text-[3.5vw] font-light text-[#002366] leading-none mb-[0.5vh] tabular-nums">
                                 {formatTime(currentTime).split(' ')[0]}
@@ -102,29 +102,29 @@ function StaffDashboardContent() {
                 <div className="flex-1 flex flex-col gap-[3vh] overflow-hidden">
                     {/* Stats Row */}
                     <div className="grid grid-cols-4 gap-[2vw]">
-                        <StatusCard 
-                            title="Available" 
-                            value={roomStats.available} 
-                            icon={<BedDouble className="w-[1.4vw] h-[1.4vw]" />} 
-                            color="green" 
+                        <StatusCard
+                            title="Available"
+                            value={roomStats.available}
+                            icon={<BedDouble className="w-[1.4vw] h-[1.4vw]" />}
+                            color="green"
                         />
-                        <StatusCard 
-                            title="Arrivals" 
-                            value={4} 
-                            icon={<CalendarCheck className="w-[1.4vw] h-[1.4vw]" />} 
-                            color="royal" 
+                        <StatusCard
+                            title="Arrivals"
+                            value={4}
+                            icon={<CalendarCheck className="w-[1.4vw] h-[1.4vw]" />}
+                            color="royal"
                         />
-                        <StatusCard 
-                            title="Departing" 
-                            value={3} 
-                            icon={<CalendarX className="w-[1.4vw] h-[1.4vw]" />} 
-                            color="orange" 
+                        <StatusCard
+                            title="Departing"
+                            value={3}
+                            icon={<CalendarX className="w-[1.4vw] h-[1.4vw]" />}
+                            color="orange"
                         />
-                        <StatusCard 
-                            title="Turnover" 
-                            value={roomStats.cleaning} 
-                            icon={<Brush className="w-[1.4vw] h-[1.4vw]" />} 
-                            color="purple" 
+                        <StatusCard
+                            title="Turnover"
+                            value={roomStats.cleaning}
+                            icon={<Brush className="w-[1.4vw] h-[1.4vw]" />}
+                            color="purple"
                         />
                     </div>
 
@@ -139,7 +139,7 @@ function StaffDashboardContent() {
                                 Full Manifest
                             </button>
                         </div>
-                        
+
                         <div className="flex-1 overflow-y-auto px-[2vw] py-[2vh] space-y-[1vh]">
                             {mockBookings.map((booking) => (
                                 <div key={booking.id} className="flex items-center justify-between p-[1.2vw] rounded-[0.8vw] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer group">
@@ -154,7 +154,7 @@ function StaffDashboardContent() {
                                             </p>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="flex items-center gap-[2vw]">
                                         <div className="text-right">
                                             <span className={`text-[0.6vw] font-normal px-[0.7vw] py-[0.3vh] rounded-full uppercase
@@ -200,14 +200,14 @@ function StaffDashboardContent() {
                     <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100">
                         <h3 className="text-[0.7vw] font-normal text-slate-300 uppercase tracking-widest mb-[1.5vh]">Alerts</h3>
                         <div className="space-y-[1.5vh]">
-                            <AlertItem 
-                                icon={<AlertCircle className="text-orange-300 w-[1vw] h-[1vw]" />} 
-                                msg="Maintenance overdue: 301" 
+                            <AlertItem
+                                icon={<AlertCircle className="text-orange-300 w-[1vw] h-[1vw]" />}
+                                msg="Maintenance overdue: 301"
                                 time="Active"
                             />
-                            <AlertItem 
-                                icon={<Clock className="text-blue-300 w-[1vw] h-[1vw]" />} 
-                                msg="4 guests due for check-out" 
+                            <AlertItem
+                                icon={<Clock className="text-blue-300 w-[1vw] h-[1vw]" />}
+                                msg="4 guests due for check-out"
                                 time="Pending"
                             />
                         </div>
@@ -226,16 +226,20 @@ function StatusCard({ title, value, icon, color }: { title: string, value: numbe
         purple: 'bg-purple-50 text-purple-500',
     };
 
-    return (
-        <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group">
-            <div className="flex justify-between items-start mb-[2vh]">
-                <div className={`p-[0.7vw] rounded-lg ${colors[color] || colors.royal} transition-all`}>
-                    {icon}
-                </div>
+   return (
+        <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex justify-between items-center gap-[1.2vw]">
+            {/* ICON ON THE LEFT */}
+            <div className={`p-[0.8vw] rounded-xl shrink-0 ${colors[color] || colors.royal} transition-all`}>
+                {icon}
             </div>
-            <div>
-                <p className="text-slate-400 text-[0.8vw] font-light uppercase tracking-wider mb-[0.2vh]">{title}</p>
-                <h3 className="text-[2vw] font-light text-slate-700 leading-none">{value}</h3>
+            {/* TEXT ON THE RIGHT */}
+            <div className="flex flex-col">
+                <p className="text-slate-400 text-[0.8vw] font-light uppercase tracking-wider mb-[0.2vh]">
+                    {title}
+                </p>
+                <h3 className="text-[1.8vw] font-light text-slate-700 leading-none">
+                    {value}
+                </h3>
             </div>
         </div>
     );
