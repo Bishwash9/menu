@@ -1,6 +1,6 @@
 import {Navigate, Outlet} from 'react-router-dom';
 import {useAuth} from '../../Context/AuthContext';
-import {type Role } from '../../Lib/Roles';
+import {type Role } from '../../Lib/roles';
 
 interface RoleGaurdProps{
     allowedRoles : Role[];

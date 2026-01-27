@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Download, Clock, Users, DollarSign, Timer, SquareMenu } from 'lucide-react';
+import { Plus, Clock, Users, DollarSign, Timer, SquareMenu } from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import {
     CafeStatCard,
@@ -16,7 +16,7 @@ const CafeOrdersPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedOrder, setSelectedOrder] = useState<CafeOrder | null>(null);
-    const [statusFilter, setStatusFilter] = useState<OrderStatus | 'All'>('All');
+    const [statusFilter] = useState<OrderStatus | 'All'>('All');
     const [showQuickMenu, setShowQuickMenu] = useState(false);
 
     // Calculate stats
@@ -74,35 +74,20 @@ const CafeOrdersPage: React.FC = () => {
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
             <SideBar />
-            
+
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
                 <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+                    <DashboardHeader />
                 </div>
-                
+
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                     
+
                         <div className="flex gap-3 flex-wrap">
-                            <button 
-                                onClick={() => {
-                                    const csv = 'Order ID,Table,Status,Total,Date\n' + orders.map(o => `${o.id},${o.tableNumber},${o.status},${o.total},${o.createdAt}`).join('\n');
-                                    const blob = new Blob([csv], { type: 'text/csv' });
-                                    const url = window.URL.createObjectURL(blob);
-                                    const a = document.createElement('a');
-                                    a.href = url;
-                                    a.download = `orders_${new Date().toISOString().split('T')[0]}.csv`;
-                                    a.click();
-                                }}
-                                className="flex items-center gap-2 px-4 py-2.5 border-2 rounded-lg   border-[#1E3A8A] text-[#1E3A8A] font-bold hover:bg-[#1E3A8A]/10  transition-colors"
-                            >
-                                <Download size={18} />
-                                Export
-                            </button>
                             <div className="relative">
-                                <button 
+                                <button
                                     onClick={() => setShowQuickMenu(!showQuickMenu)}
                                     className="flex items-center gap-2 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-[#001a4d] transition-colors"
                                 >
@@ -177,7 +162,7 @@ const CafeOrdersPage: React.FC = () => {
                         />
                     </div>
 
-                  
+
 
                     {/* Main Content */}
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
