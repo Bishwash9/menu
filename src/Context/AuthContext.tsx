@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import type {Role} from '../Lib/roles';
-import {ROLES} from '../Lib/roles'
+import type {Role} from '../Lib/Roles';
+import {ROLES} from '../Lib/Roles'
 
 
 //defining what the context will hold

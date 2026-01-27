@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { SIDEBAR_CONFIG } from "../../Config/sidebarConfig";
-import { ROLES, type Role } from "../../Lib/roles";
+import { SIDEBAR_CONFIG } from "../../Config/SidebarConfig";
+import { ROLES, type Role } from "../../Lib/Roles";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../Assets/Logo.svg";

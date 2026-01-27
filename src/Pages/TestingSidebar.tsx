@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ROLES, type Role } from '../lib/roles';
+import { ROLES, type Role } from '../Lib/Roles';
 import { SideBar } from '../Components/layout/Sidebar';
 
 
