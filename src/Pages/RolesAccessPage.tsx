@@ -46,18 +46,18 @@ const RolesAccessPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar/>
-            
+            <SideBar />
+
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
                 <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+                    <DashboardHeader />
                 </div>
-                
+
                 <div className="p-6">
                     {/* Page Header */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                    
+                    <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
+
                         <button
                             onClick={handleAddRole}
                             className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"
@@ -68,40 +68,35 @@ const RolesAccessPage: React.FC = () => {
                     </div>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-[#002366]/10 rounded-xl">
-                                    <Shield size={24} className="text-[#002366]" />
-                                </div>
-                                <div>
-                                    <p className="text-2xl font-bold text-slate-800">{roles.length}</p>
-                                    <p className="text-sm text-slate-500">Total Roles</p>
-                                </div>
+                    {/* Stats */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-[2vw] mb-6">
+                        <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm flex items-center justify-between gap-[1.2vw]">
+                            <div className="p-[0.7vw] bg-[#002366]/10 rounded-lg">
+                                <Shield size={24} className="text-[#002366] w-[1.4vw] h-[1.4vw]" />
+                            </div>
+                            <div className="text-right">
+                                <p className="text-slate-400 text-[0.8vw] uppercase tracking-wider mb-[0.2vh]">Total Roles</p>
+                                <h3 className="text-[2vw] font-light text-slate-700 leading-none">{roles.length}</h3>
                             </div>
                         </div>
-                        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-[#D4AF37]/20 rounded-xl">
-                                    <Users size={24} className="text-[#D4AF37]" />
-                                </div>
-                                <div>
-                                    <p className="text-2xl font-bold text-slate-800">
-                                        {roles.reduce((sum, r) => sum + r.usersCount, 0)}
-                                    </p>
-                                    <p className="text-sm text-slate-500">Users Assigned</p>
-                                </div>
+                        <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm flex items-center justify-between gap-[1.2vw]">
+                            <div className="p-[0.7vw] bg-[#D4AF37]/20 rounded-lg">
+                                <Users size={24} className="text-[#D4AF37] w-[1.4vw] h-[1.4vw]" />
+                            </div>
+                            <div className="text-right">
+                                <p className="text-slate-400 text-[0.8vw] uppercase tracking-wider mb-[0.2vh]">Users Assigned</p>
+                                <h3 className="text-[2vw] font-light text-slate-700 leading-none">
+                                    {roles.reduce((sum, r) => sum + r.usersCount, 0)}
+                                </h3>
                             </div>
                         </div>
-                        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-green-100 rounded-xl">
-                                    <Shield size={24} className="text-green-600" />
-                                </div>
-                                <div>
-                                    <p className="text-2xl font-bold text-slate-800">{allPermissions.length}</p>
-                                    <p className="text-sm text-slate-500">Permissions</p>
-                                </div>
+                        <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm flex items-center justify-between gap-[1.2vw]">
+                            <div className="p-[0.7vw] bg-green-100 rounded-lg">
+                                <Shield size={24} className="text-green-600 w-[1.4vw] h-[1.4vw]" />
+                            </div>
+                            <div className="text-right">
+                                <p className="text-slate-400 text-[0.8vw] uppercase tracking-wider mb-[0.2vh]">Permissions</p>
+                                <h3 className="text-[2vw] font-light text-slate-700 leading-none">{allPermissions.length}</h3>
                             </div>
                         </div>
                     </div>
@@ -109,12 +104,12 @@ const RolesAccessPage: React.FC = () => {
                     {/* Roles Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {roles.map(role => (
-                            <div 
-                                key={role.id} 
+                            <div
+                                key={role.id}
                                 className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition-all overflow-hidden"
                             >
-                                <div 
-                                    className="h-2" 
+                                <div
+                                    className="h-2"
                                     style={{ backgroundColor: role.color }}
                                 ></div>
                                 <div className="p-5">

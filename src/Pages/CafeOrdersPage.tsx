@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Clock, Users, DollarSign, Timer, SquareMenu } from 'lucide-react';
+import { Plus, Clock, Users, DollarSign} from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import {
     CafeStatCard,
@@ -17,14 +17,13 @@ const CafeOrdersPage: React.FC = () => {
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedOrder, setSelectedOrder] = useState<CafeOrder | null>(null);
     const [statusFilter] = useState<OrderStatus | 'All'>('All');
-    const [showQuickMenu, setShowQuickMenu] = useState(false);
+
 
     // Calculate stats
     const stats = {
         pendingOrders: orders.filter(o => o.status === 'Pending' || o.status === 'Preparing').length,
         activeTables: new Set(orders.filter(o => o.tableNumber && o.status !== 'Completed' && o.status !== 'Cancelled').map(o => o.tableNumber)).size,
         todayRevenue: orders.filter(o => o.status !== 'Cancelled').reduce((sum, o) => sum + o.total, 0),
-        avgPrepTime: 15,
     };
 
     const handleNewOrder = () => {
@@ -83,35 +82,9 @@ const CafeOrdersPage: React.FC = () => {
 
                 <div className="p-6">
                     {/* Page Header */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
 
                         <div className="flex gap-3 flex-wrap">
-                            <div className="relative">
-                                <button
-                                    onClick={() => setShowQuickMenu(!showQuickMenu)}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-[#001a4d] transition-colors"
-                                >
-                                    <SquareMenu size={18} />
-                                    Quick Menu
-                                </button>
-                                {showQuickMenu && (
-                                    <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg border border-slate-200 py-2 min-w-48 z-50">
-                                        {['Biryani - RS300', 'Naan - RS50', 'Chai - RS30', 'Samosa - RS20', 'Lassi - RS60'].map(item => (
-                                            <button
-                                                key={item}
-                                                onClick={() => {
-                                                    const name = item.split(' - ')[0];
-                                                    alert(`${name} added to quick menu!`);
-                                                    setShowQuickMenu(false);
-                                                }}
-                                                className="w-full px-4 py-2 text-left text-sm text-slate-600 hover:bg-slate-50 transition-colors"
-                                            >
-                                                {item}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
                             <button
                                 onClick={handleNewOrder}
                                 className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"
@@ -127,46 +100,29 @@ const CafeOrdersPage: React.FC = () => {
                         <CafeStatCard
                             title="Pending Orders"
                             value={stats.pendingOrders}
-                            subtitle="Awaiting preparation"
                             icon={<Clock size={24} className="text-orange-600" />}
                             iconBgColor="bg-orange-100"
-                            change="12%"
-                            changeType="positive"
                         />
                         <CafeStatCard
                             title="Active Tables"
                             value={stats.activeTables}
-                            subtitle="Currently occupied"
                             icon={<Users size={24} className="text-green-600" />}
                             iconBgColor="bg-green-100"
-                            change="5%"
-                            changeType="positive"
                         />
                         <CafeStatCard
                             title="Today's Revenue"
-                            value={`RS${stats.todayRevenue.toFixed(2)}`}
-                            subtitle="Sales today"
+                            value={`Rs. ${stats.todayRevenue.toFixed(2)}`}
                             icon={<DollarSign size={24} className="text-[#D4AF37]" />}
                             iconBgColor="bg-[#D4AF37]/20"
-                            change="24%"
-                            changeType="positive"
                         />
-                        <CafeStatCard
-                            title="Avg. Prep Time"
-                            value={`${stats.avgPrepTime}m`}
-                            subtitle="Order to serve"
-                            icon={<Timer size={24} className="text-red-500" />}
-                            iconBgColor="bg-red-100"
-                            change="8%"
-                            changeType="negative"
-                        />
+
                     </div>
 
 
 
                     {/* Main Content */}
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                        <div className="lg:col-span-3 overflow-x-auto">
+                    <div className="w-full">
+                        <div className="w-full overflow-x-auto">
                             <OrderTable
                                 orders={statusFilter === 'All' ? orders : orders.filter(o => o.status === statusFilter)}
                                 onView={handleViewOrder}

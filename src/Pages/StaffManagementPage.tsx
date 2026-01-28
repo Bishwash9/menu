@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SideBar } from '../Components/Layout/Sidebar';
-import { Plus } from 'lucide-react';
+import { Plus, Users, UserCheck, UserX, Briefcase } from 'lucide-react';
 import {
     StaffStatCard,
     StaffModal,
@@ -74,7 +74,7 @@ function StaffManagementPage() {
                             value={stats.totalStaff}
                             trend="+12%"
                             trendUp={true}
-                            icon={(props) => <span {...props}>👥</span>}
+                            icon={<Users size={20} />}
                             iconColor="royal"
                         />
                         <StaffStatCard
@@ -82,19 +82,19 @@ function StaffManagementPage() {
                             value={stats.active}
                             trend="+5%"
                             trendUp={true}
-                            icon={(props) => <span {...props}>✓</span>}
+                            icon={<UserCheck size={20} />}
                             iconColor="green"
                         />
                         <StaffStatCard
                             title="On Leave"
                             value={stats.onLeave}
-                            icon={(props) => <span {...props}>⏸️</span>}
+                            icon={<UserX size={20} />}
                             iconColor="golden"
                         />
                         <StaffStatCard
                             title="Roles"
                             value={stats.totalRoles}
-                            icon={(props) => <span {...props}>💼</span>}
+                            icon={<Briefcase size={20} />}
                             iconColor="purple"
                         />
                     </div>

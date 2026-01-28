@@ -306,11 +306,11 @@ function AdminDashboardContent() {
                 <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <table className="w-full border-collapse">
                     <thead>
-                      <tr className="bg-gray-50 border-b border-gray-100">
-                        <th className="text-left text-xs font-bold text-gray-500 uppercase px-6 py-4 tracking-wider">Guest</th>
-                        <th className="text-left text-xs font-bold text-gray-500 uppercase px-6 py-4 tracking-wider">Room</th>
-                        <th className="text-left text-xs font-bold text-gray-500 uppercase px-6 py-4 tracking-wider">Check-in</th>
-                        <th className="text-right text-xs font-bold text-gray-500 uppercase px-6 py-4 tracking-wider">Amount</th>
+                      <tr className="bg-slate-50 border-b border-slate-200">
+                        <th className="text-left font-bold text-slate-700 px-6 py-3">Guest</th>
+                        <th className="text-left font-bold text-slate-700 px-6 py-3">Room</th>
+                        <th className="text-left font-bold text-slate-700 px-6 py-3">Check-in</th>
+                        <th className="text-right font-bold text-slate-700 px-6 py-3">Amount</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -350,7 +350,7 @@ function AdminDashboardContent() {
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <span className="text-base font-bold text-gray-900">RS{booking.amount}</span>
+                              <span className="text-base font-bold text-gray-900">Rs.{booking.amount}</span>
                             </td>
                           </tr>
                         ))}
@@ -510,7 +510,7 @@ function AdminDashboardContent() {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Amount (RS)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Amount (Rs.)</label>
                       <input
                         type="number"
                         value={newBookingForm.amount}
@@ -566,7 +566,7 @@ function AdminDashboardContent() {
                       </div>
                       <div className="p-3 bg-gray-50 rounded-lg">
                         <p className="text-xs text-gray-500 mb-1">Amount</p>
-                        <p className="font-semibold text-gray-900">RS{selectedBooking.amount}</p>
+                        <p className="font-semibold text-gray-900">Rs.{selectedBooking.amount}</p>
                       </div>
                       <div className="p-3 bg-gray-50 rounded-lg">
                         <p className="text-xs text-gray-500 mb-1">Check-in</p>
@@ -658,7 +658,7 @@ function AdminDashboardContent() {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Amount (RS)</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Amount (Rs.)</label>
                         <input
                           type="text"
                           value={selectedBooking.amount}
@@ -724,7 +724,7 @@ function StatusCard({ title, value, icon, color, isCurrency }: { title: string, 
       <div className="text-right">
         <p className="text-slate-400 text-[0.8vw]  uppercase tracking-wider mb-[0.2vh] ">{title}</p>
         <h3 className="text-[2vw] font-light text-slate-700 leading-none">
-          {isCurrency ? `RS ${value.toLocaleString()}` : value}
+          {isCurrency ? `Rs. ${value.toLocaleString()}` : value}
         </h3>
       </div>
     </div>

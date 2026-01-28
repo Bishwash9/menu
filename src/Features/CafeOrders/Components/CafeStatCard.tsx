@@ -3,43 +3,27 @@ import React from 'react';
 interface CafeStatCardProps {
     title: string;
     value: string | number;
-    subtitle: string;
     icon: React.ReactNode;
     iconBgColor: string;
-    change?: string;
-    changeType?: 'positive' | 'negative';
+
 }
 
 export const CafeStatCard: React.FC<CafeStatCardProps> = ({
     title,
     value,
-    subtitle,
     icon,
     iconBgColor,
-    change,
-    changeType,
+
 }) => {
     return (
-        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-start justify-between">
-                <div className={`p-3 rounded-xl ${iconBgColor}`}>
-                    {icon}
-                </div>
-                {change && (
-                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                        changeType === 'positive' 
-                            ? 'bg-green-100 text-green-600' 
-                            : 'bg-red-100 text-red-600'
-                    }`}>
-                        {changeType === 'positive' ? '+' : ''}{change}
-                    </span>
-                )}
+        <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]">
+            <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconBgColor} transition-all`}>
+                {icon}
             </div>
-            <div className="mt-4">
-                <h3 className="text-2xl font-bold text-slate-800">{value}</h3>
-                <p className="text-sm text-slate-500 font-medium">{title}</p>
+            <div className="text-right flex-1 min-w-0">
+                <p className="text-[0.8vw] text-slate-400 uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
+                <h3 className="text-[2vw] font-light text-slate-700 leading-none mb-[0.2vh]">{value}</h3>
             </div>
-            <p className="text-xs text-slate-400 mt-2">{subtitle}</p>
         </div>
     );
 };

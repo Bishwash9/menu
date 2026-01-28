@@ -20,6 +20,7 @@ interface CartContextType {
     removeFromCart: (itemId: number) => void;
     updateQuantity: (itemId: number, delta: number) => void;
     toggleCart: () => void;
+    clearCart: () => void;
 }
 
 // CONTEXT CREATION
@@ -78,6 +79,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     // ACTION: Toggle sidebar visibility
     const toggleCart = () => setIsCartOpen(!isCartOpen);
 
+    // ACTION: Clear the entire cart
+    const clearCart = () => setCartItems([]);
+
     const cartTotal = useMemo(() => {
         return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     }, [cartItems]);
@@ -95,6 +99,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         removeFromCart,
         updateQuantity,
         toggleCart,
+        clearCart,
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

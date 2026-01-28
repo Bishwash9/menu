@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { MOCK_ORDER_DATA } from '../Lib/orderdata'
 import type { OrderModel, OrderType } from '../Types/order'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 interface OrderModelPageProps {
@@ -22,10 +22,10 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
         }
     }, [location.state]);
 
-     const handleNext = () => {
+    const handleNext = () => {
         console.log("Preparing order for:", formData.identifier);
 
-        navigate(`/menu?type${formData.orderType}&id=${formData.identifier}`)
+        navigate(`/menu?type=${formData.orderType}&id=${formData.identifier}`)
     }
 
 
@@ -45,7 +45,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
 
 
 
-   
+
 
     const content = (
         <>
@@ -107,23 +107,23 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
                 />
             </div>
 
-         
-                <button
-                    onClick={handleNext}
-                    disabled={!formData.identifier}
-                    className='w-full bg-[#002366] hover:bg-[#001a4d] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 group shadow-lg shadow-[#002366]/20'
+
+            <button
+                onClick={handleNext}
+                disabled={!formData.identifier}
+                className='w-full bg-[#002366] hover:bg-[#001a4d] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 group shadow-lg shadow-[#002366]/20'
+            >
+                <span>Next</span>
+                <svg
+                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                 >
-                    <span>Next</span>
-                    <svg
-                        className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
-       
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+
         </>
     );
 

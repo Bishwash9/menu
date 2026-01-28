@@ -25,7 +25,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
     const filteredInvoices = invoices.filter(invoice => {
-        const matchesSearch = 
+        const matchesSearch =
             invoice.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
             invoice.guestName.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesStatus = statusFilter === 'All' || invoice.status === statusFilter;
@@ -87,14 +87,14 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                     <table className="w-full text-sm">
                         <thead className="bg-slate-50 border-b border-slate-200">
                             <tr>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Invoice</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Guest</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Date</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Due Date</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Amount</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Paid</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Status</th>
-                                <th className="px-4 py-3 text-center font-semibold text-slate-600 uppercase text-xs">Actions</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Invoice</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Guest</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Date</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Due Date</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Amount</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Paid</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Status</th>
+                                <th className="px-4 py-3 text-center font-bold text-slate-700">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -168,9 +168,9 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                                             </button>
                                                         )}
                                                         <button
-                                                            onClick={() => { 
-                                                                if (confirm('Delete this invoice?')) onDelete?.(invoice.id); 
-                                                                setActiveMenu(null); 
+                                                            onClick={() => {
+                                                                if (confirm('Delete this invoice?')) onDelete?.(invoice.id);
+                                                                setActiveMenu(null);
                                                             }}
                                                             className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
                                                         >

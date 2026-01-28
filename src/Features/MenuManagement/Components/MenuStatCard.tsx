@@ -1,51 +1,36 @@
 import React from 'react';
-import { TrendingUp } from 'lucide-react';
+
 
 interface MenuStatCardProps {
     title: string;
     value: string | number;
-    trend?: string;
-    trendUp?: boolean;
-    icon: React.ComponentType<{ size: number }>;
+    icon: React.ReactNode;
     iconColor: 'royal' | 'golden' | 'green' | 'purple';
 }
 
 export const MenuStatCard: React.FC<MenuStatCardProps> = ({
     title,
     value,
-    trend,
-    trendUp,
-    icon: Icon,
+    icon,
     iconColor,
 }) => {
     const colorMap = {
-        royal: 'from-[#1E3A8A] to-[#2563EB]',
-        golden: 'from-[#D4AF37] to-[#F59E0B]',
-        green: 'from-[#10B981] to-[#059669]',
-        purple: 'from-[#8B5CF6] to-[#7C3AED]',
+        royal: 'bg-blue-50 text-blue-500',
+        golden: 'bg-orange-50 text-orange-500',
+        green: 'bg-green-50 text-green-600',
+        purple: 'bg-purple-50 text-purple-500',
     };
 
     return (
-        <div className="bg-white rounded-lg p-4 shadow-sm border border-slate-100 flex flex-col justify-between h-full">
-            <div className="flex justify-between items-start mb-3">
-                <div>
-                    <p className="text-slate-500 text-xs md:text-sm font-medium mb-1">{title}</p>
-                    <h3 className="text-[#1E3A8A] text-xl md:text-2xl font-bold">{value}</h3>
-                </div>
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorMap[iconColor]} flex items-center justify-center text-white shadow-md`}>
-                    <Icon size={20} />
-                </div>
+        <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]">
+            <div className={`p-[0.7vw] rounded-lg shrink-0 ${colorMap[iconColor]} transition-all`}>
+                {icon}
             </div>
+            <div className="text-right flex-1 min-w-0">
+                <p className="text-slate-400 text-[0.8vw] uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
+                <h3 className="text-[2vw] font-light text-slate-700 leading-none mb-[0.5vh]">{value}</h3>
 
-            {trend !== undefined && (
-                <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-100">
-                    <span className="text-slate-400 text-xs">Updated now</span>
-                    <div className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full ${trendUp ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
-                        <TrendingUp size={10} className={!trendUp ? 'rotate-180' : ''} />
-                        {trend}
-                    </div>
-                </div>
-            )}
+            </div>
         </div>
     );
 };

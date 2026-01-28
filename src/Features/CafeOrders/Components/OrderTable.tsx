@@ -53,10 +53,10 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 
     const getTypeIcon = (type: OrderType) => {
         switch (type) {
-            case 'Dine In': return '🍽️';
-            case 'Takeaway': return '🥡';
-            case 'Room Service': return '🛎️';
-            default: return '📦';
+            case 'Dine In': return '';
+            case 'Takeaway': return '';
+            case 'Room Service': return '';
+            default: return '';
         }
     };
 
@@ -64,7 +64,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
     return (
         <div className="w-full mt-[2vh]">
             {/* Filters */}
-            <div className=" bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col lg:flex-row gap-3 items-end">
+            <div className=" bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col lg:flex-row gap-3 items-end mb-[2vh]">
                 <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                     <input
@@ -102,29 +102,21 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                 </div>
             </div>
 
-            {/* Recent Orders Header */}
-            <div className=" flex items-center p-2 justify-between">
-                <div className='mt-[2vh] mb-[2vh]'>
-                    <h2 className="text-lg font-bold text-[#002366]">Recent Orders</h2>
-                    <p className="text-sm text-slate-500">{filteredOrders.length} orders found</p>
-                </div>
-            </div>
-
             {/* Table */}
             <div className="rounded-xl  border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                        <thead className="bg-slate-100 border-b border-slate-200">
+                        <thead className="bg-slate-50 border-b border-slate-200">
                             <tr>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Order ID</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Customer</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Type</th>
-                                <th className='px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs'>Table</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Items</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Status</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Priority</th>
-                                <th className="px-4 py-3 text-left font-semibold text-slate-600 uppercase text-xs">Total</th>
-                            
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Order ID</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Customer</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Type</th>
+                                <th className='px-4 py-3 text-left font-bold text-slate-700'>Table</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Items</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Status</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Priority</th>
+                                <th className="px-4 py-3 text-left font-bold text-slate-700">Total</th>
+
 
 
 
@@ -132,7 +124,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {filteredOrders.map((order) => (
-                                <tr key={order.id} className="hover:bg-slate-50/50 transition-colors">
+                                <tr key={order.id} className="hover:bg-slate-50 transition-colors">
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-2">
                                             <span className="w-8 h-8 bg-[#D4AF37]/20 rounded-lg flex items-center justify-center text-xs">
@@ -161,13 +153,13 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                                         </span>
                                     </td>
 
-                                     <td className={`px-4 py-3 font-medium ${getPriorityColor(order.priority)}`}>
+                                    <td className={`px-4 py-3 font-medium ${getPriorityColor(order.priority)}`}>
                                         {order.priority}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <span className="font-semibold text-[#D4AF37]">RS{order.total.toFixed(2)}</span>
+                                        <span className="font-semibold text-[#D4AF37]">Rs.{order.total.toFixed(2)}</span>
                                     </td>
-                                   
+
                                     <td className={`px-4 py-3 font-medium ${order.tableNumber || '-'}`}>
 
                                     </td>

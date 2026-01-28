@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useCart } from "../Context/CartContext";
+import { useOrders } from "../../../Context/OrderContext";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const CartSidebar: React.FC = () => {
     const {
@@ -9,7 +11,11 @@ export const CartSidebar: React.FC = () => {
         updateQuantity,
         removeFromCart,
         cartTotal,
+        clearCart,
     } = useCart();
+    const { createOrder } = useOrders();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         if (isCartOpen) {
@@ -137,7 +143,7 @@ export const CartSidebar: React.FC = () => {
                                                 </button>
                                             </div>
                                             <p className="text-primary font-bold text-xs mt-1 uppercase tracking-wider">
-                                                NPR {item.price}
+                                                Rs. {item.price}
                                             </p>
 
                                             <div className="flex items-center justify-between mt-3">
@@ -159,7 +165,7 @@ export const CartSidebar: React.FC = () => {
                                                     </button>
                                                 </div>
                                                 <span className="font-bold text-gray-800 text-sm">
-                                                    NPR {item.price * item.quantity}
+                                                    Rs. {item.price * item.quantity}
                                                 </span>
                                             </div>
                                         </div>
@@ -174,20 +180,34 @@ export const CartSidebar: React.FC = () => {
                             <div className="space-y-2">
                                 <div className="flex justify-between text-gray-500 text-sm">
                                     <span>Subtotal</span>
-                                    <span>NPR {cartTotal.toFixed(0)}</span>
+                                    <span>Rs. {cartTotal.toFixed(0)}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-500 text-sm">
                                     <span>Tax (13%)</span>
-                                    <span>NPR {taxAmount.toFixed(0)}</span>
+                                    <span>Rs. {taxAmount.toFixed(0)}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-900 font-bold text-lg pt-4 mt-2 border-t border-gray-100">
                                     <span>Total Amount</span>
-                                    <span>NPR {grandTotal.toFixed(0)}</span>
+                                    <span>Rs. {grandTotal.toFixed(0)}</span>
                                 </div>
                             </div>
 
 
-                            <button className="w-full bg-[#002366] text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-[#001a4d] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                            <button
+                                onClick={() => {
+                                    const orderId = createOrder({
+                                        locationId: searchParams.get('id') || 'General',
+                                        type: (searchParams.get('type') as 'table' | 'room') || 'table',
+                                        items: cartItems,
+                                    });
+                                    localStorage.removeItem('cartItems');
+                                    clearCart();
+                                    localStorage.removeItem('cartItems')
+                                    toggleCart();
+                                    navigate(`/orders/${orderId}`);
+                                }}
+                                className="w-full bg-[#002366] text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-[#001a4d] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                            >
                                 Order
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

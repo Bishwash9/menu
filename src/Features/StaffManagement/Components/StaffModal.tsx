@@ -23,7 +23,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
         role: editingEmployee?.role || 'Waiter',
         shift: editingEmployee?.shift || 'Morning Shift',
         status: editingEmployee?.status || 'Active',
-        salary: editingEmployee?.salary || '',
+
         joinDate: editingEmployee?.joinDate || '',
     });
 
@@ -45,7 +45,6 @@ export const StaffModal: React.FC<StaffModalProps> = ({
             role: formData.role as any,
             shift: formData.shift as any,
             status: formData.status as any,
-            salary: parseInt(formData.salary as any),
             joinDate: formData.joinDate,
             avatarColor: Math.random() > 0.5 ? 'royal' : 'golden',
         };
@@ -58,7 +57,6 @@ export const StaffModal: React.FC<StaffModalProps> = ({
             role: 'Waiter',
             shift: 'Morning Shift',
             status: 'Active',
-            salary: '',
             joinDate: '',
         });
         onClose();
@@ -177,19 +175,6 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                                     <option key={status} value={status}>{status}</option>
                                 ))}
                             </select>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Salary (Monthly) *</label>
-                            <input
-                                type="number"
-                                name="salary"
-                                value={formData.salary}
-                                onChange={handleChange}
-                                required
-                                min="0"
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
-                                placeholder="0"
-                            />
                         </div>
                     </div>
 

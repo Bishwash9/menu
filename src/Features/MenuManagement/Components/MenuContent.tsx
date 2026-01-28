@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search} from 'lucide-react';
+import { Search } from 'lucide-react';
 import type { MenuItem } from '../Types';
 
 interface MenuContentProps {
@@ -23,18 +23,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
         return matchesSearch && matchesCategory;
     });
 
-    const getDietColor = (diet: string) => {
-        switch (diet) {
-            case 'Veg':
-                return 'bg-green-100 text-green-700';
-            case 'Non-Veg':
-                return 'bg-red-100 text-red-700';
-            case 'Vegan':
-                return 'bg-yellow-100 text-yellow-700';
-            default:
-                return 'bg-gray-100 text-gray-700';
-        }
-    };
+
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -75,15 +64,6 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                         <option key={cat} value={cat}>{cat}</option>
                     ))}
                 </select>
-                <button
-                    onClick={() => {
-                        setSearchQuery('');
-                        setCategoryFilter('');
-                    }}
-                    className="px-4 py-2 text-[#D4AF37] font-bold hover:underline"
-                >
-                    Clear
-                </button>
             </div>
 
             {/* Table */}
@@ -95,11 +75,9 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">ITEM</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">CATEGORY</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">PRICE</th>
-                                <th className="px-4 py-3 text-left font-bold text-slate-700">DIET INFO</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">PREP TIME</th>
-                                <th className="px-4 py-3 text-left font-bold text-slate-700">RATING</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">STATUS</th>
-                              
+
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -108,29 +86,19 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                                     <td className="px-4 py-3">
                                         <div>
                                             <p className="font-bold text-slate-800">{item.name}</p>
-                                            <p className="text-xs text-slate-500">{item.calories} calories</p>
+
                                         </div>
                                     </td>
                                     <td className="px-4 py-3 text-slate-600">{item.category}</td>
-                                    <td className="px-4 py-3 font-bold text-[#D4AF37]">${item.price}</td>
-                                    <td className="px-4 py-3">
-                                        <span className={`px-2 py-1 rounded text-xs font-bold ${getDietColor(item.dietInfo)}`}>
-                                            {item.dietInfo}
-                                        </span>
-                                    </td>
+                                    <td className="px-4 py-3 font-bold text-[#D4AF37]">Rs.{item.price}</td>
                                     <td className="px-4 py-3 text-slate-600">{item.prepTime} min</td>
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center gap-1">
-                                            {'★'.repeat(Math.floor(item.rating))}
-                                            <span className="text-xs text-slate-600">{item.rating}</span>
-                                        </div>
-                                    </td>
+
                                     <td className="px-4 py-3">
                                         <span className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(item.status)}`}>
                                             {item.status}
                                         </span>
                                     </td>
-                                    
+
                                 </tr>
                             ))}
                         </tbody>

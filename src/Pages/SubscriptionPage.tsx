@@ -9,7 +9,7 @@ const SubscriptionPage: React.FC = () => {
   const plans = [
     {
       name: 'Basic Plan',
-      price: '1,499',
+      price: '20,000',
       icon: <Zap size={24} className="text-slate-600" />,
       features: [
         'Up to 50 orders/day',
@@ -22,7 +22,7 @@ const SubscriptionPage: React.FC = () => {
     },
     {
       name: 'Normal Plan',
-      price: '3,499',
+      price: '50,000',
       icon: <Star size={24} className="text-slate-400" />,
       features: [
         'Unlimited orders',
@@ -36,7 +36,7 @@ const SubscriptionPage: React.FC = () => {
     },
     {
       name: 'Premium Plan',
-      price: '5,999',
+      price: '1,00,000',
       icon: <Rocket size={24} className="text-[#1E3A8A]" />,
       features: [
         'Everything in Normal',
@@ -88,7 +88,7 @@ const SubscriptionPage: React.FC = () => {
 
                   <div className="mb-8">
                     <div className="flex items-baseline gap-1">
-                      <span className="text-sm font-bold text-slate-500">RS</span>
+                      <span className="text-sm font-bold text-slate-500">Rs. </span>
                       <span className="text-4xl font-black text-[#002366]">{plan.price}</span>
                       <span className="text-slate-500">/mo</span>
                     </div>

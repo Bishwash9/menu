@@ -78,9 +78,7 @@ function StaffDashboardContent() {
                             <h2 className="text-[3vw] font-light text-[#002366] leading-none tracking-tight mb-[1vh]">
                                 Welcome back, <span className="font-normal">Staff</span>
                             </h2>
-                            <p className="text-[1.1vw] text-slate-500 font-light max-w-[35vw]">
-                                Effortlessly manage your guests and room inventory from a single view.
-                            </p>
+
                         </div>
 
                         <div className="text-right pb-[1vh]">
@@ -226,7 +224,7 @@ function StatusCard({ title, value, icon, color }: { title: string, value: numbe
         purple: 'bg-purple-50 text-purple-500',
     };
 
-   return (
+    return (
         <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex justify-between items-center gap-[1.2vw]">
             {/* ICON ON THE LEFT */}
             <div className={`p-[0.8vw] rounded-xl shrink-0 ${colors[color] || colors.royal} transition-all`}>
@@ -237,7 +235,7 @@ function StatusCard({ title, value, icon, color }: { title: string, value: numbe
                 <p className="text-slate-400 text-[0.8vw] font-light uppercase tracking-wider mb-[0.2vh]">
                     {title}
                 </p>
-                <h3 className="text-[1.8vw] font-light text-slate-700 leading-none">
+                <h3 className="text-[2vw] font-light text-slate-700 leading-none">
                     {value}
                 </h3>
             </div>

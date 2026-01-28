@@ -14,15 +14,13 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, icon, iconBgColor, valueColor = 'text-slate-800' }) => (
-    <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-        <div className="flex items-center justify-between">
-            <div>
-                <p className="text-sm text-slate-500 font-medium">{title}</p>
-                <p className={`text-2xl font-bold mt-1 ${valueColor}`}>{value}</p>
-            </div>
-            <div className={`p-3 rounded-xl ${iconBgColor}`}>
-                {icon}
-            </div>
+    <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]">
+        <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconBgColor} transition-all`}>
+            {icon}
+        </div>
+        <div className="text-right flex-1 min-w-0">
+            <p className="text-[0.8vw] text-slate-400 uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
+            <p className={`text-[2vw] font-bold leading-none ${valueColor}`}>{value}</p>
         </div>
     </div>
 );
@@ -86,12 +84,12 @@ const BillingPage: React.FC = () => {
                             ${invoice.items.map(item => `
                                 <div class="item-row">
                                     <span>${item.description} x${item.quantity}</span>
-                                    <span>RS${item.amount.toFixed(2)}</span>
+                                    <span>Rs. {item.amount.toFixed(2)}</span>
                                 </div>
                             `).join('')}
                         </div>
                         <div class="line"></div>
-                        <div class="total">Total: RS${invoice.total.toFixed(2)}</div>
+                        <div class="total">Total: Rs. {invoice.total.toFixed(2)}</div>
                         <div class="info" style="margin-top: 15px;">
                             <div>Status: ${invoice.status}</div>
                             <div>Payment: ${invoice.paymentMethod || 'N/A'}</div>
@@ -120,8 +118,8 @@ const BillingPage: React.FC = () => {
     };
 
     const handleMarkPaid = (invoiceId: string) => {
-        setInvoices(invoices.map(i => 
-            i.id === invoiceId 
+        setInvoices(invoices.map(i =>
+            i.id === invoiceId
                 ? { ...i, status: 'Paid' as const, paidAmount: i.total, paymentMethod: 'Cash' as const }
                 : i
         ));
@@ -129,14 +127,14 @@ const BillingPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar/>
-            
+            <SideBar />
+
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
                 <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+                    <DashboardHeader />
                 </div>
-                
+
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -157,14 +155,14 @@ const BillingPage: React.FC = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                         <StatCard
                             title="Total Revenue"
-                            value={`RS${stats.totalRevenue.toLocaleString()}`}
+                            value={`Rs. ${stats.totalRevenue.toLocaleString()}`}
                             icon={<DollarSign size={24} className="text-green-600" />}
                             iconBgColor="bg-green-100"
                             valueColor="text-green-600"
                         />
                         <StatCard
                             title="Pending Payments"
-                            value={`RS${stats.pendingPayments.toLocaleString()}`}
+                            value={`Rs. ${stats.pendingPayments.toLocaleString()}`}
                             icon={<Clock size={24} className="text-yellow-600" />}
                             iconBgColor="bg-yellow-100"
                             valueColor="text-yellow-600"
@@ -177,7 +175,7 @@ const BillingPage: React.FC = () => {
                         />
                         <StatCard
                             title="Overdue Amount"
-                            value={`RS${stats.overdueAmount.toLocaleString()}`}
+                            value={`Rs. ${stats.overdueAmount.toLocaleString()}`}
                             icon={<AlertTriangle size={24} className="text-red-500" />}
                             iconBgColor="bg-red-100"
                             valueColor="text-red-500"
@@ -193,7 +191,7 @@ const BillingPage: React.FC = () => {
                         onDelete={handleDeleteInvoice}
                         onMarkPaid={handleMarkPaid}
                     />
-                    
+
                     {/* Create Invoice Modal */}
                     <InvoiceModal
                         isOpen={isInvoiceModalOpen}

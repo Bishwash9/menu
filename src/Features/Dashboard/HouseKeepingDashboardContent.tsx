@@ -1,11 +1,31 @@
 import { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, CheckCircle, Clock } from 'lucide-react';
 
 interface Room {
   id: number;
   roomNo: string;
   status: 'pending' | 'completed';
 }
+
+interface StatCardProps {
+  title: string;
+  value: number;
+  icon: React.ReactNode;
+  iconBgColor: string;
+  valueColor: string;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ title, value, icon, iconBgColor }) => (
+  <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]">
+    <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconBgColor} transition-all`}>
+      {icon}
+    </div>
+    <div className="text-right flex-1 min-w-0">
+      <p className="text-[0.8vw] text-slate-400 uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
+      <p className="text-[2vw] font-light text-slate-700 leading-none">{value}</p>
+    </div>
+  </div>
+);
 
 const HouseKeepingDashboardContent = () => {
   const [rooms, setRooms] = useState<Room[]>([
@@ -40,16 +60,22 @@ const HouseKeepingDashboardContent = () => {
       <div className="max-w-7xl mx-auto space-y-6">
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-            <h3 className="text-gray-500 text-sm font-medium mb-2">Rooms Completed</h3>
-            <p className="text-4xl font-bold text-emerald-600">{completedRooms}</p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[2vw]">
+          <StatCard
+            title="Rooms Completed"
+            value={completedRooms}
+            icon={<CheckCircle className="w-[1.4vw] h-[1.4vw] text-emerald-600" />}
+            iconBgColor="bg-emerald-100"
+            valueColor="text-emerald-600"
+          />
 
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-            <h3 className="text-gray-500 text-sm font-medium mb-2">Rooms Pending</h3>
-            <p className="text-4xl font-bold text-orange-600">{pendingRooms}</p>
-          </div>
+          <StatCard
+            title="Rooms Pending"
+            value={pendingRooms}
+            icon={<Clock className="w-[1.4vw] h-[1.4vw] text-orange-600" />}
+            iconBgColor="bg-orange-100"
+            valueColor="text-orange-600"
+          />
         </div>
 
         {/* Search Bar */}
@@ -85,8 +111,8 @@ const HouseKeepingDashboardContent = () => {
                     </td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded text-xs font-bold ${room.status === 'completed'
-                          ? 'bg-emerald-100 text-emerald-700'
-                          : 'bg-orange-100 text-orange-700'
+                        ? 'bg-emerald-100 text-emerald-700'
+                        : 'bg-orange-100 text-orange-700'
                         }`}>
                         {room.status === 'completed' ? 'Completed' : 'Pending'}
                       </span>

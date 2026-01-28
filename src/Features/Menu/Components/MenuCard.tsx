@@ -1,5 +1,5 @@
 import React from 'react';
-import type { MenuItem } from '../../../lib/data';
+import type { MenuItem } from '../../../Lib/data';
 import { useCart } from '../../Cart';
 
 
@@ -39,7 +39,7 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
 
                 <div className="flex items-center justify-between mt-auto">
                     <span className="text-lg font-bold text-gray-900">
-                        <span className="text-primary text-sm mr-1">NPR</span>
+                        <span className="text-primary text-sm mr-1">Rs.</span>
                         {item.price}
                     </span>
 

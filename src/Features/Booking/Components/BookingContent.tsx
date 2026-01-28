@@ -18,7 +18,7 @@ interface BookingContentProps {
     onConfirm?: (bookingId: string) => void;
 }
 
-export const BookingContent: React.FC<BookingContentProps> = ({ 
+export const BookingContent: React.FC<BookingContentProps> = ({
     bookings,
     onEdit,
     onDelete,
@@ -28,25 +28,25 @@ export const BookingContent: React.FC<BookingContentProps> = ({
     const [searchQuery, setSearchQuery] = useState('');
 
     const formatDate = (dateStr: string) => {
-        return new Date(dateStr).toLocaleDateString('en-US', { 
-            month: 'short', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit' 
+        return new Date(dateStr).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         });
     };
 
     const getDayDate = () => {
-        return new Date().toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+        return new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
     };
 
-    const filteredBookings = bookings.filter(b => 
-        b.guest.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const filteredBookings = bookings.filter(b =>
+        b.guest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         b.id.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -91,16 +91,15 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                 <div className="hidden md:block bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
-                            <thead className="bg-slate-50 border-b border-slate-100">
+                            <thead className="bg-slate-50 border-b border-slate-200">
                                 <tr>
-                                    <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Booking ID</th>
-                                    <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Guest</th>
-                                    <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Room</th>
-                                    <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Check In/Out</th>
-                                    <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nights</th>
-                                    <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Amount</th>
-                                    <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Status</th>
-                                    <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Actions</th>
+                                    <th className="p-4 text-left font-bold text-slate-700">Booking ID</th>
+                                    <th className="p-4 text-left font-bold text-slate-700">Guest</th>
+                                    <th className="p-4 text-left font-bold text-slate-700">Room</th>
+                                    <th className="p-4 text-left font-bold text-slate-700">Check In/Out</th>
+                                    <th className="p-4 text-left font-bold text-slate-700">Nights</th>
+                                    <th className="p-4 text-left font-bold text-slate-700 text-right">Amount</th>
+                                    <th className="p-4 text-center font-bold text-slate-700">Status</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50">
@@ -133,48 +132,12 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                                             </span>
                                         </td>
                                         <td className="p-4 text-right font-bold text-[#D4AF37]">
-                                            ${booking.amount}
+                                            Rs. {booking.amount}
                                         </td>
                                         <td className="p-4 text-center">
                                             <StatusBadge status={booking.status} />
                                             <div className="mt-1">
                                                 <PaymentBadge status={booking.payment} />
-                                            </div>
-                                        </td>
-                                        <td className="p-4">
-                                            <div className="flex items-center justify-center gap-2 opacity-100 transition-opacity">
-                                                <button 
-                                                    onClick={() => onView?.(booking)}
-                                                    className="p-2 text-[#1E3A8A] hover:bg-blue-50 rounded-full transition-colors cursor-pointer" 
-                                                    title="View"
-                                                >
-                                                    <Eye size={18} />
-                                                </button>
-                                                <button 
-                                                    onClick={() => onEdit?.(booking)}
-                                                    className="p-2 text-[#1E3A8A] hover:bg-blue-50 rounded-full transition-colors cursor-pointer" 
-                                                    title="Edit"
-                                                >
-                                                    <PenSquare size={18} />
-                                                </button>
-                                                <button 
-                                                    onClick={() => onConfirm?.(booking.id)}
-                                                    className="p-2 text-[#D4AF37] hover:bg-yellow-50 rounded-full transition-colors cursor-pointer" 
-                                                    title="Confirm"
-                                                >
-                                                    <CheckCircle size={18} />
-                                                </button>
-                                                <button 
-                                                    onClick={() => {
-                                                        if (confirm('Are you sure you want to delete this booking?')) {
-                                                            onDelete?.(booking.id);
-                                                        }
-                                                    }}
-                                                    className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors cursor-pointer" 
-                                                    title="Delete"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -225,7 +188,7 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                                         {booking.nights} Nights
                                     </span>
                                     <div className="text-right">
-                                        <span className="block text-xl font-bold text-[#D4AF37]">${booking.amount}</span>
+                                        <span className="block text-xl font-bold text-[#D4AF37]">Rs. {booking.amount}</span>
                                         <div className="flex justify-end mt-1">
                                             <PaymentBadge status={booking.payment} />
                                         </div>
@@ -233,31 +196,6 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                                 </div>
                             </div>
 
-                            {/* Card Actions */}
-                            <div className="bg-slate-50 p-3 flex justify-between gap-2">
-                                <button 
-                                    onClick={() => onView?.(booking)}
-                                    className="flex-1 min-h-[44px] py-2 rounded-lg border border-[#1E3A8A] text-[#1E3A8A] font-bold text-sm hover:bg-blue-50 cursor-pointer"
-                                >
-                                    View
-                                </button>
-                                <button 
-                                    onClick={() => onEdit?.(booking)}
-                                    className="flex-1 min-h-[44px] py-2 rounded-lg bg-[#D4AF37] text-white font-bold text-sm hover:bg-[#F59E0B] shadow-sm cursor-pointer"
-                                >
-                                    Edit
-                                </button>
-                                <button 
-                                    onClick={() => {
-                                        if (confirm('Are you sure you want to delete this booking?')) {
-                                            onDelete?.(booking.id);
-                                        }
-                                    }}
-                                    className="w-11 h-11 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 cursor-pointer"
-                                >
-                                    <Trash2 size={18} />
-                                </button>
-                            </div>
                         </div>
                     ))}
                 </div>

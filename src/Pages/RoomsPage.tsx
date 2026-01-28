@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Plus, BedDouble, CheckCircle, Users, Wrench } from 'lucide-react';
+import { Plus, BedDouble, CheckCircle, Users, Wrench} from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { DashboardHeader } from '../Components/Layout';
-import { 
-    RoomStatCard, 
-    RoomModal, 
+import {
+    RoomStatCard,
+    RoomModal,
     RoomContent,
-    initialRooms 
+    initialRooms
 } from '../Features/Rooms';
 import type { Room, RoomStats } from '../Features/Rooms/Types';
 
@@ -16,6 +16,7 @@ const RoomsPage: React.FC = () => {
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
     const [roomStatusFilter, setRoomStatusFilter] = useState<'All' | 'Available' | 'Occupied' | 'Cleaning' | 'Maintenance'>('All');
+
 
     // Calculate stats
     const stats: RoomStats = {
@@ -65,30 +66,29 @@ const RoomsPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar/>
-            
+            <SideBar />
+
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
 
                 <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+                    <DashboardHeader />
                 </div>
-                
+
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                     
-                        <div className="flex gap-3 flex-wrap">
+
+                        <div className="flex gap-3 flex-wrap w-full justify-between">
                             <div className="flex gap-2 flex-wrap">
                                 {['All', 'Available', 'Occupied', 'Cleaning', 'Maintenance'].map(status => (
                                     <button
                                         key={status}
                                         onClick={() => setRoomStatusFilter(status as any)}
-                                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                            roomStatusFilter === status
-                                                ? 'bg-[#002366] text-white'
-                                                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                                        }`}
+                                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${roomStatusFilter === status
+                                            ? 'bg-[#002366] text-white'
+                                            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                                            }`}
                                     >
                                         {status}
                                     </button>
@@ -137,7 +137,11 @@ const RoomsPage: React.FC = () => {
 
                     {/* Room Content */}
                     <RoomContent
-                        rooms={roomStatusFilter === 'All' ? rooms : rooms.filter(r => r.status === roomStatusFilter)}
+                        rooms={rooms.filter(r => {
+                            const matchesStatus = roomStatusFilter === 'All' || r.status === roomStatusFilter;
+                  
+                            return matchesStatus;
+                        })}
                         onView={handleViewRoom}
                         onEdit={handleEditRoom}
                         onDelete={handleDeleteRoom}

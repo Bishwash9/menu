@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { SIDEBAR_CONFIG } from "../../Config/sidebarConfig";
+import { SIDEBAR_CONFIG } from "../../Config/SidebarConfig";
 import { ROLES, type Role } from "../../Lib/roles";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -83,7 +83,7 @@ export function SideBar() {
           >
             <option value={ROLES.ADMIN}>Admin</option>
             <option value={ROLES.RECEPTION}>Reception</option>
-            <option value={ROLES.USER}>User</option>
+            {/* <option value={ROLES.USER}>User</option> */}
             <option value={ROLES.HOUSEKEEPING}>Housekeeping</option>
           </select>
 

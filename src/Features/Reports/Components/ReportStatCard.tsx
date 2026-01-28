@@ -21,25 +21,24 @@ export const ReportStatCard: React.FC<ReportStatCardProps> = ({
     const isPositive = change >= 0;
 
     return (
-        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-start justify-between mb-4">
-                {icon && (
-                    <div className={`p-3 rounded-xl ${iconBgColor}`}>
-                        {icon}
-                    </div>
-                )}
-                <span className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full ${
-                    isPositive 
-                        ? 'bg-green-100 text-green-600' 
-                        : 'bg-red-100 text-red-600'
-                }`}>
-                    {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+        <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]">
+            {icon && (
+                <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconBgColor} transition-all`}>
+                    {icon}
+                </div>
+            )}
+            <div className="text-right flex-1 min-w-0">
+                <p className="text-[0.8vw] text-slate-400 uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
+                <h3 className="text-[2vw] font-light text-slate-700 leading-none mb-[0.2vh]">{value}</h3>
+                <p className="text-[0.7vw] text-slate-400 mb-[0.5vh]">{subtitle}</p>
+                <span className={`inline-flex items-center gap-[0.2vw] text-[0.7vw] font-semibold px-[0.5vw] py-[0.2vh] rounded-full ${isPositive
+                    ? 'bg-green-100 text-green-600'
+                    : 'bg-red-100 text-red-600'
+                    }`}>
+                    {isPositive ? <TrendingUp size={10} className="w-[0.7vw] h-[0.7vw]" /> : <TrendingDown size={10} className="w-[0.7vw] h-[0.7vw]" />}
                     {isPositive ? '+' : ''}{change}%
                 </span>
             </div>
-            <h3 className="text-2xl font-bold text-slate-800">{value}</h3>
-            <p className="text-sm font-medium text-slate-500">{title}</p>
-            <p className="text-xs text-slate-400 mt-1">{subtitle}</p>
         </div>
     );
 };

@@ -16,6 +16,7 @@ import DashboardPage from './Pages/DashboardPage'
 import SubscriptionPage from './Pages/SubscriptionPage'
 import { RoleGaurd } from './Components/RoleGaurd/RoleGaurd'
 import WebSocketComponent from './WebSocketComponent'
+import OrderDetailsPage from './Pages/OrderDetailsPage'
 
 function App() {
   return (
@@ -43,7 +44,10 @@ function App() {
             <Route path='/guests' element={<GuestsPage />} />
             <Route path='/tables' element={<TablesPage />} />
             <Route path='/cafe-orders' element={<CafeOrdersPage />} />
+            <Route path='/menu' element={<MenuPage />} />
+            <Route path='/orders/:orderId' element={<OrderDetailsPage />} />
             <Route path='/billing' element={<BillingPage />} />
+            <Route path='/orderForm' element={<OrderModelPage />} />
           </Route>
 
 
@@ -54,6 +58,7 @@ function App() {
           <Route element={<RoleGaurd allowedRoles={['user']} />}>
             <Route path='/orderForm' element={<OrderModelPage />} />
             <Route path='/menu' element={<MenuPage />} />
+            <Route path='/orders/:orderId' element={<OrderDetailsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

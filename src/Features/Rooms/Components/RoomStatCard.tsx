@@ -13,18 +13,16 @@ export const RoomStatCard: React.FC<RoomStatCardProps> = ({
     value,
     icon,
     iconBgColor = 'bg-[#002366]/10',
-    valueColor = 'text-slate-800',
+    valueColor = 'text-slate-700',
 }) => {
     return (
-        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between">
-                <div>
-                    <p className="text-sm text-slate-500 font-medium">{title}</p>
-                    <p className={`text-2xl font-bold mt-1 ${valueColor}`}>{value}</p>
-                </div>
-                <div className={`p-3 rounded-xl ${iconBgColor}`}>
-                    {icon}
-                </div>
+        <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]">
+            <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconBgColor} transition-all`}>
+                {icon}
+            </div>
+            <div className="text-right flex-1 min-w-0">
+                <p className="text-[0.8vw] text-slate-400 uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
+                <h3 className={`text-[2vw] font-light leading-none ${valueColor}`}>{value}</h3>
             </div>
         </div>
     );

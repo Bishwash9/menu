@@ -11,18 +11,6 @@ interface OrderModalProps {
     mode: 'add' | 'edit';
 }
 
-// Mock menu items for quick add
-const quickMenuItems = [
-    { name: 'Paneer Butter Masala', price: 320 },
-    { name: 'Butter Naan', price: 60 },
-    { name: 'Dal Makhani', price: 240 },
-    { name: 'Chicken Biryani', price: 350 },
-    { name: 'Veg Pulao', price: 220 },
-    { name: 'Coffee', price: 80 },
-    { name: 'Tea', price: 40 },
-    { name: 'Fresh Lime Soda', price: 60 },
-];
-
 export const OrderModal: React.FC<OrderModalProps> = ({
     isOpen,
     onClose,
@@ -71,27 +59,6 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     };
 
-    const addItem = (menuItem: { name: string; price: number }) => {
-        const existingIndex = formData.items.findIndex(item => item.name === menuItem.name);
-        let newItems: OrderItem[];
-        
-        if (existingIndex >= 0) {
-            newItems = formData.items.map((item, idx) => 
-                idx === existingIndex 
-                    ? { ...item, quantity: item.quantity + 1 }
-                    : item
-            );
-        } else {
-            newItems = [...formData.items, {
-                id: Date.now().toString(),
-                name: menuItem.name,
-                price: menuItem.price,
-                quantity: 1,
-            }];
-        }
-        
-        setFormData({ ...formData, items: newItems, total: calculateTotal(newItems) });
-    };
 
     const updateItemQuantity = (itemId: string, change: number) => {
         const newItems = formData.items.map(item => {
@@ -200,24 +167,6 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         </div>
                     )}
 
-                    {/* Quick Menu */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Quick Add Items
-                        </label>
-                        <div className="flex flex-wrap gap-2">
-                            {quickMenuItems.map((item, idx) => (
-                                <button
-                                    key={idx}
-                                    type="button"
-                                    onClick={() => addItem(item)}
-                                    className="px-3 py-1.5 text-sm bg-slate-100 hover:bg-[#002366] hover:text-white text-slate-600 rounded-full transition-colors"
-                                >
-                                    {item.name} - RS{item.price}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
 
                     {/* Order Items */}
                     <div>

@@ -13,15 +13,13 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, icon, iconBgColor }) => (
-    <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-        <div className="flex items-center justify-between">
-            <div>
-                <p className="text-sm text-slate-500 font-medium">{title}</p>
-                <p className="text-2xl font-bold text-slate-800 mt-1">{value}</p>
-            </div>
-            <div className={`p-3 rounded-xl ${iconBgColor}`}>
-                {icon}
-            </div>
+    <div className="bg-white rounded-[1vw] p-[1.5vw] border border-slate-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]">
+        <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconBgColor} transition-all`}>
+            {icon}
+        </div>
+        <div className="text-right flex-1 min-w-0">
+            <p className="text-slate-400 text-[0.8vw] uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
+            <h3 className="text-[2vw] font-light text-slate-700 leading-none">{value}</h3>
         </div>
     </div>
 );
@@ -77,29 +75,28 @@ const GuestsPage: React.FC = () => {
 
     return (
         <div className="flex h-screen bg-[#F8FAFC]">
-            <SideBar/>
-            
+            <SideBar />
+
             <main className="flex-1 overflow-auto">
                 {/* Header Space */}
                 <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+                    <DashboardHeader />
                 </div>
-                
+
                 <div className="p-6">
                     {/* Page Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                     
-                        <div className="flex gap-3 flex-wrap">
+
+                        <div className="flex gap-3 flex-wrap w-full justify-between">
                             <div className="flex gap-2 flex-wrap">
                                 {['All', 'Checked In', 'Reserved', 'VIP', 'Checked Out'].map(status => (
                                     <button
                                         key={status}
                                         onClick={() => setGuestStatusFilter(status as any)}
-                                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                            guestStatusFilter === status
-                                                ? 'bg-[#002366] text-white'
-                                                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                                        }`}
+                                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${guestStatusFilter === status
+                                            ? 'bg-[#002366] text-white'
+                                            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                                            }`}
                                     >
                                         {status}
                                     </button>
