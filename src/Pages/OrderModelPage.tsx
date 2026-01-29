@@ -6,10 +6,12 @@ import { useLocation } from 'react-router-dom';
 
 interface OrderModelPageProps {
     isModal?: boolean;
+    onNext?: (data: { orderType: OrderType; identifier: string }) => void;
 }
 
 
-const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
+const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onNext }) => {
+
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -23,9 +25,11 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false }) => {
     }, [location.state]);
 
     const handleNext = () => {
-        console.log("Preparing order for:", formData.identifier);
-
-        navigate(`/menu?type=${formData.orderType}&id=${formData.identifier}`)
+        if (onNext) {
+            onNext({ orderType: formData.orderType, identifier: formData.identifier });
+        } else {
+            navigate(`/menu?type=${formData.orderType}&id=${formData.identifier}`)
+        }
     }
 
 

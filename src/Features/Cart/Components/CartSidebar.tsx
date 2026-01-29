@@ -3,7 +3,12 @@ import { useCart } from "../Context/CartContext";
 import { useOrders } from "../../../Context/OrderContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-export const CartSidebar: React.FC = () => {
+interface CartSidebarProps {
+    isPopupView? : boolean;
+    orderData? :{orderType: string; identifier: string;};
+}
+
+export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView=false, orderData = null}) => {
     const {
         isCartOpen,
         toggleCart,
@@ -18,16 +23,21 @@ export const CartSidebar: React.FC = () => {
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        if (isCartOpen) {
+        if (isCartOpen && !isPopupView) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "unset";
         }
-    }, [isCartOpen]);
+    }, [isCartOpen, isPopupView]);
 
     // Slide-up for mobile, Slide-from-right for desktop
-    const sidebarClass = `fixed bottom-0 left-0 right-0 h-3/4 md:top-0 md:h-full md:left-auto md:right-0 md:w-[450px] bg-gray-50 md:bg-white shadow-2xl z-[60] transform transition-transform duration-500 ease-in-out ${isCartOpen ? "translate-y-0 md:translate-x-0" : "translate-y-full md:translate-x-full md:translate-y-0"}`;
-    const overlayClass = `fixed inset-0 bg-white-70 backdrop-blur-[2px] z-[55] transition-opacity duration-500 ${isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`;
+    const sidebarClass = isPopupView
+        ? "flex flex-col h-full bg-white"
+        : `fixed bottom-0 left-0 right-0 h-3/4 md:top-0 md:h-full md:left-auto md:right-0 md:w-[450px] bg-gray-50 md:bg-white shadow-2xl z-[60] transform transition-transform duration-500 ease-in-out ${isCartOpen ? "translate-y-0 md:translate-x-0" : "translate-y-full md:translate-x-full md:translate-y-0"}`;
+
+    const overlayClass = isPopupView
+        ? "hidden"
+        : `fixed inset-0 bg-white-70 backdrop-blur-[2px] z-[55] transition-opacity duration-500 ${isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`;
 
     // Calculate tax and total
     const taxAmount = cartTotal * 0.13; // 13% tax
@@ -196,13 +206,12 @@ export const CartSidebar: React.FC = () => {
                             <button
                                 onClick={() => {
                                     const orderId = createOrder({
-                                        locationId: searchParams.get('id') || 'General',
-                                        type: (searchParams.get('type') as 'table' | 'room') || 'table',
+                                        locationId: orderData?.identifier || searchParams.get('id') || 'General',
+                                        type: (orderData?.orderType as 'table' | 'room') || (searchParams.get('type') as 'table' | 'room') || 'table',
                                         items: cartItems,
                                     });
                                     localStorage.removeItem('cartItems');
                                     clearCart();
-                                    localStorage.removeItem('cartItems')
                                     toggleCart();
                                     navigate(`/orders/${orderId}`);
                                 }}

@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Bell, User, LogOut, CheckCircle, Info, AlertCircle, Plus, X } from "lucide-react";
 import OrderModelPage from "../../Pages/OrderModelPage";
+import QuickMenuPopup from "./QuickMenuPopup";
 
 export default function DashboardHeader({ initials = "" }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const [currentOrderData, setCurrentOrderData] = useState<{ orderType: string; identifier: string } | null>(null);
 
   const profileRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,10 @@ export default function DashboardHeader({ initials = "" }) {
         <div className="flex items-center gap-4">
 
           <button
-            onClick={() => { setIsOrderModalOpen(true) }} //open modal when clicked 
+            onClick={() => {
+              setCurrentOrderData(null);
+              setIsOrderModalOpen(true);
+            }} //open modal when clicked 
             className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all duration-200 text-sm font-medium shadow-sm active:scale-95"
           >
             <Plus size={16} strokeWidth={2.5} />
@@ -62,10 +67,6 @@ export default function DashboardHeader({ initials = "" }) {
               className={`p-2 rounded-lg transition-colors relative ${isNotificationsOpen ? "bg-slate-100 text-slate-900" : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
                 }`}
             >
-
-
-
-
               <Bell size={19} />
               <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
             </button>
@@ -126,24 +127,38 @@ export default function DashboardHeader({ initials = "" }) {
 
       {/*Render Modal Overlay outside header to avoid stacking context issues */}
       {isOrderModalOpen && (
-        <div className="fixed inset-0 z-100 grid place-items-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Backdrop */}
-          <div className="absolute inset-0 backdrop-blur-sm bg-black/40"
-            onClick={() => setIsOrderModalOpen(false)} //close div when clicking on backdrop
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsOrderModalOpen(false)} // Closes everything
           />
+          <div className="relative z-10 w-full transition-all duration-300">
 
-          {/* Modal Content */}
-          <div className="relative z-10 w-full max-w-lg bg-white rounded-2xl shadow-2xl p-8 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            {/* Close button */}
-            <button
-              onClick={() => setIsOrderModalOpen(false)}
-              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 transition-colors z-50 rounded-full hover:bg-slate-100"
-            >
-              <X size={20} />
-            </button>
-            <OrderModelPage isModal={true} />
+            {!currentOrderData ? (
+              /*  Show Form */
+              <div className="max-w-lg mx-auto bg-white rounded-2xl p-8 relative">
+                <button
+                  onClick={() => setIsOrderModalOpen(false)}
+                  className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 transition-colors z-50 rounded-full hover:bg-slate-100"
+                >
+                  <X size={20} />
+                </button>
+                <OrderModelPage
+                  isModal={true}
+                  onNext={(data) => setCurrentOrderData(data as any)} // Sets the data to "Step 2"
+                />
+              </div>
+            ) : (
+              /*  Show Menu & Cart */
+              <div className="max-w-6xl mx-auto">
+                <QuickMenuPopup
+                  orderData={currentOrderData as any}
+                  onClose={() => setIsOrderModalOpen(false)}
+                />
+              </div>
+            )}
           </div>
-
         </div>
       )}
     </>
