@@ -85,8 +85,8 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                        <thead className="bg-slate-50 border-b border-slate-200">
-                            <tr>
+                        <thead className="bg-slate-100 border-b border-slate-200">
+                            <tr className="bg-slate-100">
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">Invoice</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">Guest</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">Date</th>

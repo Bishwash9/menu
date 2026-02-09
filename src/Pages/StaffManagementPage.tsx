@@ -59,7 +59,7 @@ function StaffManagementPage() {
                                     setEditingEmployee(null);
                                     setIsModalOpen(true);
                                 }}
-                                className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#D4AF37] text-white font-bold hover:bg-[#b8962e] transition-colors shadow-sm cursor-pointer"
+                                className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-dashboard-primary text-white font-bold hover:bg-dashboard-accent transition-colors shadow-sm cursor-pointer"
                             >
                                 <Plus size={18} />
                                 Add Staff

@@ -106,7 +106,7 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                                     <th className="p-4 text-center font-bold text-slate-700">Status</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
+                            <tbody className="divide-y divide-slate-100">
                                 {filteredBookings.map((booking) => (
                                     <tr key={booking.id} className="hover:bg-slate-50/50 transition-colors group">
                                         <td className="p-4 font-bold text-status-confirmed">{booking.id}</td>

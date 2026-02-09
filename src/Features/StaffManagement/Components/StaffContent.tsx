@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search} from 'lucide-react';
+import { Search } from 'lucide-react';
 import type { Employee, EmployeeStatus } from '../Types';
 import { STATUSES } from '../data';
 
@@ -11,7 +11,7 @@ interface StaffContentProps {
 
 export const StaffContent: React.FC<StaffContentProps> = ({
     employees,
-  
+
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<EmployeeStatus | 'All'>('All');
@@ -53,7 +53,7 @@ export const StaffContent: React.FC<StaffContentProps> = ({
     return (
         <div className="space-y-4">
             {/* Search and Filter */}
-            <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 items-end">
+            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 items-end">
                 <div className="relative flex-1">
                     <Search className="absolute left-3 top-3 text-slate-400" size={18} />
                     <input
@@ -102,20 +102,20 @@ export const StaffContent: React.FC<StaffContentProps> = ({
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                        <thead className="bg-slate-50 border-b border-slate-200">
-                            <tr>
+                        <thead className="bg-slate-100 border-b border-slate-200">
+                            <tr className="bg-slate-100">
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">EMPLOYEE</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">CONTACT</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">ROLE</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">SHIFT</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">STATUS</th>
-            
+
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-slate-200">
                             {filteredEmployees.map((employee) => (
                                 <tr key={employee.id} className="hover:bg-slate-50 transition-colors">
                                     <td className="px-4 py-3">
@@ -137,14 +137,14 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                                     </td>
                                     <td className="px-4 py-3 text-slate-800 font-medium"> {employee.role}</td>
                                     <td className={`px-4 py-3 font-medium ${getShiftColor(employee.shift)}`}>
-                                         {employee.shift}
+                                        {employee.shift}
                                     </td>
                                     <td className="px-4 py-3">
                                         <span className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(employee.status)}`}>
                                             {employee.status}
                                         </span>
                                     </td>
-                                    
+
                                 </tr>
                             ))}
                         </tbody>

@@ -106,8 +106,8 @@ export const OrderTable: React.FC<OrderTableProps> = ({
             <div className="rounded-xl  border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                        <thead className="bg-slate-50 border-b border-slate-200">
-                            <tr>
+                        <thead className="bg-slate-100 border-b border-slate-200">
+                            <tr className="bg-slate-100">
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">Order ID</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">Customer</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">Type</th>
@@ -122,7 +122,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-slate-100 ">
                             {filteredOrders.map((order) => (
                                 <tr key={order.id} className="hover:bg-slate-50 transition-colors">
                                     <td className="px-4 py-3">
@@ -160,9 +160,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                                         <span className="font-semibold text-[#D4AF37]">Rs.{order.total.toFixed(2)}</span>
                                     </td>
 
-                                    <td className={`px-4 py-3 font-medium ${order.tableNumber || '-'}`}>
 
-                                    </td>
 
                                 </tr>
                             ))}
