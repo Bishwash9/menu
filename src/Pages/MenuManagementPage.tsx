@@ -23,10 +23,8 @@ function MenuManagementPage() {
     }));
 
     const [items, setItems] = useState<MenuItem[]>(initialItems);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
-    const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
-    const [showViewModal, setShowViewModal] = useState(false);
+    // const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+    // const [showViewModal, setShowViewModal] = useState(false);
 
     const stats = {
         totalItems: items.length,
@@ -34,31 +32,10 @@ function MenuManagementPage() {
         totalCategories: new Set(items.map(i => i.category)).size,
     };
 
-    const handleAddItem = (item: MenuItem) => {
-        if (editingItem) {
-            setItems(items.map(i => i.id === item.id ? item : i));
-            setEditingItem(null);
-        } else {
-            setItems([...items, item]);
-        }
-    };
 
-    const handleDeleteItem = (itemId: string) => {
-        setItems(items.filter(i => i.id !== itemId));
-    };
-
-    const handleEditItem = (item: MenuItem) => {
-        setEditingItem(item);
-        setIsModalOpen(true);
-    };
-
-    const handleViewItem = (item: MenuItem) => {
-        setSelectedItem(item);
-        setShowViewModal(true);
-    };
 
     return (
-        <div className="flex h-screen bg-[#F8FAFC]">
+        <div className="flex h-screen bg-dashboard-bg">
             <SideBar />
 
             <main className="flex-1 overflow-auto">
@@ -68,21 +45,8 @@ function MenuManagementPage() {
                 </div>
 
                 <div className="p-6">
-                    {/* Page Header */}
-                    {/* <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => {
-                                    setEditingItem(null);
-                                    setIsModalOpen(true);
-                                }}
-                                className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#D4AF37] text-white font-bold hover:bg-[#b8962e] transition-colors shadow-sm cursor-pointer"
-                            >
-                                <Plus size={18} />
-                                Add New Item
-                            </button>
-                        </div>
-                    </div> */}
+                   
+                 
 
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -112,9 +76,6 @@ function MenuManagementPage() {
                     <div className="grid grid-cols-1 gap-6">
                         <MenuContent
                             items={items}
-                            onEdit={handleEditItem}
-                            onDelete={handleDeleteItem}
-                            onView={handleViewItem}
                         />
                     </div>
                 </div>
@@ -132,10 +93,10 @@ function MenuManagementPage() {
             /> */}
 
             {/* View Modal */}
-            {showViewModal && selectedItem && (
+            {/* {showViewModal && selectedItem && (
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6">
-                        <h2 className="text-2xl font-bold text-[#1E3A8A] mb-4">{selectedItem.name}</h2>
+                        <h2 className="text-2xl font-bold text-status-confirmed mb-4">{selectedItem.name}</h2>
                         <div className="space-y-3 mb-6">
                             <div>
                                 <p className="text-sm text-slate-600 font-bold">Description</p>
@@ -161,13 +122,13 @@ function MenuManagementPage() {
                         </div>
                         <button
                             onClick={() => setShowViewModal(false)}
-                            className="w-full px-4 py-2 rounded-lg bg-[#1E3A8A] text-white font-bold hover:bg-[#1E3A8A]/90"
+                            className="w-full px-4 py-2 rounded-lg bg-status-confirmed text-white font-bold hover:bg-status-confirmed/90"
                         >
                             Close
                         </button>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

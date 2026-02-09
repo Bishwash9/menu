@@ -217,7 +217,7 @@ export const RoleModal: React.FC<RoleModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-[#001a4d] transition-colors"
+                            className="flex-1 px-4 py-2.5 bg-dashboard-primary text-white rounded-lg font-medium hover:bg-dashboard-primary transition-colors"
                         >
                             {mode === 'add' ? 'Create Role' : 'Save Changes'}
                         </button>

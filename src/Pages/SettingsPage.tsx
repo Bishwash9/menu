@@ -100,7 +100,7 @@ const SettingsPage: React.FC = () => {
                                     <span className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full">Active</span>
                                 </div>
                                 <div className="flex gap-3">
-                                    <button className="px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-[#001a4d]">
+                                    <button className="px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-primary">
                                         Create Backup Now
                                     </button>
                                     <button className="px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50">
@@ -144,7 +144,7 @@ const SettingsPage: React.FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-[#F8FAFC]">
+        <div className="flex h-screen bg-dashboard-bg">
             <SideBar />
             
             <main className="flex-1 overflow-auto">

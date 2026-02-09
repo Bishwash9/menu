@@ -230,7 +230,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-[#001a4d] transition-colors"
+                            className="flex-1 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-primary transition-colors"
                         >
                             {mode === 'add' ? 'Add Room' : 'Save Changes'}
                         </button>

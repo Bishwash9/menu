@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 import {
     Search,
     Filter,
-    Eye,
-    CheckCircle,
-    PenSquare,
-    Trash2,
 } from 'lucide-react';
-import type { Booking } from '../Types';
+import type { Booking, BookingStatus } from '../Types';
 import { StatusBadge, PaymentBadge } from './Badges';
 
 interface BookingContentProps {
@@ -20,12 +16,17 @@ interface BookingContentProps {
 
 export const BookingContent: React.FC<BookingContentProps> = ({
     bookings,
-    onEdit,
-    onDelete,
-    onView,
-    onConfirm,
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
+    const [statusFilter, setStatusFilter] = useState<BookingStatus | ''>  ('');
+
+    const handleStatusFilterChange = (status: BookingStatus) =>{
+        if(statusFilter === status){
+            setStatusFilter('');
+        }else{
+            setStatusFilter(status);
+        }
+    }
 
     const formatDate = (dateStr: string) => {
         return new Date(dateStr).toLocaleDateString('en-US', {
@@ -45,10 +46,14 @@ export const BookingContent: React.FC<BookingContentProps> = ({
         });
     };
 
-    const filteredBookings = bookings.filter(b =>
-        b.guest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.id.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredBookings = bookings.filter(b => {
+        const matchesSearch = 
+            b.guest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            b.id.toLowerCase().includes(searchQuery.toLowerCase());
+
+        const matchesStatus = statusFilter ? b.status === statusFilter : true;
+        return matchesSearch && matchesStatus;
+});
 
     return (
         <div className="space-y-4">
@@ -61,28 +66,27 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                         placeholder="Search bookings..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20 focus:border-[#1E3A8A] transition-all"
+                        className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed focus:border-status-confirmed transition-all"
                     />
                 </div>
 
-                <div className="w-full md:w-auto flex flex-1 gap-2">
-                    <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-white border border-slate-200 rounded-lg text-slate-600 font-medium hover:bg-slate-50 transition-colors">
-                        <Filter size={18} />
-                        <span className="hidden sm:inline">All Status</span>
-                        <span className="sm:hidden">Filter</span>
-                    </button>
-                    <button className="px-4 py-3 min-h-[44px] text-[#1E3A8A] font-bold hover:underline whitespace-nowrap">
-                        Clear All
-                    </button>
-                </div>
+                 <select 
+                 value={statusFilter}
+                 onChange ={ (e)=> handleStatusFilterChange(e.target.value as BookingStatus)}
+                 className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20 focus:border-status-confirmed transition-all">
+                    <option value="">All Status</option>
+                    {['confirmed', 'pending', 'checked-in', 'checked-out', 'cancelled'].map(status=>(
+                        <option key ={status} value= {status}>{status}</option>
+                    ))}
+                 </select>
             </div>
 
             {/* --- Bookings Section --- */}
             <div className="space-y-4">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                    <h2 className="text-lg font-bold text-[#1E3A8A] flex items-center gap-2">
+                    <h2 className="text-lg font-bold text-status-confirmed flex items-center gap-2">
                         Recent Bookings
-                        <span className="bg-[#1E3A8A]/10 text-[#1E3A8A] text-xs px-2 py-1 rounded-full">{filteredBookings.length} found</span>
+                        <span className="bg-status-confirmed/10 text-status-confirmed text-xs px-2 py-1 rounded-full">{filteredBookings.length} found</span>
                     </h2>
                     <p className="text-slate-400 text-sm font-medium">{getDayDate()}</p>
                 </div>
@@ -98,21 +102,21 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                                     <th className="p-4 text-left font-bold text-slate-700">Room</th>
                                     <th className="p-4 text-left font-bold text-slate-700">Check In/Out</th>
                                     <th className="p-4 text-left font-bold text-slate-700">Nights</th>
-                                    <th className="p-4 text-left font-bold text-slate-700 text-right">Amount</th>
+                                    <th className="p-4 text-left font-bold text-slate-700">Amount</th>
                                     <th className="p-4 text-center font-bold text-slate-700">Status</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50">
                                 {filteredBookings.map((booking) => (
                                     <tr key={booking.id} className="hover:bg-slate-50/50 transition-colors group">
-                                        <td className="p-4 font-bold text-[#1E3A8A]">{booking.id}</td>
+                                        <td className="p-4 font-bold text-status-confirmed">{booking.id}</td>
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
-                                                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-sm ${booking.guest.avatarColor === 'royal' ? 'bg-[#1E3A8A]' : 'bg-[#D4AF37]'}`}>
+                                                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-sm ${booking.guest.avatarColor === 'royal' ? 'bg-status-confirmed' : 'bg-dashboard-accent'}`}>
                                                     {booking.guest.name.charAt(0)}
                                                 </div>
                                                 <div>
-                                                    <p className="text-sm font-bold text-slate-700">{booking.guest.name}</p>
+                                                    <p className="text-sm font-bold text-status-confirmed">{booking.guest.name}</p>
                                                     <p className="text-xs text-slate-400">ID: {booking.guest.id}</p>
                                                 </div>
                                             </div>
@@ -127,7 +131,7 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                                             </div>
                                         </td>
                                         <td className="p-4">
-                                            <span className="text-sm font-bold text-[#1E3A8A] bg-blue-50 px-2 py-1 rounded">
+                                            <span className="text-sm font-bold text-status-confirmed bg-blue-50 px-2 py-1 rounded">
                                                 {booking.nights} nights
                                             </span>
                                         </td>
@@ -136,9 +140,6 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                                         </td>
                                         <td className="p-4 text-center">
                                             <StatusBadge status={booking.status} />
-                                            <div className="mt-1">
-                                                <PaymentBadge status={booking.payment} />
-                                            </div>
                                         </td>
                                     </tr>
                                 ))}
@@ -150,21 +151,21 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                 {/* --- Mobile Card View --- */}
                 <div className="md:hidden space-y-4">
                     {filteredBookings.map((booking) => (
-                        <div key={booking.id} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden relative border-l-4 border-l-[#1E3A8A]">
+                        <div key={booking.id} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden relative border-l-status-confirmed">
 
                             {/* Card Header */}
                             <div className="p-4 border-b border-slate-50 flex justify-between items-start">
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md ${booking.guest.avatarColor === 'royal' ? 'bg-[#1E3A8A]' : 'bg-[#D4AF37]'}`}>
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md ${booking.guest.avatarColor === 'royal' ? 'bg-status-confirmed' : 'bg-dashboard-accent'}`}>
                                         {booking.guest.name.charAt(0)}
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2">
-                                            <span className="font-bold text-[#1E3A8A]">{booking.id}</span>
+                                            <span className="font-bold text-status-confirmed">{booking.id}</span>
                                             <span className="text-slate-300">|</span>
                                             <span className="text-xs text-slate-500 font-medium">{booking.room.number} - {booking.room.type}</span>
                                         </div>
-                                        <h3 className="font-bold text-slate-800">{booking.guest.name}</h3>
+                                        <h3 className="font-bold text-status-confirmed">{booking.guest.name}</h3>
                                     </div>
                                 </div>
                                 <StatusBadge status={booking.status} />
@@ -174,17 +175,17 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                             <div className="p-4 grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <p className="text-xs text-slate-400 uppercase font-bold tracking-wider">Check In</p>
-                                    <p className="text-sm font-medium text-slate-700">{formatDate(booking.checkIn).split(',')[0]}</p>
+                                    <p className="text-sm font-medium text-status-confirmed">{formatDate(booking.checkIn).split(',')[0]}</p>
                                     <p className="text-xs text-slate-500">{formatDate(booking.checkIn).split(',')[1]}</p>
                                 </div>
                                 <div className="space-y-1 text-right">
                                     <p className="text-xs text-slate-400 uppercase font-bold tracking-wider">Check Out</p>
-                                    <p className="text-sm font-medium text-slate-700">{formatDate(booking.checkOut).split(',')[0]}</p>
+                                    <p className="text-sm font-medium text-status-confirmed">{formatDate(booking.checkOut).split(',')[0]}</p>
                                     <p className="text-xs text-slate-500">{formatDate(booking.checkOut).split(',')[1]}</p>
                                 </div>
 
                                 <div className="col-span-2 flex items-center justify-between pt-2 border-t border-slate-50 mt-2">
-                                    <span className="text-sm font-bold text-[#1E3A8A] bg-blue-50 px-2 py-1 rounded">
+                                    <span className="text-sm font-bold text-status-confirmed bg-blue-50 px-2 py-1 rounded">
                                         {booking.nights} Nights
                                     </span>
                                     <div className="text-right">

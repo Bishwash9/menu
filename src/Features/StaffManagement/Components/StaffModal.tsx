@@ -68,7 +68,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 <div className="sticky top-0 bg-white p-4 md:p-6 border-b border-slate-200 flex justify-between items-center">
-                    <h2 className="text-lg md:text-xl font-bold text-[#1E3A8A]">
+                    <h2 className="text-lg md:text-xl font-bold text-status-confirmed">
                         {editingEmployee ? 'Edit Employee' : 'Add New Employee'}
                     </h2>
                     <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full">
@@ -86,7 +86,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                                 value={formData.name}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                                 placeholder="Enter name"
                             />
                         </div>
@@ -98,7 +98,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                                 placeholder="email@hotel.com"
                             />
                         </div>
@@ -113,7 +113,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                                 value={formData.phone}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                                 placeholder="+91 XXXXXXXXXX"
                             />
                         </div>
@@ -125,7 +125,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                                 value={formData.joinDate}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                             />
                         </div>
                     </div>
@@ -138,7 +138,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                                 value={formData.role}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                             >
                                 {ROLES.map(role => (
                                     <option key={role} value={role}>{role}</option>
@@ -152,7 +152,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                                 value={formData.shift}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                             >
                                 {SHIFTS.map(shift => (
                                     <option key={shift} value={shift}>{shift}</option>
@@ -169,7 +169,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                                 value={formData.status}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                             >
                                 {STATUSES.map(status => (
                                     <option key={status} value={status}>{status}</option>

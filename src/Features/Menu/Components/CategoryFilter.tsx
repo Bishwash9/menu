@@ -1,6 +1,6 @@
 import React from 'react';
-import { CATEGORIES } from '../../../lib/data';
-import type { Category } from '../../../lib/data';
+import { CATEGORIES } from '../../../Lib/data';
+import type { Category } from '../../../Lib/data';
 
 interface CategoryFilterProps {
     activeCategory: string;

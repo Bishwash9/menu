@@ -45,7 +45,7 @@ const RolesAccessPage: React.FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-[#F8FAFC]">
+        <div className="flex h-screen bg-dashboard-bg">
             <SideBar />
 
             <main className="flex-1 overflow-auto">

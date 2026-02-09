@@ -1,10 +1,13 @@
 import { useParams, Link } from 'react-router-dom';
 import { useOrders } from '../Context/OrderContext';
+import QuickMenuPopup from '../Components/Layout/QuickMenuPopup';
+import { useState } from 'react';
 
 const OrderDetailsPage = () => {
     const { orderId } = useParams();
     const { orders } = useOrders();
     const order = orders[orderId!];
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     if (!order) {
         return (
@@ -84,25 +87,24 @@ const OrderDetailsPage = () => {
                         <div className="flex flex-col gap-[1.5vh] md:gap-3">
                             {/*  Add Order (Keep Context) */}
                             <Link
-                                to='/cafeOrders'
-                                className="block text-center w-full py-[1.5vh] md:py-4 bg-[#002366] text-white font-bold rounded-xl transition-all hover:bg-[#001a4d] shadow-lg shadow-[#002366]/10"
+                                to='/cafe-orders'
+                                className="block text-center w-full py-[1.5vh] md:py-4 bg-[#002366] text-white font-bold rounded-xl transition-all hover:bg-primary shadow-lg shadow-[#002366]/10"
                             >
-                                 Order
+                                Order
                             </Link>
 
                             <div className="grid grid-cols-2 gap-3">
-                                {/*  New Order (Reset Context) */}
-                                <Link
-                                    to={`/menu?type=${order.type}&id=${order.locationId}`}
-                                    className="block text-center w-full py-[1.5vh] md:py-4 bg-white border-2 border-[#002366] text-[#002366] font-bold rounded-xl transition-all hover:bg-slate-50"
+                                <button
+                                    onClick={() => setIsPopupOpen(true)}
+                                    className="block text-center w-full py-[1.5vh] md:py-4 bg-white border-2 border-[#002366] text-[#002366] font-bold rounded-xl transition-all hover:bg-slate-50 cursor-pointer text-sm md:text-base"
                                 >
-                                    Add Item
-                                </Link>
+                                    Add Items
+                                </button>
 
                                 {/*  All Orders (View List) */}
                                 <Link
                                     to="/orderForm"
-                                    className="flex text-center w-full py-[1.2vh] md:py-3 bg-gray-200 text-gray-600 font-semibold rounded-xl hover:bg-gray-300 transition-colors flex items-center justify-center"
+                                    className=" text-center w-full py-[1.2vh] md:py-3 bg-gray-200 text-gray-600 font-semibold rounded-xl hover:bg-gray-300 transition-colors flex items-center justify-center"
                                 >
                                     New Order
                                 </Link>
@@ -111,6 +113,25 @@ const OrderDetailsPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modal Overlay moved outside the card for better coverage */}
+            {isPopupOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    {/* Backdrop */}
+                    <div
+                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        onClick={() => setIsPopupOpen(false)}
+                    />
+
+                    {/* Popup Content */}
+                    <div className="relative z-10 w-full max-w-6xl mx-auto animate-in zoom-in-95 duration-200">
+                        <QuickMenuPopup
+                            orderData={{ orderType: order.type, identifier: order.locationId }}
+                            onClose={() => setIsPopupOpen(false)}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -74,7 +74,7 @@ const GuestsPage: React.FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-[#F8FAFC]">
+        <div className="flex h-screen bg-dashboard-bg">
             <SideBar />
 
             <main className="flex-1 overflow-auto">
@@ -104,7 +104,7 @@ const GuestsPage: React.FC = () => {
                             </div>
                             <button
                                 onClick={handleAddGuest}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"
+                                className="flex items-center gap-2 px-4 py-2.5 bg-dashboard-primary text-white rounded-lg font-medium hover:bg-dashboard-accent cursor-pointer transition-colors shadow-sm"
                             >
                                 <Plus size={18} />
                                 Add Guest

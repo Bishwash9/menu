@@ -72,16 +72,16 @@ function StaffManagementPage() {
                         <StaffStatCard
                             title="Total Staff"
                             value={stats.totalStaff}
-                            trend="+12%"
-                            trendUp={true}
+                            
+             
                             icon={<Users size={20} />}
                             iconColor="royal"
                         />
                         <StaffStatCard
                             title="Active"
                             value={stats.active}
-                            trend="+5%"
-                            trendUp={true}
+                            
+                          
                             icon={<UserCheck size={20} />}
                             iconColor="green"
                         />

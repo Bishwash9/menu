@@ -121,7 +121,7 @@ export const AppearanceSettingsComponent: React.FC<AppearanceSettingsProps> = ({
             <div className="flex justify-end">
                 <button
                     onClick={onSave}
-                    className="px-6 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-[#001a4d] transition-colors"
+                    className="px-6 py-2.5 bg-dashboard-primary text-white rounded-lg font-medium hover:bg-dashboard-primary transition-colors"
                 >
                     Save Changes
                 </button>

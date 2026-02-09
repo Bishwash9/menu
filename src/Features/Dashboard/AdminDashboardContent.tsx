@@ -10,7 +10,10 @@ import {
   CalendarX,
 
   Search,
-  Eye
+  Eye,
+  Clock,
+  ChevronRight,
+  LogOut
 } from 'lucide-react';
 
 // Types
@@ -181,12 +184,12 @@ function AdminDashboardContent() {
 
   const getStatusColor = (status: Booking['status']) => {
     switch (status) {
-      case 'confirmed': return 'bg-green-100 text-green-700';
-      case 'pending': return 'bg-yellow-100 text-yellow-700';
-      case 'cancelled': return 'bg-red-100 text-red-700';
-      case 'checked-in': return 'bg-blue-100 text-blue-700';
-      case 'checked-out': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-600';
+      case 'confirmed': return 'bg-green-50 text-green-600';
+      case 'pending': return 'bg-yellow-50 text-yellow-600';
+      case 'cancelled': return 'bg-red-50 text-red-600';
+      case 'checked-in': return 'bg-blue-50 text-blue-600';
+      case 'checked-out': return 'bg-gray-50 text-gray-600';
+      default: return 'bg-gray-50 text-gray-600';
     }
   };
 
@@ -199,25 +202,25 @@ function AdminDashboardContent() {
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-40"
           alt="Background"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-white via-white/80 to-transparent z-10" />
+        <div className="absolute inset-0 bg-linear-to-r from-white via-transparent to-transparent z-10" />
 
         <div className="relative z-20 h-full flex flex-col justify-center px-[5vw]">
-          <div className="flex items-center gap-[1vw]">
-            <span className="text-[#002366] text-[0.8vw] font-light uppercase tracking-widest">
+          <div className="flex items-center gap-[1vw] mb-[1.5vh]">
+            <span className="text-dashboard-primary text-[0.8vw] font-light uppercase tracking-widest">
               Admin Panel
             </span>
-            <div className="h-px w-[5vw] bg-[#002366]/10" />
+            <div className="h-px w-[5vw] bg-dashboard-primary/10" />
           </div>
 
           <div className="flex justify-between items-end">
             <div>
-              <h2 className="text-[3vw] font-light text-[#002366] leading-none tracking-tight mb-[1vh]">
+              <h2 className="text-[3vw] font-light text-dashboard-primary leading-none tracking-tight mb-[1vh]">
                 Welcome back, <span className="font-normal">Admin</span>
               </h2>
             </div>
 
             <div className="text-right pb-[1vh]">
-              <div className="text-[3.5vw] font-light text-[#002366] leading-none mb-[0.5vh] tabular-nums">
+              <div className="text-[3.5vw] font-light text-dashboard-primary leading-none mb-[0.5vh] tabular-nums">
                 {formatTime(currentTime).split(' ')[0]}
                 <span className="text-[1.2vw] text-slate-400 ml-[0.5vw]">{formatTime(currentTime).split(' ')[1]}</span>
               </div>
@@ -230,201 +233,225 @@ function AdminDashboardContent() {
       </div>
 
       {/* Viewport Managed Layout */}
-      <div className="flex-1  overflow-y-auto p-[2.5vw] bg-slate-50/30">
+      <div className="flex-1 flex overflow-hidden p-[2.5vw] gap-[2.5vw] bg-slate-50/30">
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[2vw] mb-6">
-          <StatusCard
-            title="Available Rooms"
-            value={roomStats.available}
-            icon={<BedDouble className="w-[1.4vw] h-[1.4vw]" />}
-            color="green"
-          />
-          <StatusCard
-            title="Occupied Rooms"
-            value={roomStats.occupied}
-            icon={<Users className="w-[1.4vw] h-[1.4vw]" />}
-            color="royal"
-          />
-          <StatusCard
-            title="Today's Check-ins"
-            value={todayActivity.checkIns}
-            icon={<CalendarCheck className="w-[1.4vw] h-[1.4vw]" />}
-            color="purple"
-          />
-          <StatusCard
-            title="Today's Revenue"
-            value={totalRevenue}
-            isCurrency
-            icon={<DollarSign className="w-[1.4vw] h-[1.4vw]" />}
-            color="orange"
-          />
-        </div>
+        {/* Left Column: Stats & Activity */}
+        <div className="flex-1 flex flex-col gap-[3vh] overflow-y-auto pr-[1vw]">
 
-        {/* Show Recent Bookings Button */}
-        <div className="flex justify-end mb-6 mt-6">
-          <button
-            onClick={() => setShowBookings(true)}
-            className="px-6 py-2.5 bg-[#002366] text-white rounded-xl font-bold hover:bg-[#001a4d] transition-all shadow-md flex items-center gap-2"
-          >
-            <Eye size={18} className='hover:text-[#D4AF37]' />
-            Show Recent Bookings
-          </button>
-        </div>
+          {/* Quick Stats Grid */}
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-[2vw]">
+            <StatusCard
+              title="Available"
+              value={roomStats.available}
+              icon={<BedDouble className="w-[1.4vw] h-[1.4vw]" />}
+              color="green"
+            />
+            <StatusCard
+              title="Occupied"
+              value={roomStats.occupied}
+              icon={<Users className="w-[1.4vw] h-[1.4vw]" />}
+              color="royal"
+            />
+            <StatusCard
+              title="Check-ins"
+              value={todayActivity.checkIns}
+              icon={<CalendarCheck className="w-[1.4vw] h-[1.4vw]" />}
+              color="purple"
+            />
+            <StatusCard
+              title="Revenue"
+              value={totalRevenue}
+              isCurrency
+              icon={<DollarSign className="w-[1.4vw] h-[1.4vw]" />}
+              color="orange"
+            />
+          </div>
 
-        {/* Bookings Modal */}
-        {showBookings && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-            <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100">
-              <div className="grid grid-cols-3 items-center p-6 border-b border-gray-100 bg-white">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Recent Bookings</h3>
-                </div>
-                <div className="flex justify-center">
-                  <div className="relative w-full max-w-xs">
-                    <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Search bookings..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-gray-700 w-full transition-all"
-                    />
+          {/* Bookings Modal */}
+          {showBookings && (
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+              <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100">
+                <div className="grid grid-cols-3 items-center p-6 border-b border-gray-100 bg-white">
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">Recent Bookings</h3>
+                  </div>
+                  <div className="flex justify-center">
+                    <div className="relative w-full max-w-xs">
+                      <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="text"
+                        placeholder="Search bookings..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-gray-700 w-full transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => setShowBookings(false)}
+                      className="px-6 py-2.5 bg-gray-700 text-white rounded-xl font-bold hover:bg-gray-900 transition-all text-sm shadow-sm border border-gray-200"
+                    >
+                      Close
+                    </button>
                   </div>
                 </div>
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => setShowBookings(false)}
-                    className="px-6 py-2.5 bg-gray-700 text-white rounded-xl font-bold hover:bg-gray-900 transition-all text-sm shadow-sm border border-gray-200"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
 
-              <div className="flex-1 overflow-auto p-6 bg-gray-50/30">
-                <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                  <table className="w-full border-collapse">
-                    <thead>
-                      <tr className="bg-slate-50 border-b border-slate-200">
-                        <th className="text-left font-bold text-slate-700 px-6 py-3">Guest</th>
-                        <th className="text-left font-bold text-slate-700 px-6 py-3">Room</th>
-                        <th className="text-left font-bold text-slate-700 px-6 py-3">Check-in</th>
-                        <th className="text-right font-bold text-slate-700 px-6 py-3">Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                      {recentBookingsList
-                        .filter(b =>
-                          b.guestName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          b.roomId.toLowerCase().includes(searchQuery.toLowerCase())
-                        )
-                        .map((booking) => (
-                          <tr key={booking.id} className="hover:bg-orange-50/30 transition-colors group">
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 bg-linear-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:scale-110 transition-transform">
-                                  {booking.guestName.charAt(0)}
+                <div className="flex-1 overflow-auto p-6 bg-gray-50/30">
+                  <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 border-b border-slate-200">
+                          <th className="text-left font-bold text-slate-700 px-6 py-3">Guest</th>
+                          <th className="text-left font-bold text-slate-700 px-6 py-3">Room</th>
+                          <th className="text-left font-bold text-slate-700 px-6 py-3">Check-in</th>
+                          <th className="text-right font-bold text-slate-700 px-6 py-3">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {recentBookingsList
+                          .filter(b =>
+                            b.guestName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            b.roomId.toLowerCase().includes(searchQuery.toLowerCase())
+                          )
+                          .map((booking) => (
+                            <tr key={booking.id} className="hover:bg-orange-50/30 transition-colors group">
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center gap-4">
+                                  <div className="w-10 h-10 bg-linear-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:scale-110 transition-transform">
+                                    {booking.guestName.charAt(0)}
+                                  </div>
+                                  <div>
+                                    <p className="font-bold text-gray-900 text-sm group-hover:text-orange-600 transition-colors">{booking.guestName}</p>
+                                    <p className="text-xs text-gray-400 font-medium">{booking.id}</p>
+                                  </div>
                                 </div>
-                                <div>
-                                  <p className="font-bold text-gray-900 text-sm group-hover:text-orange-600 transition-colors">{booking.guestName}</p>
-                                  <p className="text-xs text-gray-400 font-medium">{booking.id}</p>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                                  <span className="text-sm text-gray-700 font-semibold group-hover:text-gray-900">
+                                    {typeof booking.room === 'string' ? booking.room : booking.room.name}
+                                  </span>
                                 </div>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center gap-2">
-                                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                                <span className="text-sm text-gray-700 font-semibold group-hover:text-gray-900">
-                                  {typeof booking.room === 'string' ? booking.room : booking.room.name}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <span className="text-sm text-gray-600 font-medium">
+                                  {new Date(booking.checkIn).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })}
                                 </span>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="text-sm text-gray-600 font-medium">
-                                {new Date(booking.checkIn).toLocaleDateString('en-US', {
-                                  month: 'short',
-                                  day: 'numeric',
-                                  year: 'numeric'
-                                })}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <span className="text-base font-bold text-gray-900">Rs.{booking.amount}</span>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right">
+                                <span className="text-base font-bold text-gray-900">Rs.{booking.amount}</span>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Today's Activity */}
-        <div className="space-y-5">
-          {/* Check-ins */}
-          <div className="bg-white border border-gray-200 rounded-xl">
-            <div className="flex justify-between items-center p-4 border-b border-gray-100">
-              <div className="flex items-center gap-2">
-                <CalendarCheck size={18} className="text-green-500" />
-                <h3 className="font-semibold text-gray-900">Today's Check-ins</h3>
+          {/* Today's Activity Lists (Check-ins) */}
+          <div className="space-y-[3vh]">
+            {/* Check-ins */}
+            <div className="bg-white rounded-[1vw] shadow-sm border border-slate-100 flex flex-col overflow-hidden">
+              <div className="px-[2vw] py-[2.5vh] border-b border-slate-50 flex justify-between items-center">
+                <h3 className="text-[1.1vw] font-normal text-slate-700 flex items-center gap-[0.8vw]">
+                  <Clock className="text-slate-400 w-[1.2vw] h-[1.2vw]" />
+                  Today's Check-ins
+                </h3>
+                <button className="text-[0.7vw] font-normal text-slate-400 hover:text-[#002366] transition-colors uppercase tracking-widest">
+                  {todayCheckIns.length} guests • View All
+                </button>
               </div>
-              <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
-                {todayCheckIns.length} guests
-              </span>
-            </div>
-            <div className="divide-y divide-gray-50">
-              {todayCheckIns.map((item, idx) => (
-                <div key={idx} className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <span className="text-green-700 font-medium text-sm">{item.guestName.charAt(0)}</span>
+              <div className="flex-1 overflow-y-auto px-[2vw] py-[2vh] space-y-[1vh]">
+                {todayCheckIns.map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-[1.2vw] rounded-[0.8vw] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer group">
+                    <div className="flex items-center gap-[1.5vw]">
+                      <div className="w-[3vw] h-[3vw] rounded-full bg-slate-100 text-[#002366] flex items-center justify-center font-light text-[1.1vw]">
+                        {item.guestName.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-[1vw] font-normal text-slate-800 leading-tight">{item.guestName}</p>
+                        <p className="text-[0.8vw] text-slate-400 font-light mt-[0.2vh]">
+                          Room {typeof item.room === 'string' ? item.room : item.room.name} • {item.id}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{item.guestName}</p>
-                      <p className="text-xs text-gray-400">Room {typeof item.room === 'string' ? item.room : item.room.name}</p>
+                    <div className="flex items-center gap-[2vw]">
+                      <span className={`text-[0.6vw] font-normal px-[0.7vw] py-[0.3vh] rounded-full uppercase ${getStatusColor(item.status)}`}>
+                        {item.status}
+                      </span>
+                      <ChevronRight className="w-[1.1vw] h-[1.1vw] text-slate-200 group-hover:text-slate-400 transition-colors" />
                     </div>
                   </div>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${getStatusColor(item.status)}`}>
-                    {item.status}
-                  </span>
-                </div>
-              ))}
-              {todayCheckIns.length === 0 && <p className="p-4 text-sm text-gray-500 text-center">No check-ins today</p>}
+                ))}
+                {todayCheckIns.length === 0 && <p className="p-4 text-sm text-gray-500 text-center">No check-ins today</p>}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Panel: Quick Actions */}
+        <div className="w-[20vw] flex flex-col gap-[3vh]">
+          <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 flex flex-col gap-[2vh]">
+            <h3 className="text-[0.9vw] font-normal text-slate-400 uppercase tracking-widest border-b border-slate-50 pb-[1vh]">
+              Quick Actions
+            </h3>
+            <div className="space-y-[1vh]">
+              <ActionButton
+                icon={<Eye size={16} className="text-dashboard-accent" />}
+                label="Show Recent Bookings"
+                primary
+                onClick={() => setShowBookings(true)}
+              />
+
+              <ActionButton
+                icon={<LogOut size={16} className='text-dashboard-accent' />}
+                label="Log Out"
+                onClick={() => {
+                  // Add logout logic here if needed
+                  console.log('Logging out...');
+                }}
+              />
             </div>
           </div>
 
-          {/* Check-outs */}
-          <div className="bg-white border border-gray-200 rounded-xl">
-            <div className="flex justify-between items-center p-4 border-b border-gray-100">
-              <div className="flex items-center gap-2">
-                <CalendarX size={18} className="text-orange-500" />
-                <h3 className="font-semibold text-gray-900">Today's Check-outs</h3>
-              </div>
-              <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full font-medium">
-                {todayCheckOuts.length} guests
+          {/* Moved Check-outs List */}
+          <div className="bg-white rounded-[1vw] shadow-sm border border-slate-100 flex flex-col overflow-hidden max-h-[40vh]">
+            <div className="px-[1.5vw] py-[2vh] border-b border-slate-50 flex justify-between items-center">
+              <h3 className="text-[0.9vw] font-normal text-slate-700 flex items-center gap-[0.6vw]">
+                <Clock className="text-slate-400 w-[1vw] h-[1vw]" />
+                Today's Check-outs
+              </h3>
+              <span className="text-[0.6vw] font-normal text-slate-400 uppercase tracking-widest">
+                {todayCheckOuts.length}
               </span>
             </div>
-            <div className="divide-y divide-gray-50">
+            <div className="flex-1 overflow-y-auto px-[1vw] py-[1.5vh] space-y-[0.8vh]">
               {todayCheckOuts.map((item, idx) => (
-                <div key={idx} className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                      <span className="text-orange-700 font-medium text-sm">{item.guestName.charAt(0)}</span>
+                <div key={idx} className="flex items-center justify-between p-[0.8vw] rounded-[0.6vw] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer group">
+                  <div className="flex items-center gap-[1vw]">
+                    <div className="w-[2.2vw] h-[2.2vw] rounded-full bg-slate-100 text-[#002366] flex items-center justify-center font-light text-[0.8vw]">
+                      {item.guestName.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{item.guestName}</p>
-                      <p className="text-xs text-gray-400">Room {typeof item.room === 'string' ? item.room : item.room.name}</p>
+                      <p className="text-[0.85vw] font-normal text-slate-800 leading-tight">{item.guestName}</p>
+                      <p className="text-[0.65vw] text-slate-400 font-light mt-[0.1vh]">
+                        Room {typeof item.room === 'string' ? item.room : item.room.name}
+                      </p>
                     </div>
                   </div>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${getStatusColor(item.status)}`}>
-                    {item.status}
-                  </span>
+                  <ChevronRight className="w-[0.9vw] h-[0.9vw] text-slate-200 group-hover:text-slate-400 transition-colors" />
                 </div>
               ))}
-              {todayCheckOuts.length === 0 && <p className="p-4 text-sm text-gray-500 text-center">No check-outs today</p>}
+              {todayCheckOuts.length === 0 && <p className="px-[1vw] py-[2vh] text-[0.7vw] text-slate-400 text-center font-light">No check-outs today</p>}
             </div>
           </div>
         </div>
@@ -708,6 +735,19 @@ function AdminDashboardContent() {
 
 export default AdminDashboardContent;
 
+function ActionButton({ icon, label, primary, onClick }: { icon: React.ReactNode, label: string, primary?: boolean, onClick?: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center gap-[0.8vw] px-[1vw] py-[1.2vh] rounded-[0.8vw] text-[0.8vw] font-light transition-all
+        ${primary ? 'bg-[#002366] text-white shadow-sm hover:shadow-md' : 'bg-white text-slate-600 border border-slate-100 hover:bg-slate-50'}`}
+    >
+      {icon}
+      <span className="uppercase tracking-widest">{label}</span>
+    </button>
+  );
+}
+
 function StatusCard({ title, value, icon, color, isCurrency }: { title: string, value: number, icon: React.ReactNode, color: string, isCurrency?: boolean }) {
   const colors: Record<string, string> = {
     royal: 'bg-blue-50 text-blue-500',
@@ -717,15 +757,18 @@ function StatusCard({ title, value, icon, color, isCurrency }: { title: string, 
   };
 
   return (
-    <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]">
-      <div className={`p-[0.7vw] rounded-lg shrink-0 ${colors[color] || colors.royal} transition-all`}>
+    <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex items-center gap-[1.2vw]">
+      <div className={`p-[0.8vw] rounded-xl shrink-0 ${colors[color] || colors.royal} transition-all`}>
         {icon}
       </div>
-      <div className="text-right">
-        <p className="text-slate-400 text-[0.8vw]  uppercase tracking-wider mb-[0.2vh] ">{title}</p>
-        <h3 className="text-[2vw] font-light text-slate-700 leading-none">
-          {isCurrency ? `Rs. ${value.toLocaleString()}` : value}
-        </h3>
+      <div className="flex flex-col min-w-0 flex-1">
+        <p className="text-slate-400 text-[0.8vw] font-light uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
+        <div className="flex items-baseline gap-[0.3vw] overflow-hidden">
+          {isCurrency && <span className="text-[0.9vw] font-light text-slate-400 shrink-0">Rs.</span>}
+          <h3 className={`${isCurrency ? 'text-[1.6vw]' : 'text-[2vw]'} font-light text-slate-700 leading-none tabular-nums truncate`}>
+            {value.toLocaleString()}
+          </h3>
+        </div>
       </div>
     </div>
   );

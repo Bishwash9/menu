@@ -37,7 +37,7 @@ const SubscriptionPage: React.FC = () => {
     {
       name: 'Premium Plan',
       price: '1,00,000',
-      icon: <Rocket size={24} className="text-[#1E3A8A]" />,
+      icon: <Rocket size={24} className="text-status-confirmed" />,
       features: [
         'Everything in Normal',
         'Custom Branding',
@@ -51,7 +51,7 @@ const SubscriptionPage: React.FC = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-[#F8FAFC]">
+    <div className="flex h-screen bg-dashboard-bg">
       <SideBar />
 
       <main className="flex-1 overflow-auto">
@@ -118,7 +118,7 @@ const SubscriptionPage: React.FC = () => {
             {/* FAQ/Support Section */}
             <div className="mt-16 text-center">
               <p className="text-slate-500 text-sm">
-                Questions? <button className="text-[#1E3A8A] font-bold hover:underline">Contact our support team</button>
+                Questions? <button className="text-status-confirmed font-bold hover:underline">Contact our support team</button>
               </p>
             </div>
           </div>

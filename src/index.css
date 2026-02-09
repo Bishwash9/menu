@@ -1,87 +1,79 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #002366;
+  --color-primary-hover: #001a4d;
+  --color-primary-light: #E6EAF0;
+  --color-accent: #D4AF37;
+
+  --color-dashboard-bg: #F8FAFC;
+  --color-dashboard-primary: #002366;
+  --color-dashboard-accent: #D4AF37;
+  --color-dashboard-text: #334155;
+  --color-dashboard-text-light: #64748B;
+
+  --color-status-confirmed: #1E3A8A;
+  --color-status-pending: #D4AF37;
+  --color-status-paid: #10B981;
+  --color-status-cancelled: #EF4444;
+}
+
 @layer base {
-  :root {
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
 
-    --color-primary: #002366;
-    /* Royal Blue */
-    --color-primary-hover: #001a4d;
-    /* Darker Royal Blue */
-    --color-primary-light: #E6EAF0;
-    /* Light Blue tint */
-
-    --color-accent: #D4AF37;
-    /* Gold */
-
-    --color-dashboard-bg: #F8FAFC;
-    --color-dashboard-primary: #1E3A8A;
-    --color-dashboard-accent: #D4AF37;
-    --color-dashboard-text: #334155;
-    --color-dashboard-text-light: #64748B;
-    --color-status-confirmed: #1E3A8A;
-    --color-status-pending: #D4AF37;
-    --color-status-paid: #10B981;
-    --color-status-cancelled: #EF4444;
-
-
-    @layer base {
-      @keyframes fade-in {
-        from {
-          opacity: 0;
-        }
-
-        to {
-          opacity: 1;
-        }
-      }
-
-      @keyframes slide-in-bottom {
-        from {
-          transform: translateY(100%);
-          opacity: 0;
-        }
-
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      @keyframes slide-in-right {
-        from {
-          transform: translateX(20px);
-          opacity: 0;
-        }
-
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
+    to {
+      opacity: 1;
     }
   }
 
-
-  @layer utilities {
-    animate-in {
-      animation-duration: 300ms;
-      animation-fill-mode: forwards;
+  @keyframes slide-in-bottom {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
     }
 
-    fade-in {
-      animation-name: fade-in;
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(20px);
+      opacity: 0;
     }
 
-    slide-in-from-bottom-2 {
-      animation-name: slide-in-bottom;
+    to {
+      transform: translateX(0);
+      opacity: 1;
     }
+  }
+}
 
-    slide-in-from-right-4 {
-      animation-name: slide-in-right;
-    }
 
-    slide-in-from-bottom-5 {
-      animation-name: slide-in-bottom;
-    }
+@layer utilities {
+  .animate-in {
+    animation-duration: 300ms;
+    animation-fill-mode: forwards;
+  }
+
+  .fade-in {
+    animation-name: fade-in;
+  }
+
+  .slide-in-from-bottom-2 {
+    animation-name: slide-in-bottom;
+  }
+
+  .slide-in-from-right-4 {
+    animation-name: slide-in-right;
+  }
+
+  .slide-in-from-bottom-5 {
+    animation-name: slide-in-bottom;
   }
 }

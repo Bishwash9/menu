@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Plus, Clock, Users, DollarSign} from 'lucide-react';
+import {Clock, Users, DollarSign} from 'lucide-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import {
     CafeStatCard,
-    OrderModal,
     OrderTable,
     initialOrders,
 
@@ -13,9 +12,6 @@ import { DashboardHeader } from '../Components/Layout';
 
 const CafeOrdersPage: React.FC = () => {
     const [orders, setOrders] = useState<CafeOrder[]>(initialOrders);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
-    const [selectedOrder, setSelectedOrder] = useState<CafeOrder | null>(null);
     const [statusFilter] = useState<OrderStatus | 'All'>('All');
 
 
@@ -26,23 +22,9 @@ const CafeOrdersPage: React.FC = () => {
         todayRevenue: orders.filter(o => o.status !== 'Cancelled').reduce((sum, o) => sum + o.total, 0),
     };
 
-    const handleNewOrder = () => {
-        setModalMode('add');
-        setSelectedOrder(null);
-        setIsModalOpen(true);
-    };
+  
 
-    const handleEditOrder = (order: CafeOrder) => {
-        setModalMode('edit');
-        setSelectedOrder(order);
-        setIsModalOpen(true);
-    };
 
-    const handleViewOrder = (order: CafeOrder) => {
-        setModalMode('edit');
-        setSelectedOrder(order);
-        setIsModalOpen(true);
-    };
 
     const handleDeleteOrder = (orderId: string) => {
         setOrders(orders.filter(o => o.id !== orderId));
@@ -52,26 +34,13 @@ const CafeOrdersPage: React.FC = () => {
         setOrders(orders.map(o => o.id === orderId ? { ...o, status } : o));
     };
 
-    const handleSaveOrder = (orderData: any) => {
-        if (orderData.id) {
-            // Update existing order
-            setOrders(orders.map(o => o.id === orderData.id ? orderData : o));
-        } else {
-            // Add new order
-            const newOrder: CafeOrder = {
-                ...orderData,
-                id: Date.now().toString(),
-                orderNumber: `ORD${String(orders.length + 1).padStart(3, '0')}`,
-            };
-            setOrders([newOrder, ...orders]);
-        }
-    };
+ 
 
 
 
 
     return (
-        <div className="flex h-screen bg-[#F8FAFC]">
+        <div className="flex h-screen bg-dashboard-bg">
             <SideBar />
 
             <main className="flex-1 overflow-auto">
@@ -81,19 +50,7 @@ const CafeOrdersPage: React.FC = () => {
                 </div>
 
                 <div className="p-6">
-                    {/* Page Header */}
-                    <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
-
-                        <div className="flex gap-3 flex-wrap">
-                            <button
-                                onClick={handleNewOrder}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"
-                            >
-                                <Plus size={18} />
-                                New Order
-                            </button>
-                        </div>
-                    </div>
+                
 
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -125,8 +82,6 @@ const CafeOrdersPage: React.FC = () => {
                         <div className="w-full overflow-x-auto">
                             <OrderTable
                                 orders={statusFilter === 'All' ? orders : orders.filter(o => o.status === statusFilter)}
-                                onView={handleViewOrder}
-                                onEdit={handleEditOrder}
                                 onDelete={handleDeleteOrder}
                                 onStatusChange={handleStatusChange}
                             />
@@ -135,14 +90,7 @@ const CafeOrdersPage: React.FC = () => {
                 </div>
             </main>
 
-            {/* Modal */}
-            <OrderModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSave={handleSaveOrder}
-                order={selectedOrder}
-                mode={modalMode}
-            />
+           
         </div>
     );
 };

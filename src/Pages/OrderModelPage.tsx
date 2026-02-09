@@ -115,7 +115,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onNext
             <button
                 onClick={handleNext}
                 disabled={!formData.identifier}
-                className='w-full bg-[#002366] hover:bg-[#001a4d] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 group shadow-lg shadow-[#002366]/20'
+                className='w-full bg-[#002366] hover:bg-primarydisabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 group shadow-lg shadow-[#002366]/20'
             >
                 <span>Next</span>
                 <svg

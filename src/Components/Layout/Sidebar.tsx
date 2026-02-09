@@ -45,7 +45,7 @@ export function SideBar() {
   return (
 
     <aside
-      className={`h-screen bg-[#002366] text-white flex flex-col shadow-2xl  overflow-hidden 
+      className={`h-screen bg-dashboard-primary text-white flex flex-col shadow-2xl  overflow-hidden 
       transition-all duration-300 ease-in-out
       ${collapsed ? "w-16" : "w-64"}`}
     >
@@ -53,7 +53,7 @@ export function SideBar() {
 
       {/* Header */}
       <div
-        className={`bg-white flex items-center justify-center border-b border-yellow-600 h-[7vh] 
+        className={`bg-white flex items-center justify-center border-b border-accent h-[7vh] 
        ${collapsed ? 'justify-center' : 'justify-start'}`}
       >
         <button onClick={() => setCollapsed(!collapsed)} className={`focus:outline-none h-full flex ease-in-out ${collapsed ? 'justify-center w-full' : 'gap-3'}`}>
@@ -78,8 +78,8 @@ export function SideBar() {
             setRole(e.target.value as Role);
             navigate ('/');
             }}
-          className="w-full text-sm bg-[#002366] text-white border border-[#D4AF37] rounded px-2 py-1.5 
-                    focus:outline-none focus:ring-1 ring-[#D4AF37]"
+          className="w-full text-sm bg-primary text-white border border-[#D4AF37] rounded px-2 py-1.5 
+                    focus:outline-none focus:ring-1 ring-accent"
           >
             <option value={ROLES.ADMIN}>Admin</option>
             <option value={ROLES.RECEPTION}>Reception</option>
@@ -92,8 +92,8 @@ export function SideBar() {
 
       {!collapsed &&(
         <div className="px-3 py-2 bg-white border-b border-yellow-500">
-          <select name="" id="" className="w-full text-sm bg-[#002366] text-white border border-[#D4AF37] rounded px-2 py-1.5 
-                    focus:outline-none focus:ring-1 ring-[#D4AF37]">
+          <select name="" id="" className="w-full text-sm bg-primary text-white border border-[#D4AF37] rounded px-2 py-1.5 
+                    focus:outline-none focus:ring-1 ring-accent">
             <option value="">Abc</option>
             <option value="">Def</option>
           </select>
@@ -127,20 +127,20 @@ export function SideBar() {
                     }
                   }}
                   className={`group flex items-center cursor-pointer transition-all duration-300
-                  border-l-4 ${isItemActive ? 'border-[#D4AF37] bg-white/10' : 'border-transparent hover:bg-white/10 hover:border-[#D4AF37]'} 
-                  ${isItemActive ? 'text-[#D4AF37]' : 'hover:text-[#D4AF37]'}
+                  border-l-4 ${isItemActive ? 'border-accent bg-white/10' : 'border-transparent hover:bg-white/10 hover:border-accent'} 
+                  ${isItemActive ? 'text-accent' : 'hover:text-accent'}
                    ${collapsed ? "justify-center py-4" : "py-4 pr-4"}`}
                 >
                 
                   {/* ICON CONTAINER: Fixed w-16 matches the collapsed sidebar width exactly */}
                   <div className="w-16 flex justify-center shrink-0">
-                    <span className={`text-2xl transition-transform duration-300 ${isItemActive ? 'text-[#D4AF37]' : 'text-[#D4AF37]'}`}>
+                    <span className={`text-2xl transition-transform duration-300 ${isItemActive ? 'text-accent' : 'text-accent'}`}>
                       {item.icon}
                     </span>
                   </div>
                   {!collapsed && (
                     <div className="flex-1 flex items-center justify-between transition-all duration-300 ease-in-out">
-                      <span className={`text-sm font-medium flex-1 whitespace-nowrap transition-all duration-300 ease-in-out ${isItemActive ? 'text-[#D4AF37]' : ''}`}>
+                      <span className={`text-sm font-medium flex-1 whitespace-nowrap transition-all duration-300 ease-in-out ${isItemActive ? 'text-accent' : ''}`}>
                         {item.label}
                       </span>
                       {hasSubItems && (
@@ -170,7 +170,7 @@ export function SideBar() {
                           key={sub.label}
                           /* pl-16 aligns sub-items with the main text (past the icon width) */
                           className={`flex items-center gap-3 pl-16 py-3 cursor-pointer transition-colors text-xs
-                          ${isSubActive ? 'text-[#D4AF37] font-medium' : 'text-slate-300 hover:text-[#D4AF37]'} group/sub`}
+                          ${isSubActive ? 'text-accent font-medium' : 'text-slate-300 hover:text-accent'} group/sub`}
                         >
                           <span className="scale-75 opacity-70 transition-transform duration-300">
                             {sub.icon}

@@ -3,12 +3,14 @@ import { useCart } from "../Context/CartContext";
 import { useOrders } from "../../../Context/OrderContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+
 interface CartSidebarProps {
-    isPopupView? : boolean;
-    orderData? :{orderType: string; identifier: string;};
+    isPopupView?: boolean;
+    orderData?: { orderType: string; identifier: string; };
+    onOrderComplete? : () => void;
 }
 
-export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView=false, orderData = null}) => {
+export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, orderData = null, onOrderComplete}) => {
     const {
         isCartOpen,
         toggleCart,
@@ -213,6 +215,10 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView=false, ord
                                     localStorage.removeItem('cartItems');
                                     clearCart();
                                     toggleCart();
+
+                                    if(onOrderComplete){
+                                        onOrderComplete();
+                                    }
                                     navigate(`/orders/${orderId}`);
                                 }}
                                 className="w-full bg-[#002366] text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-[#001a4d] active:scale-[0.98] transition-all flex items-center justify-center gap-2"

@@ -61,13 +61,13 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                         placeholder="Search staff by name, email, or phone..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                        className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                     />
                 </div>
                 <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value as any)}
-                    className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
+                    className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
                 >
                     <option value="All">All Status</option>
                     {STATUSES.map(status => (
@@ -120,7 +120,7 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                                 <tr key={employee.id} className="hover:bg-slate-50 transition-colors">
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-3">
-                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${employee.avatarColor === 'royal' ? 'bg-[#1E3A8A]' : 'bg-[#D4AF37]'}`}>
+                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${employee.avatarColor === 'royal' ? 'bg-status-confirmed' : 'bg-dashboard-accent'}`}>
                                                 {employee.name.charAt(0)}
                                             </div>
                                             <div>
@@ -131,13 +131,13 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                                     </td>
                                     <td className="px-4 py-3">
                                         <div className="text-sm">
-                                            <p className="text-slate-800">📧 {employee.email}</p>
-                                            <p className="text-slate-600">📞 {employee.phone}</p>
+                                            <p className="text-slate-800"> {employee.email}</p>
+                                            <p className="text-slate-600"> {employee.phone}</p>
                                         </div>
                                     </td>
-                                    <td className="px-4 py-3 text-slate-800 font-medium">👔 {employee.role}</td>
+                                    <td className="px-4 py-3 text-slate-800 font-medium"> {employee.role}</td>
                                     <td className={`px-4 py-3 font-medium ${getShiftColor(employee.shift)}`}>
-                                        🕐 {employee.shift}
+                                         {employee.shift}
                                     </td>
                                     <td className="px-4 py-3">
                                         <span className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(employee.status)}`}>

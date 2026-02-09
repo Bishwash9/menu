@@ -55,7 +55,7 @@ function StaffDashboardContent() {
     };
 
     return (
-        <div className="w-full h-[calc(100vh-3.5rem)] flex flex-col bg-white overflow-hidden font-light">
+        <div className="w-full h-[calc(100vh-3.5rem)] flex flex-col bg-dashboard-bg overflow-hidden font-light">
             {/* Soft Viewport Header Section */}
             <div className="relative w-full h-[25vh] shrink-0 overflow-hidden border-b border-slate-100">
                 <img
@@ -67,22 +67,22 @@ function StaffDashboardContent() {
 
                 <div className="relative z-20 h-full flex flex-col justify-center px-[5vw]">
                     <div className="flex items-center gap-[1vw] mb-[1.5vh]">
-                        <span className="text-[#002366] text-[0.8vw] font-light uppercase tracking-widest">
+                        <span className="text-dashboard-primary text-[0.8vw] font-light uppercase tracking-widest">
                             Reception Desk
                         </span>
-                        <div className="h-px w-[5vw] bg-[#002366]/10" />
+                        <div className="h-px w-[5vw] bg-dashboard-primary/10" />
                     </div>
 
                     <div className="flex justify-between items-end">
                         <div>
-                            <h2 className="text-[3vw] font-light text-[#002366] leading-none tracking-tight mb-[1vh]">
+                            <h2 className="text-[3vw] font-light text-dashboard-primary leading-none tracking-tight mb-[1vh]">
                                 Welcome back, <span className="font-normal">Staff</span>
                             </h2>
 
                         </div>
 
                         <div className="text-right pb-[1vh]">
-                            <div className="text-[3.5vw] font-light text-[#002366] leading-none mb-[0.5vh] tabular-nums">
+                            <div className="text-[3.5vw] font-light text-dashboard-primary leading-none mb-[0.5vh] tabular-nums">
                                 {formatTime(currentTime).split(' ')[0]}
                                 <span className="text-[1.2vw] text-slate-400 ml-[0.5vw]">{formatTime(currentTime).split(' ')[1]}</span>
                             </div>
@@ -133,7 +133,7 @@ function StaffDashboardContent() {
                                 <Clock className="text-slate-400 w-[1.2vw] h-[1.2vw]" />
                                 Today's Arrivals
                             </h3>
-                            <button className="text-[0.7vw] font-normal text-slate-400 hover:text-[#002366] transition-colors uppercase tracking-widest">
+                            <button className="text-[0.7vw] font-normal text-slate-400 hover:text-dashboard-primary transition-colors uppercase tracking-widest">
                                 Full Manifest
                             </button>
                         </div>
@@ -142,7 +142,7 @@ function StaffDashboardContent() {
                             {mockBookings.map((booking) => (
                                 <div key={booking.id} className="flex items-center justify-between p-[1.2vw] rounded-[0.8vw] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer group">
                                     <div className="flex items-center gap-[1.5vw]">
-                                        <div className="w-[3vw] h-[3vw] rounded-full bg-slate-100 text-[#002366] flex items-center justify-center font-light text-[1.1vw]">
+                                        <div className="w-[3vw] h-[3vw] rounded-full bg-slate-100 text-dashboard-primary flex items-center justify-center font-light text-[1.1vw]">
                                             {booking.guestName.charAt(0)}
                                         </div>
                                         <div>
@@ -261,8 +261,8 @@ function SmallInventoryItem({ label, value, color }: { label: string, value: num
 function ActionButton({ icon, label, primary }: { icon: React.ReactNode, label: string, primary?: boolean }) {
     return (
         <button className={`w-full flex items-center gap-[0.8vw] px-[1vw] py-[1.2vh] rounded-[0.8vw] text-[0.8vw] font-light transition-all
-            ${primary ? 'bg-[#D4AF37] text-white shadow-sm hover:shadow-md' : 'bg-white text-slate-600 border border-slate-100 hover:bg-slate-50'}`}>
-            {icon}
+            ${primary ? 'bg-dashboard-primary text-white shadow-sm hover:shadow-md' : 'bg-white text-slate-600 border border-slate-100 hover:bg-slate-50'}`}>
+            {icon ? <div className="w-[1.2vw] h-[1.2vw] text-dashboard-accent flex items-center justify-center">{icon}</div> : null}
             <span className="uppercase tracking-widest">{label}</span>
         </button>
     );
