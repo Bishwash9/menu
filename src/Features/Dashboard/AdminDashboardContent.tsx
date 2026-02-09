@@ -1,11 +1,11 @@
 // src/Features/Dashboard/AdminDashboardContent.tsx
 
 import { useState, useEffect } from 'react';
+import { IconCurrencyRupeeNepalese } from '@tabler/icons-react';
 import Banner from '../../assets/Banner.svg';
 import {
   BedDouble,
   Users,
-  DollarSign,
   CalendarCheck,
   CalendarX,
 
@@ -239,7 +239,7 @@ function AdminDashboardContent() {
         <div className="flex-1 flex flex-col gap-[3vh] overflow-y-auto pr-[1vw]">
 
           {/* Quick Stats Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-4 gap-[2vw]">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-[1.5vw]">
             <StatusCard
               title="Available"
               value={roomStats.available}
@@ -261,8 +261,7 @@ function AdminDashboardContent() {
             <StatusCard
               title="Revenue"
               value={totalRevenue}
-              isCurrency
-              icon={<DollarSign className="w-[1.4vw] h-[1.4vw]" />}
+              icon={<IconCurrencyRupeeNepalese className="w-[1.4vw] h-[1.4vw]" />}
               color="orange"
             />
           </div>
@@ -399,7 +398,7 @@ function AdminDashboardContent() {
         </div>
 
         {/* Right Panel: Quick Actions */}
-        <div className="w-[20vw] flex flex-col gap-[3vh]">
+        <div className="w-[18vw] flex flex-col gap-[3vh] mt-[9vh]">
           <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 flex flex-col gap-[2vh]">
             <h3 className="text-[0.9vw] font-normal text-slate-400 uppercase tracking-widest border-b border-slate-50 pb-[1vh]">
               Quick Actions
@@ -407,7 +406,7 @@ function AdminDashboardContent() {
             <div className="space-y-[1vh]">
               <ActionButton
                 icon={<Eye size={16} className="text-dashboard-accent" />}
-                label="Show Recent Bookings"
+                label=" Recent Bookings"
                 primary
                 onClick={() => setShowBookings(true)}
               />
@@ -757,18 +756,15 @@ function StatusCard({ title, value, icon, color, isCurrency }: { title: string, 
   };
 
   return (
-    <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex items-center gap-[1.2vw]">
+    <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex justify-between items-center gap-[1.2vw]">
       <div className={`p-[0.8vw] rounded-xl shrink-0 ${colors[color] || colors.royal} transition-all`}>
         {icon}
       </div>
-      <div className="flex flex-col min-w-0 flex-1">
-        <p className="text-slate-400 text-[0.8vw] font-light uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
-        <div className="flex items-baseline gap-[0.3vw] overflow-hidden">
-          {isCurrency && <span className="text-[0.9vw] font-light text-slate-400 shrink-0">Rs.</span>}
-          <h3 className={`${isCurrency ? 'text-[1.6vw]' : 'text-[2vw]'} font-light text-slate-700 leading-none tabular-nums truncate`}>
-            {value.toLocaleString()}
-          </h3>
-        </div>
+      <div className="flex flex-col">
+        <p className="text-slate-400 text-[0.8vw] font-light uppercase tracking-wider mb-[0.2vh]">{title}</p>
+        <h3 className={`${isCurrency ? 'text-[1.8vw]' : 'text-[2vw]'} font-light text-slate-700 leading-none tabular-nums`}>
+          {value.toLocaleString()}
+        </h3>
       </div>
     </div>
   );

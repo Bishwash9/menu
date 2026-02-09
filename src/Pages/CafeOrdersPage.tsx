@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {Clock, Users, DollarSign} from 'lucide-react';
+import {Clock, Users} from 'lucide-react';
+import { IconCurrencyRupeeNepalese } from '@tabler/icons-react';
 import { SideBar } from '../Components/Layout/Sidebar';
 import {
     CafeStatCard,
@@ -68,8 +69,8 @@ const CafeOrdersPage: React.FC = () => {
                         />
                         <CafeStatCard
                             title="Today's Revenue"
-                            value={`Rs. ${stats.todayRevenue.toFixed(2)}`}
-                            icon={<DollarSign size={24} className="text-[#D4AF37]" />}
+                            value={`${stats.todayRevenue.toFixed(2)}`}
+                            icon={<IconCurrencyRupeeNepalese size={24} className="text-dashboard-accent" />}
                             iconBgColor="bg-[#D4AF37]/20"
                         />
 

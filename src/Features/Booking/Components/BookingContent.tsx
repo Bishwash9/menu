@@ -73,7 +73,7 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                  <select 
                  value={statusFilter}
                  onChange ={ (e)=> handleStatusFilterChange(e.target.value as BookingStatus)}
-                 className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20 focus:border-status-confirmed transition-all">
+                 className="px-[2vw] py-[1.5vh] border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20 focus:border-status-confirmed transition-all">
                     <option value="">All Status</option>
                     {['confirmed', 'pending', 'checked-in', 'checked-out', 'cancelled'].map(status=>(
                         <option key ={status} value= {status}>{status}</option>

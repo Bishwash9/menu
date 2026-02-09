@@ -1,7 +1,7 @@
 import { SideBar } from '../Components/Layout/Sidebar';
+import { IconCurrencyRupeeNepalese } from '@tabler/icons-react';
 import {
     Users,
-    DollarSign,
     Clock,
     TrendingUp,
 } from 'lucide-react';
@@ -57,13 +57,13 @@ const BookingPage: React.FC = () => {
                             title="Pending"
                             value={stats.pending.toString()}
                             icon={<Clock size={20} />}
-                            iconColor="golden"
+                            iconColor="purple"
                         />
                         <StatCard
                             title="Revenue Today"
-                            value={`Rs. ${stats.revenue}`}
-                            icon={<DollarSign size={20} />}
-                            iconColor="royal"
+                            value={`${stats.revenue}`}
+                            icon={<IconCurrencyRupeeNepalese size={20} />}
+                            iconColor="green"
                         />
                     </div>
 
