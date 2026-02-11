@@ -94,7 +94,7 @@ export const LoginForm: React.FC = () => {
                 className="w-full bg-dashboard-primary text-white font-bold py-3.5 rounded-xl hover:bg-dashboard-accent cursor-pointer shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
             >
                 Login to Dashboard
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
            
             
