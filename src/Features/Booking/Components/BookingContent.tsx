@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
     Search,
-    Filter,
 } from 'lucide-react';
 import type { Booking, BookingStatus } from '../Types';
 import { StatusBadge, PaymentBadge } from './Badges';
@@ -18,12 +17,12 @@ export const BookingContent: React.FC<BookingContentProps> = ({
     bookings,
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [statusFilter, setStatusFilter] = useState<BookingStatus | ''>  ('');
+    const [statusFilter, setStatusFilter] = useState<BookingStatus | ''>('');
 
-    const handleStatusFilterChange = (status: BookingStatus) =>{
-        if(statusFilter === status){
+    const handleStatusFilterChange = (status: BookingStatus) => {
+        if (statusFilter === status) {
             setStatusFilter('');
-        }else{
+        } else {
             setStatusFilter(status);
         }
     }
@@ -47,13 +46,13 @@ export const BookingContent: React.FC<BookingContentProps> = ({
     };
 
     const filteredBookings = bookings.filter(b => {
-        const matchesSearch = 
+        const matchesSearch =
             b.guest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             b.id.toLowerCase().includes(searchQuery.toLowerCase());
 
         const matchesStatus = statusFilter ? b.status === statusFilter : true;
         return matchesSearch && matchesStatus;
-});
+    });
 
     return (
         <div className="space-y-4">
@@ -70,15 +69,15 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                     />
                 </div>
 
-                 <select 
-                 value={statusFilter}
-                 onChange ={ (e)=> handleStatusFilterChange(e.target.value as BookingStatus)}
-                 className="px-[2vw] py-[1.5vh] border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20 focus:border-status-confirmed transition-all">
+                <select
+                    value={statusFilter}
+                    onChange={(e) => handleStatusFilterChange(e.target.value as BookingStatus)}
+                    className="px-[2vw] py-[1.5vh] border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20 focus:border-status-confirmed transition-all">
                     <option value="">All Status</option>
-                    {['confirmed', 'pending', 'checked-in', 'checked-out', 'cancelled'].map(status=>(
-                        <option key ={status} value= {status}>{status}</option>
+                    {['confirmed', 'pending', 'checked-in', 'checked-out', 'cancelled'].map(status => (
+                        <option key={status} value={status}>{status}</option>
                     ))}
-                 </select>
+                </select>
             </div>
 
             {/* --- Bookings Section --- */}

@@ -22,7 +22,7 @@ function MenuManagementPage() {
         status: 'Available',
     }));
 
-    const [items, setItems] = useState<MenuItem[]>(initialItems);
+    const [items] = useState<MenuItem[]>(initialItems);
     // const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
     // const [showViewModal, setShowViewModal] = useState(false);
 
@@ -45,8 +45,8 @@ function MenuManagementPage() {
                 </div>
 
                 <div className="p-6">
-                   
-                 
+
+
 
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
