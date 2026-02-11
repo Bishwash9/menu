@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { IconCurrencyRupeeNepalese } from '@tabler/icons-react';
-import Banner from '@assets/dashboard-banner.jpg';
+import Banner from '@assets/Banner.jpg';
 import {
   BedDouble,
   Users,
