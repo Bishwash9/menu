@@ -3,8 +3,8 @@ import { SIDEBAR_CONFIG } from "../../Config/SidebarConfig";
 import { ROLES, type Role } from "../../Lib/roles";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Logo from "../../Assets/Logo.svg";
-import Namaste from "../../Assets/Namaste.svg";
+import Logo from "@assets/Logo.svg";
+import Namaste from "@assets/Namaste.svg";
 import { useAuth } from "../../Context/AuthContext";
 
 

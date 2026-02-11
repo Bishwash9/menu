@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Banner from '../../assets/Banner.svg';
+import Banner from '@assets/Banner.svg';
 import {
     BedDouble,
     CalendarCheck,
