@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Phone, Lock, Eye, EyeOff, ArrowRight, Link } from 'lucide-react';
+import React, { use, useState } from 'react';
+import { Phone, Lock, Eye, EyeOff, ArrowRight} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({ phone: '', password: '' });
     const [errors, setErrors] = useState({ phone: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +33,8 @@ export const LoginForm: React.FC = () => {
         if (validate()) {
             console.log('Logging in with:', formData);
             // Handle login logic here
+
+            navigate('/dashboard'); // Redirect to dashboard on successful login
         }
     };
 
@@ -84,7 +88,7 @@ export const LoginForm: React.FC = () => {
             </div>
 
             {/* Submit Button */}
-            <Link to="/dashboard">
+            
                 <button
                 type="submit"
                 className="w-full bg-[#002366] text-white font-bold py-3.5 rounded-xl hover:bg-primary-hover shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
@@ -92,7 +96,7 @@ export const LoginForm: React.FC = () => {
                 Login to Dashboard
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
-            </Link>
+           
             
         </form>
     );
