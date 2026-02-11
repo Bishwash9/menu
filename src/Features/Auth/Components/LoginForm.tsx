@@ -86,7 +86,7 @@ export const LoginForm: React.FC = () => {
             {/* Submit Button */}
             <button
                 type="submit"
-                className="w-full bg-[#002366] text-white font-bold py-3.5 rounded-xl hover:bg-[#001a4d] shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
+                className="w-full bg-[#002366] text-white font-bold py-3.5 rounded-xl hover:bg-primary-hover shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
             >
                 Login to Dashboard
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
