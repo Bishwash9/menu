@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Phone, Lock, Eye, EyeOff, ArrowRight, Link } from 'lucide-react';
 
 export const LoginForm: React.FC = () => {
     const [formData, setFormData] = useState({ phone: '', password: '' });
@@ -84,13 +84,16 @@ export const LoginForm: React.FC = () => {
             </div>
 
             {/* Submit Button */}
-            <button
+            <Link to="/dashboard">
+                <button
                 type="submit"
                 className="w-full bg-[#002366] text-white font-bold py-3.5 rounded-xl hover:bg-primary-hover shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
             >
                 Login to Dashboard
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
+            </Link>
+            
         </form>
     );
 };
