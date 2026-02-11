@@ -17,6 +17,7 @@ import SubscriptionPage from './Pages/SubscriptionPage'
 import { RoleGaurd } from './Components/RoleGaurd/RoleGaurd'
 import WebSocketComponent from './WebSocketComponent'
 import OrderDetailsPage from './Pages/OrderDetailsPage'
+import LoginPage from './Pages/LoginPage'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
 
           {/* Public Dashboard */}
           <Route path='/' element={<DashboardPage />} />
+          <Route path='/login' element={<LoginPage />} />
 
           {/* Adimin only pages */}
           <Route element={<RoleGaurd allowedRoles={['admin']} />}>
