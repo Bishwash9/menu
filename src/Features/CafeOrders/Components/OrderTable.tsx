@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search} from 'lucide-react';
 import type { CafeOrder, OrderStatus, OrderType } from '../Types';
 import { ORDER_STATUSES, ORDER_TYPES } from '../data';
 
@@ -76,9 +76,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                     />
                 </div>
                 <div className="flex items-center gap-2">
-                    <button className="p-2.5 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">
-                        <Filter size={18} className="text-slate-500" />
-                    </button>
+                   
                     <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value as any)}
