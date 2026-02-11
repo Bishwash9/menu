@@ -26,8 +26,8 @@ function App() {
         <Routes>
 
           {/* Public Dashboard */}
-          <Route path='/' element={<DashboardPage />} />
-          <Route path='/login' element={<LoginPage />} />
+          <Route path='/dashboard' element={<DashboardPage />} />
+          <Route path='/' element={<LoginPage />} />
 
           {/* Adimin only pages */}
           <Route element={<RoleGaurd allowedRoles={['admin']} />}>
