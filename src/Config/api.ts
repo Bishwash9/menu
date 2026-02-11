@@ -1,6 +1,6 @@
 const BASE_URL = '';
 
-const apiClient = async(endpoint: string, options: RequestInit = {}) =>{
+export const apiClient = async(endpoint: string, options: RequestInit = {}) =>{
     const token = localStorage.getItem('accessToken');
 
     const headers = {
