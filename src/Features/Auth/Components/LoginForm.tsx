@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import { Phone, Lock, Eye, EyeOff, ArrowRight} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -53,7 +53,7 @@ export const LoginForm: React.FC = () => {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className={`w-full pl-10 pr-4 py-3 bg-slate-50 border rounded-xl outline-none transition-all ${
-                            errors.phone ? 'border-red-500 ring-4 ring-red-500/10' : 'border-slate-200 focus:border-[#002366] focus:ring-4 focus:ring-[#002366]/10'
+                            errors.phone ? 'border-red-500 ring-4 ring-red-500/10' : 'border-slate-200 focus:border-dashboard-primary focus:ring-4 focus:ring-dashboard-primary/10'
                         }`}
                     />
                 </div>
@@ -73,15 +73,15 @@ export const LoginForm: React.FC = () => {
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                         className={`w-full pl-10 pr-12 py-3 bg-slate-50 border rounded-xl outline-none transition-all ${
-                            errors.password ? 'border-red-500 ring-4 ring-red-500/10' : 'border-slate-200 focus:border-[#002366] focus:ring-4 focus:ring-[#002366]/10'
+                            errors.password ? 'border-red-500 ring-4 ring-red-500/10' : 'border-slate-200 focus:border-dashboard-primary focus:ring-4 focus:ring-dashboard-primary/10'
                         }`}
                     />
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#002366] transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 cursor-pointer hover:text-dashboard-accent transition-colors"
                     >
-                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                     </button>
                 </div>
                 {errors.password && <p className="text-red-500 text-xs mt-1.5 ml-1 font-medium">{errors.password}</p>}
@@ -91,7 +91,7 @@ export const LoginForm: React.FC = () => {
             
                 <button
                 type="submit"
-                className="w-full bg-[#002366] text-white font-bold py-3.5 rounded-xl hover:bg-primary-hover shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
+                className="w-full bg-dashboard-primary text-white font-bold py-3.5 rounded-xl hover:bg-dashboard-accent cursor-pointer shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
             >
                 Login to Dashboard
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
