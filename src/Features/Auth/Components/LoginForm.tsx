@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Phone, Lock, Eye, EyeOff, ArrowRight} from 'lucide-react';
+import { Phone, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../../../Services/authService';
 
 export const LoginForm: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ phone: '', password: '' });
-    const [errors, setErrors] = useState({ phone: '', password: '' });
+    const [errors, setErrors] = useState({ phone: '', password: '', general: '' });
     const [showPassword, setShowPassword] = useState(false);
 
     const validate = () => {
-        const newErrors = { phone: '', password: '' };
+        const newErrors = { phone: '', password: '', general: '' };
         let isValid = true;
 
         // Phone: Must be numeric and 10 digits (adjust length as needed)
@@ -28,18 +29,33 @@ export const LoginForm: React.FC = () => {
         return isValid;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validate()) {
-            console.log('Logging in with:', formData);
-            // Handle login logic here
+            try {
+                const response = await authService.login(formData.phone, formData.password);
 
-            navigate('/dashboard'); // Redirect to dashboard on successful login
+                if (response.user.role === 'staff') {
+                    navigate('/staff-dashboard');
+                } else if (response.user.role === 'admin') {
+                    navigate('/admin-dashboard');
+                } else {
+                    navigate('/dashboard'); // Default fallback
+                }
+            } catch (error: any) {
+                setErrors({ ...errors, general: error.message });
+            }
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-5">
+            {/* General Error Message */}
+            {errors.general && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl animate-in fade-in slide-in-from-top-1">
+                    <p className="text-red-700 text-sm font-bold">{errors.general}</p>
+                </div>
+            )}
             {/* Phone Number Field */}
             <div>
                 <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">
@@ -52,9 +68,8 @@ export const LoginForm: React.FC = () => {
                         placeholder="98XXXXXXXX"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className={`w-full pl-10 pr-4 py-3 bg-slate-50 border rounded-xl outline-none transition-all ${
-                            errors.phone ? 'border-red-500 ring-4 ring-red-500/10' : 'border-slate-200 focus:border-dashboard-primary focus:ring-4 focus:ring-dashboard-primary/10'
-                        }`}
+                        className={`w-full pl-10 pr-4 py-3 bg-slate-50 border rounded-xl outline-none transition-all ${errors.phone ? 'border-red-500 ring-4 ring-red-500/10' : 'border-slate-200 focus:border-dashboard-primary focus:ring-4 focus:ring-dashboard-primary/10'
+                            }`}
                     />
                 </div>
                 {errors.phone && <p className="text-red-500 text-xs mt-1.5 ml-1 font-medium">{errors.phone}</p>}
@@ -72,9 +87,8 @@ export const LoginForm: React.FC = () => {
                         placeholder="••••••••"
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        className={`w-full pl-10 pr-12 py-3 bg-slate-50 border rounded-xl outline-none transition-all ${
-                            errors.password ? 'border-red-500 ring-4 ring-red-500/10' : 'border-slate-200 focus:border-dashboard-primary focus:ring-4 focus:ring-dashboard-primary/10'
-                        }`}
+                        className={`w-full pl-10 pr-12 py-3 bg-slate-50 border rounded-xl outline-none transition-all ${errors.password ? 'border-red-500 ring-4 ring-red-500/10' : 'border-slate-200 focus:border-dashboard-primary focus:ring-4 focus:ring-dashboard-primary/10'
+                            }`}
                     />
                     <button
                         type="button"
@@ -88,16 +102,16 @@ export const LoginForm: React.FC = () => {
             </div>
 
             {/* Submit Button */}
-            
-                <button
+
+            <button
                 type="submit"
                 className="w-full bg-dashboard-primary text-white font-bold py-3.5 rounded-xl hover:bg-dashboard-accent cursor-pointer shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
             >
                 Login to Dashboard
-                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
-           
-            
+
+
         </form>
     );
 };
