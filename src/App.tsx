@@ -20,6 +20,7 @@ import OrderDetailsPage from './Pages/OrderDetailsPage'
 import LoginPage from './Pages/LoginPage'
 
 function App() {
+  console.log('📱 App Component Rendering');
   return (
     <>
       <BrowserRouter>

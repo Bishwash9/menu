@@ -6,14 +6,19 @@ import { AuthProvider } from './Context/AuthContext.tsx'
 import { OrderProvider } from './Context/OrderContext.tsx'
 import { CartProvider } from './Features/Cart/index.ts'
 
-createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <AuthProvider>
-        <OrderProvider>
-          <CartProvider>
-              <App />
-          </CartProvider>
-        </OrderProvider>
-      </AuthProvider>
-    </StrictMode>,
+console.log('🏁 main.tsx Loading');
+
+const root = createRoot(document.getElementById('root')!);
+console.log('🏗️ Root Created, rendering App...');
+
+root.render(
+  <StrictMode>
+    <AuthProvider>
+      <OrderProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </OrderProvider>
+    </AuthProvider>
+  </StrictMode>,
 )

@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { authService } from '../../../Services/authService';
 
 export const LoginForm: React.FC = () => {
+    console.log('💎 LoginForm Rendered');
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ phone: '', password: '' });
     const [errors, setErrors] = useState({ phone: '', password: '', general: '' });
     const [showPassword, setShowPassword] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const validate = () => {
         const newErrors = { phone: '', password: '', general: '' };
@@ -25,15 +27,26 @@ export const LoginForm: React.FC = () => {
             isValid = false;
         }
 
-        setErrors(newErrors);
+        if (isValid) {
+            console.log('✅ Validation passed');
+        } else {
+            console.log('❌ Validation failed:', newErrors);
+        }
         return isValid;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('🚀 Login form submitted');
         if (validate()) {
+            setErrors({ phone: '', password: '', general: '' });
+            setIsSubmitting(true);
             try {
                 const response = await authService.login(formData.phone, formData.password);
+
+                if (!response?.user?.role) {
+                    throw new Error('Invalid login response. Please try again.');
+                }
 
                 if (response.user.role === 'staff') {
                     navigate('/staff-dashboard');
@@ -43,7 +56,10 @@ export const LoginForm: React.FC = () => {
                     navigate('/dashboard'); // Default fallback
                 }
             } catch (error: any) {
+                console.error('❌ Login error:', error);
                 setErrors({ ...errors, general: error.message });
+            } finally {
+                setIsSubmitting(false);
             }
         }
     };
@@ -105,9 +121,10 @@ export const LoginForm: React.FC = () => {
 
             <button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full bg-dashboard-primary text-white font-bold py-3.5 rounded-xl hover:bg-dashboard-accent cursor-pointer shadow-lg shadow-[#002366]/20 transition-all flex items-center justify-center gap-2 group active:scale-[0.98]"
             >
-                Login to Dashboard
+                {isSubmitting ? 'Signing In...' : 'Login to Dashboard'}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
 
