@@ -1,31 +1,19 @@
-export interface AuthTokens{
-    accessToken: string;
-    refreshToken: string;
+export interface AuthTokens {
+    access: string;
+    refresh: string;
 }
 
-export interface StaffUser{
-    id: string;
+export interface BusinessUser {
     business_uid: string;
+    business_id: number;
     name: string;
-    role: 'staff';
-    shift: string;
-    status: string;
-}
-
-export interface BusinessUser{
-    id: string;
-    business_uid: string;
-    name: string;
-    role: 'admin';
+    role: string;
     username: string;
     email: string;
 }
 
-export type User = StaffUser | BusinessUser;
-
-export interface LoginResponse{
-    tokens: AuthTokens;
+export interface LoginResponse {
     message: string;
-    error: string | null;
-    user: User;
+    tokens: AuthTokens;
+    business: BusinessUser;
 }
