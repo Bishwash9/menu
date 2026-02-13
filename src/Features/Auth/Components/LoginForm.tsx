@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { authService } from '../../../Services/authService';
 
 export const LoginForm: React.FC = () => {
-    console.log('💎 LoginForm Rendered');
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ phone: '', password: '' });
     const [errors, setErrors] = useState({ phone: '', password: '', general: '' });
@@ -28,16 +27,16 @@ export const LoginForm: React.FC = () => {
         }
 
         if (isValid) {
-            console.log('✅ Validation passed');
+            console.log(' Validation passed');
         } else {
-            console.log('❌ Validation failed:', newErrors);
+            console.log(' Validation failed:', newErrors);
         }
         return isValid;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('🚀 Login form submitted');
+        console.log(' Login form submitted');
         if (validate()) {
             setErrors({ phone: '', password: '', general: '' });
             setIsSubmitting(true);
@@ -56,7 +55,7 @@ export const LoginForm: React.FC = () => {
                     navigate('/dashboard'); // Default fallback
                 }
             } catch (error: any) {
-                console.error('❌ Login error:', error);
+                console.error(' Login error:', error);
                 setErrors({ ...errors, general: error.message });
             } finally {
                 setIsSubmitting(false);

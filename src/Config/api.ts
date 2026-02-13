@@ -1,4 +1,4 @@
-console.log('⚙️ api.ts Script Loading');
+
 export const BASE_URL = import.meta.env.VITE_API_URL || 'https://api.thefoodhubcafe.com.np/api/';
 
 export const apiClient = async (endpoint: string, options: RequestInit = {}) => {

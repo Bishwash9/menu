@@ -2,12 +2,12 @@ import type { LoginResponse } from "../Types/auth";
 import { apiClient } from '../Config/api';
 
 export const authService = {
-    login: async (phone: string, password: string):
+    login: async (phone_number: string, password: string):
         Promise<LoginResponse> => {
-        console.log('📡 Calling authService.login for:', phone);
+       
         const data = await apiClient('login/', {
             method: 'POST',
-            body: JSON.stringify({ phone, password })
+            body: JSON.stringify({ phone_number, password })
         });
 
         //save tokens immediately after successful login
