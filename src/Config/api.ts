@@ -19,7 +19,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
         if (response.status === 401) {
             localStorage.removeItem('accessToken');
             console.error('Session expired. Please log in again.');
-            window.location.href = '/login';
+            window.location.href = '/'
             return;
         }
 
@@ -27,7 +27,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
             const error = await response.json().catch(() => ({}));
             throw {
                 status: response.status,
-                message: error.message || 'API request failed',
+                message: error.message || 'Incorrect credentials. Please try again.',
             };
         }
 
