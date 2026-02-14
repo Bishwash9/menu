@@ -43,13 +43,13 @@ export const LoginForm: React.FC = () => {
             try {
                 const response = await authService.login(formData.phone, formData.password);
 
-                if (!response?.user?.role) {
+                if (!response?.business?.role) {
                     throw new Error('Invalid login response. Please try again.');
                 }
 
-                if (response.user.role === 'staff') {
+                if (response.business.role === 'staff') {
                     navigate('/staff-dashboard');
-                } else if (response.user.role === 'admin') {
+                } else if (response.business.role === 'admin') {
                     navigate('/admin-dashboard');
                 } else {
                     navigate('/dashboard'); // Default fallback
