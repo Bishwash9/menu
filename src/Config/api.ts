@@ -16,18 +16,25 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
 
         const response = await fetch(fullUrl, { ...options, headers });
 
+        //Handle 401 error specifically
         if (response.status === 401) {
+          if (endpoint.includes('login')) {
+            const errorData = await response.json().catch(() => ({}));
+            throw { status: 401, message: errorData.message || 'Invalid credentials.' };
+          }
             localStorage.removeItem('accessToken');
             console.error('Session expired. Please log in again.');
-            window.location.href = '/'
+            window.location.href = '/';
             return;
-        }
+       }
+
+        
 
         if (!response.ok) {
             const error = await response.json().catch(() => ({}));
             throw {
                 status: response.status,
-                message: error.message || 'Incorrect credentials. Please try again.',
+                message: error.message || 'API request failed. Please try again.',
             };
         }
 
