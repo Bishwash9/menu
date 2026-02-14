@@ -1,4 +1,4 @@
-import {apiCliet} from '../Config/api';
+import {apiClient} from '../Config/api';
 import type { Order } from '../Types/order';
 export const orderService ={
     getOrders: async (tableId?:number): Promise<Order[]> =>{
