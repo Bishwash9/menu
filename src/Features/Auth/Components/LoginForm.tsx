@@ -47,9 +47,11 @@ export const LoginForm: React.FC = () => {
                     throw new Error('Invalid login response. Please try again.');
                 }
 
-                if (response.business.role === 'staff') {
+                const role = response.business.role.toLowerCase();
+
+                if (role === 'staff') {
                     navigate('/staff-dashboard');
-                } else if (response.business.role === 'admin') {
+                } else if (role === 'admin') {
                     navigate('/admin-dashboard');
                 } else {
                     navigate('/dashboard'); // Default fallback
