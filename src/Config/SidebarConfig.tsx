@@ -46,7 +46,7 @@ export type Role = 'user' | 'admin' | 'reception' | 'housekeeping' ;
 
 export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
   admin: [
-    { label: 'Dashboard', icon: Icons.Dashboard, path: '/' },
+    { label: 'Dashboard', icon: Icons.Dashboard, path: '/dashboard ' },
     { label: 'Rooms', icon: Icons.Rooms, path: '/rooms' },
     { label: 'Menu-Management', icon: Icons.Menu, path: "/menu-management" },
     { label: 'Staff-Management', icon: Icons.Users, path: "/staff-management" },
@@ -55,7 +55,7 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
     { label: 'Settings', icon: Icons.Settings, path: '/settings' },
   ],
   user: [
-    { label: 'Dashboard', icon: Icons.Dashboard, path: '/' },
+    { label: 'Dashboard', icon: Icons.Dashboard, path: '/dashboard' },
     { label: 'Menu', icon: Icons.Menu, path: '/menu' },
     { label: 'Profile', icon: Icons.Users },
     { label: 'Settings', icon: Icons.Settings },
@@ -63,7 +63,7 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
     { label: 'New Booking', icon: Icons.Bookings, path: "/orderForm", defaultType: 'room' }
   ],
   reception: [
-    { label: 'Dashboard', icon: Icons.Dashboard, path: '/' },
+    { label: 'Dashboard', icon: Icons.Dashboard, path: '/dashboard' },
     { label: 'Cafe & Orders', icon: Icons.Orders, path: '/cafe-orders' },
     { label: 'Tables', icon: Icons.Tables, path: '/tables' },
     { label: 'Guests', icon: Icons.Guests, path: '/guests' },
@@ -73,7 +73,7 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
   
   ],
   housekeeping : [
-    {label : 'Dashboard', icon: Icons.Dashboard, path:'/'},
+    {label : 'Dashboard', icon: Icons.Dashboard, path:'/dashboard'},
   ]
 
 
