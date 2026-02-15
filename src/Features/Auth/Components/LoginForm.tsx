@@ -52,7 +52,7 @@ export const LoginForm: React.FC = () => {
                 if (role === 'staff') {
                     navigate('/staff-dashboard');
                 } else if (role === 'admin') {
-                    navigate('/admin-dashboard');
+                    navigate('/dashboard');
                 } else {
                     navigate('/dashboard'); // Default fallback
                 }
