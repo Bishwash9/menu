@@ -26,6 +26,6 @@ export const authService = {
     },
 
     logout: () => {
-        localStorage.clear();
+         localStorage.clear();
     }
 }
