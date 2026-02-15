@@ -19,7 +19,7 @@ export interface Order{
     tax: number;
     total_amount: number;
     created_at: string;
-    updated_at: stirng;
+    updated_at: string;
 }
 
 export interface GetOrderResponse{
