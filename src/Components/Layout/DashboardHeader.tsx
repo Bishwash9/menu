@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Bell, User, LogOut, CheckCircle, Info, AlertCircle, Plus, X } from "lucide-react";
 import OrderModelPage from "../../Pages/OrderModelPage";
 import QuickMenuPopup from "./QuickMenuPopup";
+import { authService } from "../../Services/authService";
 
 export default function DashboardHeader({ initials = "" }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -39,6 +40,13 @@ export default function DashboardHeader({ initials = "" }) {
       case 'warning': return <AlertCircle size={14} className="text-amber-500" />;
       default: return <Info size={14} className="text-blue-500" />;
     }
+
+  
+  };
+
+  const handleLogout = async () => {
+    authService.logout();
+    window.location.href = '/login'; // Redirect to login page after logout
   };
 
   return (
@@ -115,7 +123,7 @@ export default function DashboardHeader({ initials = "" }) {
                   <User size={15} />
                   <span>My Profile</span>
                 </button>
-                <button type="button" className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-600 hover:bg-rose-50 transition-colors">
+                <button onClick={() => handleLogout()} type="button" className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-600 hover:bg-rose-50 transition-colors">
                   <LogOut size={15} />
                   <span>Sign Out</span>
                 </button>
