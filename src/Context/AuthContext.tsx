@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import type {Role} from '../Lib/roles';
-import {ROLES} from '../Lib/roles'
 
 
 //putting userinfo in state for using it later in app
