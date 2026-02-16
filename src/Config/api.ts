@@ -1,5 +1,5 @@
 
-export const BASE_URL = import.meta.env.VITE_API_URL || 'https://20.198.26.22/api/';
+export const BASE_URL = import.meta.env.VITE_API_URL ;
 
 export const apiClient = async (endpoint: string, options: RequestInit = {}) => {
     const token = localStorage.getItem('accessToken');
