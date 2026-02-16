@@ -18,6 +18,7 @@ import { RoleGaurd } from './Components/RoleGaurd/RoleGaurd'
 import WebSocketComponent from './WebSocketComponent'
 import OrderDetailsPage from './Pages/OrderDetailsPage'
 import LoginPage from './Pages/LoginPage'
+import { PublicRoute } from './Features/Auth/Components/PublicRoute'
 
 function App() {
   console.log('📱 App Component Rendering');
@@ -28,8 +29,10 @@ function App() {
 
           {/* Public Dashboard */}
           <Route path='/dashboard' element={<DashboardPage />} />
-          <Route path='/' element={<LoginPage />} />
 
+          <Route element={<PublicRoute />}>
+            <Route path='/' element={<LoginPage />} />
+          </Route>
           {/* Adimin only pages */}
           <Route element={<RoleGaurd allowedRoles={['admin']} />}>
             <Route path='/menu-management' element={<MenuManagementPage />} />
