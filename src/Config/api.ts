@@ -6,7 +6,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
 
     const headers: Record<string, string> = {
         'Content-type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` }),
+        ...(token && !endpoint.includes('login') && { 'Authorization': `Bearer ${token}` }),
         ...((options.headers as Record<string, string>) || {}),
     };
 
