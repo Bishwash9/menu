@@ -35,30 +35,39 @@ export function SideBar() {
 
     <aside
       className={`h-screen bg-dashboard-primary text-white flex flex-col shadow-2xl  overflow-hidden 
-      transition-all duration-300 ease-in-out
+      transition-all duration-300 ease-in-out justify-start
       ${collapsed ? "w-16" : "w-64"}`}
     >
 
 
       {/* Header */}
       <div
-        className={`bg-white flex items-center justify-center border-b border-accent h-[7vh] 
-       ${collapsed ? 'justify-center' : 'justify-start'}`}
+        className={`bg-white flex items-center justify-start border-b border-accent h-[7vh]`}
       >
-        <button onClick={() => setCollapsed(!collapsed)} className={`focus:outline-none h-full flex ease-in-out ${collapsed ? 'justify-center w-full' : 'gap-3'}`}>
+        <button onClick={() => setCollapsed(!collapsed)} className={`focus:outline-none h-full flex items-center justify-center w-16 p-0`}>
           {/* Logo - Always visible, stays fixed */}
           <div className="shrink-0">
-            <img src={Logo} className={`object-contain  ${collapsed ? 'h-[8vh] w-[8vw]' : 'h-[8vh] w-[8vw]'}`} />
-          </div>
-
-          {/* Namaste Text - Fades out when collapsed */}
-          <div className={`flex items-center  overflow-hidden ${collapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto flex-1'}`}>
-            <img src={Namaste} className="h-[10vh] w-[14vw] object-contain" />
+            <img src={Logo} className={`object-contain h-[7vh] w-[7vh]`} />
           </div>
         </button>
+
+        {/* Namaste Text - Fades out when collapsed */}
+        <div className={`flex items-center overflow-hidden ${collapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto flex-1'}`}>
+          <img src={Namaste} className="h-[10vh] w-[14vw] object-contain" />
+        </div>
       </div>
 
-      {!collapsed && (
+      {collapsed ? (
+        // Icon only when collapsed
+        <div className="w-16 flex justify-center items-center py-4 border-b border-white/10 cursor-pointer transition-colors" >
+              <div className="p-2 bg-white/5 rounded-lg hover:bg-white/10 border border-white/10 transition-colors ">
+                    <div className="bg-accent/20 px-2 py-2 rounded-lg">
+                      <Building2 size={20} className="text-accent" />
+                    </div>
+              </div>
+        </div>
+      ) : (
+        // Full company selector when expanded
         <div className="relative px-3 py-4 border-b border-white/10">
           <button
             onClick={() => setIsCompanyOpen(!isCompanyOpen)}
@@ -117,12 +126,11 @@ export function SideBar() {
                   }}
                   className={`group flex items-center cursor-pointer transition-all duration-300
                   border-l-4 ${isActive ? 'border-accent bg-white/10' : 'border-transparent hover:bg-white/10 hover:border-accent'} 
-                  ${isActive ? 'text-accent' : 'hover:text-accent'}
-                   ${collapsed ? "justify-center py-4" : "py-4 pr-4"}`}
+                  ${isActive ? 'text-accent' : 'hover:text-accent'} py-4 pr-4`}
                 >
 
                   {/* ICON CONTAINER: Fixed w-16 matches the collapsed sidebar width exactly */}
-                  <div className="w-16 flex justify-center shrink-0">
+                  <div className="w-16 flex justify-center items-center shrink-0">
                     <span className="text-2xl transition-transform duration-300 text-accent">
                       {item.icon}
                     </span>
