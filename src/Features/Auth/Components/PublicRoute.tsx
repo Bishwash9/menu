@@ -7,12 +7,7 @@ export const PublicRoute =  () =>{
     if(token){
         return <Navigate to="/dashboard" replace />;
     }
-
-    //if no token dont redirect them to dashbboard
-    if(!token){
-        return <Navigate to ="/" replace />;
-    }
-
+    
     //if no token, allow them to view login page
     return <Outlet/>;
 }
