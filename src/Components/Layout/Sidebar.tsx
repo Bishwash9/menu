@@ -3,6 +3,7 @@ import { SIDEBAR_CONFIG } from "../../Config/SidebarConfig";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "@assets/Logo.svg";
 import Namaste from "@assets/Namaste.svg";
+import { Building2, ChevronDown, Plus } from "lucide-react";
 import { useAuth } from "../../Context/AuthContext";
 
 
@@ -13,13 +14,14 @@ import { useAuth } from "../../Context/AuthContext";
 
 export function SideBar() {
   //first ma get role from context
-  const{role} = useAuth();
+  const { role } = useAuth();
   const menuItems = SIDEBAR_CONFIG[role as keyof typeof SIDEBAR_CONFIG] || [];
   const navigate = useNavigate();
   const location = useLocation();
-
   //  ADD: collapse state
   const [collapsed, setCollapsed] = useState(false);
+  const [isCompanyOpen, setIsCompanyOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState("The Food Hub Cafe");
 
   //  ADD: auto-collapse on small screens
   useEffect(() => {
@@ -61,25 +63,54 @@ export function SideBar() {
       </div>
 
       {!collapsed && (
-        <div className="px-3 py-2 bg-white border-b border-yellow-500">
-          <select 
-            name="company" 
-            id="company" 
-            className="w-full text-sm bg-primary text-white border border-[#D4AF37] rounded px-2 py-1.5 
-                    focus:outline-none focus:ring-1 ring-accent"
+        <div className="relative px-3 py-4 border-b border-white/10">
+          <button
+            onClick={() => setIsCompanyOpen(!isCompanyOpen)}
+            className="w-full flex items-center gap-3 px-3 py-2.5 bg-white/5 hover:bg-white/10 border border-white/20 rounded-xl transition-all group"
           >
-            <option value="">Select Company</option>
-            <option value="company1">Company 1</option>
-            <option value="company2">Company 2</option>
-          </select>
+            <div className="p-1.5 bg-accent/20 rounded-lg group-hover:bg-accent/30 transition-colors">
+              <Building2 size={18} className="text-accent" />
+            </div>
+            <div className="text-left overflow-hidden">
+              <p className="text-[10px] text-white/50 uppercase font-bold tracking-wider leading-none mb-1">Company</p>
+              <p className="text-sm font-semibold truncate leading-none">{selectedCompany}</p>
+            </div>
+            <ChevronDown size={14} className={`ml-auto text-white/50 transition-transform duration-300 ${isCompanyOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {isCompanyOpen && (
+            <div className="absolute left-3 right-3 mt-2 bg-primary border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
+              <div className="p-1">
+                {['The Food Hub Cafe', 'Company 1', 'Company 2'].map((company) => (
+                  <button
+                    key={company}
+                    onClick={() => {
+                      setSelectedCompany(company);
+                      setIsCompanyOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedCompany === company ? 'bg-accent text-white' : 'hover:bg-white/5 text-white/80'
+                      }`}
+                  >
+                    {company}
+                  </button>
+                ))}
+              </div>
+              <div className="p-1 border-t border-white/10 bg-white/5">
+                <button className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-accent hover:bg-accent/10 rounded-lg transition-colors">
+                  <Plus size={14} />
+                  Add New Company
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       <nav className="flex-1">
         <ul className="space-y-1">
           {menuItems.map((item) => {
-            const isActive = item.path === location.pathname; 
-            
+            const isActive = item.path === location.pathname;
+
             return (
               <li key={item.label}>
                 <div
@@ -93,7 +124,7 @@ export function SideBar() {
                   ${isActive ? 'text-accent' : 'hover:text-accent'}
                    ${collapsed ? "justify-center py-4" : "py-4 pr-4"}`}
                 >
-                
+
                   {/* ICON CONTAINER: Fixed w-16 matches the collapsed sidebar width exactly */}
                   <div className="w-16 flex justify-center shrink-0">
                     <span className="text-2xl transition-transform duration-300 text-accent">
