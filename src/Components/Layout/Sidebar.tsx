@@ -8,10 +8,6 @@ import { useAuth } from "../../Context/AuthContext";
 
 
 
-// interface SideBarProps {
-//   role: Role;
-// }
-
 export function SideBar() {
   //first ma get role from context
   const { role } = useAuth();
@@ -52,7 +48,7 @@ export function SideBar() {
         <button onClick={() => setCollapsed(!collapsed)} className={`focus:outline-none h-full flex ease-in-out ${collapsed ? 'justify-center w-full' : 'gap-3'}`}>
           {/* Logo - Always visible, stays fixed */}
           <div className="shrink-0">
-            <img src={Logo} className={`object-contain  ${collapsed ? 'h-[7vh] w-[7vh]' : 'h-[vh] w-[8vh]'}`} />
+            <img src={Logo} className={`object-contain  ${collapsed ? 'h-[8vh] w-[8vw]' : 'h-[8vh] w-[8vw]'}`} />
           </div>
 
           {/* Namaste Text - Fades out when collapsed */}
