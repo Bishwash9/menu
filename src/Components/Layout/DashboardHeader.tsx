@@ -46,7 +46,7 @@ export default function DashboardHeader({ initials = "" }) {
 
   const handleLogout = async () => {
     authService.logout();
-    window.location.href = '/login'; // Redirect to login page after logout
+    window.location.href = '/'; // Redirect to login page after logout
   };
 
   return (
