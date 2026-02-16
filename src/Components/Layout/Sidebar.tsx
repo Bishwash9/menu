@@ -60,6 +60,21 @@ export function SideBar() {
         </button>
       </div>
 
+      {!collapsed && (
+        <div className="px-3 py-2 bg-white border-b border-yellow-500">
+          <select 
+            name="company" 
+            id="company" 
+            className="w-full text-sm bg-primary text-white border border-[#D4AF37] rounded px-2 py-1.5 
+                    focus:outline-none focus:ring-1 ring-accent"
+          >
+            <option value="">Select Company</option>
+            <option value="company1">Company 1</option>
+            <option value="company2">Company 2</option>
+          </select>
+        </div>
+      )}
+
       <nav className="flex-1">
         <ul className="space-y-1">
           {menuItems.map((item) => {
