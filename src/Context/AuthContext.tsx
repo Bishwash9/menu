@@ -35,7 +35,7 @@ export function AuthProvider({children}:AuthProviderProps){
     //initialize state from localstorage for making it saving the role even if refreshing pages
     const [role,setRoleState] = useState<Role>(()=>{
         const saveRole = localStorage.getItem('userRole');
-        return (saveRole as Role) || ROLES.ADMIN;
+        return (saveRole as Role) || '' as Role;
     });
 
     const setRole = (newRole : Role) => {

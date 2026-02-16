@@ -9,8 +9,15 @@ interface RoleGaurdProps{
 export const RoleGaurd = ({allowedRoles}: RoleGaurdProps) =>{
     const {role} = useAuth();
 
+    //check token
+    const token = localStorage.getItem('accessToken');
+
+    if(!token){
+        return <Navigate to = '/' replace />;
+    }
+
     if(!allowedRoles.includes(role)){
-        return <Navigate to = '/'/>
+        return <Navigate to = '/' replace />;
     }
 
     return <Outlet/>;
