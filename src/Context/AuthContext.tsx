@@ -3,10 +3,21 @@ import type {Role} from '../Lib/roles';
 import {ROLES} from '../Lib/roles'
 
 
+//putting userinfo in state for using it later in app
+type UserInfo = {
+    name: string;
+    email:string;
+    role: string;
+    username: string;
+    business_id: number;
+}
+
 //defining what the context will hold
 interface AuthContextType {
     role : Role;
     setRole : (role:Role) => void;
+    user: UserInfo | null;
+    setUser: (user: UserInfo | null) => void;
 }
 
 //create a context jesma undefined is default
@@ -31,9 +42,9 @@ export function AuthProvider({children}:AuthProviderProps){
         localStorage.setItem('userRole',newRole);
         setRoleState(newRole);
     }
-
+    const [user,setUser] = useState<UserInfo | null>(null);
     return (
-        <AuthContext.Provider value={{role,setRole}}>
+        <AuthContext.Provider value={{role,setRole,user,setUser}}>
             {children}
         </AuthContext.Provider>
     )

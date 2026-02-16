@@ -3,6 +3,7 @@ import { Bell, User, LogOut, CheckCircle, Info, AlertCircle, Plus, X } from "luc
 import OrderModelPage from "../../Pages/OrderModelPage";
 import QuickMenuPopup from "./QuickMenuPopup";
 import { authService } from "../../Services/authService";
+import { useAuth } from "../../Context/AuthContext";
 
 export default function DashboardHeader({ initials = "" }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -44,8 +45,12 @@ export default function DashboardHeader({ initials = "" }) {
   
   };
 
+  const {setUser,setRole} = useAuth();
+
   const handleLogout = async () => {
     authService.logout();
+    setUser(null); //clear user info from state after logout 
+    setRole(''); //clear role from state after logout
     window.location.href = '/'; // Redirect to login page after logout
   };
 

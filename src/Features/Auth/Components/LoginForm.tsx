@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Phone, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../../Services/authService';
+import { useAuth } from '../../../Context/AuthContext';
+import type {Role} from '../../../Lib/roles';
 
 export const LoginForm: React.FC = () => {
     const navigate = useNavigate();
@@ -9,6 +11,8 @@ export const LoginForm: React.FC = () => {
     const [errors, setErrors] = useState({ phone: '', password: '', general: '' });
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const {setRole,setUser} = useAuth();
 
     const validate = () => {
         const newErrors = { phone: '', password: '', general: '' };
@@ -42,7 +46,15 @@ export const LoginForm: React.FC = () => {
             setIsSubmitting(true);
             try {
                 const response = await authService.login(formData.phone, formData.password);
-
+                const UserRole = response.business.role.toLowerCase() as Role;
+                setRole(UserRole.toLowerCase() as Role);
+                setUser({
+                    name: response.business.name,
+                    email: response.business.email,
+                    role: response.business.role,
+                    username: response.business.username,
+                    business_id: response.business.business_id
+                });
                 if (!response?.business?.role) {
                     throw new Error('Invalid login response. Please try again.');
                 }
