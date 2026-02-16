@@ -27,8 +27,9 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          {/* Public Dashboard */}
-          <Route path='/dashboard' element={<DashboardPage />} />
+          <Route element={<RoleGaurd allowedRoles = {['admin', 'reception','housekeeping' ]}/>}>
+            <Route path='/dashboard' element={<DashboardPage />} />
+          </Route>  
 
           <Route element={<PublicRoute />}>
             <Route path='/' element={<LoginPage />} />
