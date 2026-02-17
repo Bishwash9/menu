@@ -38,8 +38,9 @@ export function AuthProvider({children}:AuthProviderProps){
     });
 
     const setRole = (newRole : Role) => {
-        localStorage.setItem('userRole',newRole);
-        setRoleState(newRole);
+        const normalizedRole = newRole.toLowerCase() as Role;
+        localStorage.setItem('userRole', normalizedRole);
+        setRoleState(normalizedRole);
     }
     const [user,setUser] = useState<UserInfo | null>(null);
     return (
