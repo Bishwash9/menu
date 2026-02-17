@@ -50,10 +50,10 @@ export const LoginForm: React.FC = () => {
                 const UserRole = mainBusiness.role.toLowerCase() as Role;
                 setRole(UserRole);
                 setUser({
-                    name: mainBusiness.name,
-                    email: mainBusiness.email,
+                    name: mainBusiness.business_name,
+                    email: mainBusiness.email || '',
                     role: mainBusiness.role,
-                    username: mainBusiness.username,
+                    username: mainBusiness.username || '',
                     business_id: mainBusiness.business_id
                 });
                 if (!mainBusiness.role) {
