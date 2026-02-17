@@ -1,5 +1,5 @@
 
-export const BASE_URL = import.meta.env.VITE_API_URL || "https://api.thefoodhubcafe.com.np/api/";
+export const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const apiClient = async (endpoint: string, options: RequestInit = {}) => {
     const token = localStorage.getItem('accessToken');
