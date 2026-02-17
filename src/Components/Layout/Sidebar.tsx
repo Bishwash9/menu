@@ -65,16 +65,16 @@ export function SideBar() {
 
       {collapsed ? (
         // Icon only when collapsed
-        <div className="w-16 flex justify-center items-center py-4 border-b border-white/10 cursor-pointer transition-colors" >
+        <div className="w-16 h-24 flex justify-center items-center border-b border-white/10 cursor-pointer transition-colors" >
           <div className="p-2 bg-white/5 rounded-lg hover:bg-white/10 border border-white/10 transition-colors ">
-            <div className="bg-accent/20 px-2 py-2 rounded-lg">
+            <div className="bg-accent/20 p-1.5  rounded-lg">
               <Building2 size={20} className="text-accent" />
             </div>
           </div>
         </div>
       ) : (
         // Full company selector when expanded
-        <div className="relative px-3 py-4 border-b border-white/10">
+        <div className="relative h-24 px-3 flex items-center border-b border-white/10">
           <button
             onClick={() => setIsCompanyOpen(!isCompanyOpen)}
             className="w-full flex items-center gap-3 px-3 py-2.5 bg-white/5 hover:bg-white/10 border border-white/20 rounded-xl transition-all group"
@@ -90,7 +90,7 @@ export function SideBar() {
           </button>
 
           {isCompanyOpen && (
-            <div className="absolute left-3 right-3 mt-2 bg-primary border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
+           <div className="absolute top-full left-3 right-3 mt-2 bg-primary border border-white/10 rounded-xl shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2">
               <div className="p-1">
                 {['The Food Hub Cafe', 'Company 1', 'Company 2'].map((company) => (
                   <button
