@@ -46,30 +46,52 @@ export const LoginForm: React.FC = () => {
             setIsSubmitting(true);
             try {
                 const response = await authService.login(formData.phone, formData.password);
-                const mainBusiness = response.business[0];
-                const UserRole = mainBusiness.role.toLowerCase() as Role;
+                let UserRole : Role;
+
+                //case 1 for business login 
+                if(response.business && response.business.length > 0){
+                    const mainBusiness = response.business[0];
+                    UserRole = mainBusiness.role.toLowerCase() as Role;
+
+                    setUser({
+                        name: mainBusiness.business_name,
+                        email: mainBusiness.email || '',
+                        role: mainBusiness.role,
+                        username: mainBusiness.username || '',
+                        business_id: mainBusiness.business_id,
+                        business_type: mainBusiness.business_type
+                    });
+               
+                }else if(response.staff){
+                    const staff = response.staff;
+                    UserRole = staff.role.toLowerCase() as Role;
+
+                    setUser({
+                        name: staff.name,
+                        email: '', // Staff typically don't log in with email
+                        role: staff.role,
+                        username: '',
+                        business_id: staff.business_id,
+                        business_type: '' // Staff might not have this, or backend needs to send it
+                    });
+                }
+
+                else{
+                    throw new Error('Login successful but no user data found. Please contact support.');
+                }
+
                 setRole(UserRole);
-                setUser({
-                    name: mainBusiness.business_name,
-                    email: mainBusiness.email || '',
-                    role: mainBusiness.role,
-                    username: mainBusiness.username || '',
-                    business_id: mainBusiness.business_id,
-                    business_type: mainBusiness.business_type
-                });
-                if (!mainBusiness.role) {
-                    throw new Error('Invalid login response. Please try again.');
-                }
 
-                const role = mainBusiness.role.toLowerCase();
-
-                if (role === 'staff') {
-                    navigate('/staff-dashboard');
-                } else if (role === 'admin') {
+                //navigation switch
+                  if(UserRole === 'admin'){
                     navigate('/dashboard');
-                } else {
-                    navigate('/dashboard'); // Default fallback
-                }
+                  }else if(UserRole === 'staff'){
+                    navigate('/dashboard');
+                  }else if(UserRole === 'housekeeping'){
+                    navigate('/dashboard');
+                  }
+
+              
             } catch (error: any) {
                 console.error(' Login error:', error);
                 setErrors({ ...errors, general: error.message });

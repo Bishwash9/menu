@@ -13,7 +13,7 @@ export default function DashboardPage () {
     return(
         <DashboardLayout>
             {currentRole === 'admin' && <AdminDashboardContent/>}
-            {currentRole === 'reception' && <StaffDashboardContent/>}
+            {currentRole === 'staff' && <StaffDashboardContent/>}
             {currentRole === 'user' && <UserDashboardContent/>}
             {currentRole === 'housekeeping' && <HouseKeepingDashboardContent/>}
         </DashboardLayout>

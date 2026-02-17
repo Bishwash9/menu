@@ -42,7 +42,7 @@ export type SidebarItem = {
   defaultType?: 'room' | 'table';
 };
 
-export type Role = 'user' | 'admin' | 'reception' | 'housekeeping' ;
+export type Role = 'user' | 'admin' | 'staff' | 'housekeeping' ;
 
 export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
   admin: [
@@ -62,7 +62,7 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
     { label: 'Add Orders', icon: Icons.Orders, path: '/orderForm',defaultType :'table' },
     { label: 'New Booking', icon: Icons.Bookings, path: "/orderForm", defaultType: 'room' }
   ],
-  reception: [
+  staff: [
     { label: 'Dashboard', icon: Icons.Dashboard, path: '/dashboard' },
     { label: 'Cafe & Orders', icon: Icons.Orders, path: '/cafe-orders' },
     { label: 'Tables', icon: Icons.Tables, path: '/tables' },

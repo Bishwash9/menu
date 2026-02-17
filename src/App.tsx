@@ -27,7 +27,7 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          <Route element={<RoleGaurd allowedRoles = {['admin', 'reception','housekeeping' ]}/>}>
+          <Route element={<RoleGaurd allowedRoles = {['admin', 'staff','housekeeping' ]}/> }>
             <Route path='/dashboard' element={<DashboardPage />} />
           </Route>  
 
@@ -45,8 +45,8 @@ function App() {
             <Route path='/subscription' element={<SubscriptionPage />} />
           </Route>
 
-          {/* Reception only pages */}
-          <Route element={<RoleGaurd allowedRoles={['reception']} />}>
+          {/* Staff only pages */}
+          <Route element={<RoleGaurd allowedRoles={['staff']} />}>
             <Route path='/bookings' element={<BookingPage />} />
             <Route path='/guests' element={<GuestsPage />} />
             <Route path='/tables' element={<TablesPage />} />
