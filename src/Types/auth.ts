@@ -15,5 +15,5 @@ export interface BusinessUser {
 export interface LoginResponse {
     message: string;
     tokens: AuthTokens;
-    business: BusinessUser;
+    businesses: any[];
 }

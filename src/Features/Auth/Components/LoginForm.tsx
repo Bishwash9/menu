@@ -3,7 +3,7 @@ import { Phone, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../../Services/authService';
 import { useAuth } from '../../../Context/AuthContext';
-import type {Role} from '../../../Lib/roles';
+import type { Role } from '../../../Lib/roles';
 
 export const LoginForm: React.FC = () => {
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ export const LoginForm: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const {setRole,setUser} = useAuth();
+    const { setRole, setUser } = useAuth();
 
     const validate = () => {
         const newErrors = { phone: '', password: '', general: '' };
@@ -46,20 +46,21 @@ export const LoginForm: React.FC = () => {
             setIsSubmitting(true);
             try {
                 const response = await authService.login(formData.phone, formData.password);
-                const UserRole = response.business.role.toLowerCase() as Role;
-                setRole(UserRole.toLowerCase() as Role);
+                const mainBusiness = response.businesses[0];
+                const UserRole = mainBusiness.role.toLowerCase() as Role;
+                setRole(UserRole);
                 setUser({
-                    name: response.business.name,
-                    email: response.business.email,
-                    role: response.business.role,
-                    username: response.business.username,
-                    business_id: response.business.business_id
+                    name: mainBusiness.name,
+                    email: mainBusiness.email,
+                    role: mainBusiness.role,
+                    username: mainBusiness.username,
+                    business_id: mainBusiness.business_id
                 });
-                if (!response?.business?.role) {
+                if (!mainBusiness.role) {
                     throw new Error('Invalid login response. Please try again.');
                 }
 
-                const role = response.business.role.toLowerCase();
+                const role = mainBusiness.role.toLowerCase();
 
                 if (role === 'staff') {
                     navigate('/staff-dashboard');

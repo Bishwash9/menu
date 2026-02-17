@@ -15,9 +15,10 @@ export const authService = {
             localStorage.setItem('accessToken', data.tokens.access);
             localStorage.setItem('refreshToken', data.tokens.refresh);
         }
-        if (data.business) {
-            localStorage.setItem('userRole', data.business.role.toLowerCase());
-            localStorage.setItem('userData', JSON.stringify(data.business));
+        if (data.businesses && data.businesses.length > 0) {
+            const mainBusiness = data.businesses[0];
+            localStorage.setItem('userRole', mainBusiness.role.toLowerCase());
+            localStorage.setItem('userData', JSON.stringify(mainBusiness));
         }
 
         return data;
@@ -26,6 +27,6 @@ export const authService = {
     },
 
     logout: () => {
-         localStorage.clear();
+        localStorage.clear();
     }
 }
