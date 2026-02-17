@@ -10,16 +10,22 @@ import { useAuth } from "../../Context/AuthContext";
 
 export function SideBar() {
   //first ma get role from context
-  const { role } = useAuth();
+  const { role, user } = useAuth();
   const menuItems = SIDEBAR_CONFIG[role as keyof typeof SIDEBAR_CONFIG] || [];
   const navigate = useNavigate();
   const location = useLocation();
   //  ADD: collapse state
   const [collapsed, setCollapsed] = useState(false);
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState("The Food Hub Cafe");
+  const [selectedCompany, setSelectedCompany] = useState(user?.name || "The Food Hub Cafe");
 
   //  ADD: auto-collapse on small screens
+  useEffect(() => {
+    if(user?.name){
+      setSelectedCompany(user.name);
+    }
+  }, [user]);
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -60,11 +66,11 @@ export function SideBar() {
       {collapsed ? (
         // Icon only when collapsed
         <div className="w-16 flex justify-center items-center py-4 border-b border-white/10 cursor-pointer transition-colors" >
-              <div className="p-2 bg-white/5 rounded-lg hover:bg-white/10 border border-white/10 transition-colors ">
-                    <div className="bg-accent/20 px-2 py-2 rounded-lg">
-                      <Building2 size={20} className="text-accent" />
-                    </div>
-              </div>
+          <div className="p-2 bg-white/5 rounded-lg hover:bg-white/10 border border-white/10 transition-colors ">
+            <div className="bg-accent/20 px-2 py-2 rounded-lg">
+              <Building2 size={20} className="text-accent" />
+            </div>
+          </div>
         </div>
       ) : (
         // Full company selector when expanded

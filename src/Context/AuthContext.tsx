@@ -43,7 +43,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.setItem('userRole', normalizedRole);
         setRoleState(normalizedRole);
     }
-    const [user, setUser] = useState<UserInfo | null>(null);
+       const [user, setUser] = useState<UserInfo | null>(() => {
+        try {
+            const savedUser = localStorage.getItem('userData');
+            if (savedUser) {
+                const parsed = JSON.parse(savedUser);
+                return {
+                    ...parsed,
+                    // If 'business_name' is missing, fallback to 'name' or empty string
+                    name: parsed.business_name || parsed.name || ''
+                };
+            }
+        } catch (error) {
+            console.error("Failed to parse user data", error);
+        }
+        return null;
+    });
+
+    
+
     return (
         <AuthContext.Provider value={{ role, setRole, user, setUser }}>
             {children}
