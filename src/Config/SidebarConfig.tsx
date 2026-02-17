@@ -42,7 +42,7 @@ export type SidebarItem = {
   defaultType?: 'room' | 'table';
 };
 
-export type Role = 'user' | 'admin' | 'staff' | 'housekeeping' ;
+export type Role = 'user' | 'admin' | 'staff' | 'housekeeper' ;
 
 export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
   admin: [
@@ -72,7 +72,7 @@ export const SIDEBAR_CONFIG: Record<Role, SidebarItem[]> = {
     
   
   ],
-  housekeeping : [
+  housekeeper : [
     {label : 'Dashboard', icon: Icons.Dashboard, path:'/dashboard'},
   ]
 

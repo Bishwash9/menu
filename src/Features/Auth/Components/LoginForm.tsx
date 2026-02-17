@@ -64,7 +64,17 @@ export const LoginForm: React.FC = () => {
                
                 }else if(response.staff){
                     const staff = response.staff;
-                    UserRole = staff.role.toLowerCase() as Role;
+                    
+                    let mappedRole: Role = 'staff'; //default
+                    const backendRole = staff.role.toLowerCase();
+
+                    if(backendRole === 'housekeeper' || backendRole === 'housekeeping'){
+                        mappedRole = 'housekeeper';
+                    }else if(backendRole === 'staff'){
+                        mappedRole = 'staff';
+                    }
+
+                    UserRole = mappedRole
 
                     setUser({
                         name: staff.name,
@@ -87,7 +97,7 @@ export const LoginForm: React.FC = () => {
                     navigate('/dashboard');
                   }else if(UserRole === 'staff'){
                     navigate('/dashboard');
-                  }else if(UserRole === 'housekeeping'){
+                  }else if(UserRole === 'housekeeper'){
                     navigate('/dashboard');
                   }
 

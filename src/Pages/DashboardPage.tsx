@@ -15,7 +15,7 @@ export default function DashboardPage () {
             {currentRole === 'admin' && <AdminDashboardContent/>}
             {currentRole === 'staff' && <StaffDashboardContent/>}
             {currentRole === 'user' && <UserDashboardContent/>}
-            {currentRole === 'housekeeping' && <HouseKeepingDashboardContent/>}
+            {currentRole === 'housekeeper' && <HouseKeepingDashboardContent/>}
         </DashboardLayout>
     )
 }
