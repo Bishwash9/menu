@@ -7,14 +7,15 @@ import UserDashboardContent from "../Features/Dashboard/UserDashboardContent";
 
 export default function DashboardPage () {
     const {role} = useAuth();
+    const currentRole = role?.toLowerCase();
 
 
     return(
         <DashboardLayout>
-            {role === 'admin' && <AdminDashboardContent/>}
-            {role === 'reception' && <StaffDashboardContent/>}
-            {role === 'user' && <UserDashboardContent/>}
-            {role === 'housekeeping' && <HouseKeepingDashboardContent/>}
+            {currentRole === 'admin' && <AdminDashboardContent/>}
+            {currentRole === 'reception' && <StaffDashboardContent/>}
+            {currentRole === 'user' && <UserDashboardContent/>}
+            {currentRole === 'housekeeping' && <HouseKeepingDashboardContent/>}
         </DashboardLayout>
     )
 }
