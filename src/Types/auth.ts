@@ -23,6 +23,10 @@ export interface StaffUser{
     business_id: number;
 }
 
+export interface HousekeepingUser{
+    
+}
+
 export interface LoginResponse {
     message: string;
     tokens: AuthTokens;
