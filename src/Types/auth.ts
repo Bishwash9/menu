@@ -6,14 +6,17 @@ export interface AuthTokens {
 export interface BusinessUser {
     business_uid: string;
     business_id: number;
-    name: string;
+    business_name: string;
     role: string;
     username: string;
     email: string;
+    business_type: BusinessType;
 }
 
 export interface LoginResponse {
     message: string;
     tokens: AuthTokens;
-    businesses: any[];
+    business: BusinessUser[];
 }
+
+export type BusinessType = 'Hotel' | 'Restaurant' | 'Cafe' | 'Bar' | string;

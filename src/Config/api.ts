@@ -18,17 +18,17 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
 
         //Handle 401 error specifically
         if (response.status === 401) {
-          if (endpoint.includes('login')) {
-            const errorData = await response.json().catch(() => ({}));
-            throw { status: 401, message: errorData.message || 'Invalid credentials.' };
-          }
+            if (endpoint.includes('login')) {
+                const errorData = await response.json().catch(() => ({}));
+                throw { status: 401, message: errorData.message || 'Invalid credentials.' };
+            }
             localStorage.removeItem('accessToken');
             console.error('Session expired. Please log in again.');
             window.location.href = '/';
             return;
-       }
+        }
 
-        
+
 
         if (!response.ok) {
             const error = await response.json().catch(() => ({}));

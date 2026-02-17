@@ -15,10 +15,12 @@ export const authService = {
             localStorage.setItem('accessToken', data.tokens.access);
             localStorage.setItem('refreshToken', data.tokens.refresh);
         }
-        if (data.businesses && data.businesses.length > 0) {
-            const mainBusiness = data.businesses[0];
+        if (data.business && data.business.length > 0) {
+            const mainBusiness = data.business[0];
             localStorage.setItem('userRole', mainBusiness.role.toLowerCase());
+            localStorage.setItem('businessType', mainBusiness.business_type);
             localStorage.setItem('userData', JSON.stringify(mainBusiness));
+
         }
 
         return data;
