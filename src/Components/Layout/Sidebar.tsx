@@ -90,7 +90,7 @@ export function SideBar() {
           </button>
 
           {isCompanyOpen && (
-           <div className="absolute top-full left-3 right-3 mt-2 bg-primary border border-white/10 rounded-xl shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2">
+           <div className="absolute top-full left-3 right-3 mt-2 bg-primary border border-white/10 rounded-xl shadow-2xl z-100 overflow-hidden animate-in fade-in slide-in-from-top-2">
               <div className="p-1">
                 {['The Food Hub Cafe', 'Company 1', 'Company 2'].map((company) => (
                   <button
