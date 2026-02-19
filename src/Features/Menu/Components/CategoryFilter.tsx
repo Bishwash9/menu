@@ -1,22 +1,25 @@
 import React from 'react';
-import { CATEGORIES } from '../../../Lib/data';
-import type { Category } from '../../../Lib/data';
+
+
 
 interface CategoryFilterProps {
     activeCategory: string;
     onSelectCategory: (id: string) => void;
+    categories: { id: number; name:string }[];
 }
 
-export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, onSelectCategory }) => {
+export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, onSelectCategory, categories }) => {
+    const list = [{ id: 0, name: 'All' }, ...categories];
     return (
         <div className="flex items-center gap-3 overflow-x-auto py-4 px-4 no-scrollbar">
-            {CATEGORIES.map((cat: Category) => {
-                const isActive = activeCategory === cat.id;
+            {list.map((cat) => {
+                const id = cat.id === 0 ? 'all' : String(cat.id);
+                const isActive = activeCategory === id;
 
                 return (
                     <button
                         key={cat.id}
-                        onClick={() => onSelectCategory(cat.id)}
+                        onClick={() => onSelectCategory(id)}
                         className={`
               whitespace-nowrap px-6 py-2 rounded-full text-sm font-medium transition-all duration-200
               ${isActive

@@ -1,5 +1,5 @@
 import { apiClient } from "../Config/api";
-import type { MenuItem } from "../Features/MenuManagement";
+import type { MenuItem } from "../Types/menu";
 
 
 export const menuService = {

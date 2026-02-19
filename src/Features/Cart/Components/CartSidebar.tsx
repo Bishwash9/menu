@@ -75,7 +75,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, o
                             </button>
                             <h2 className="text-xl font-bold text-gray-800">Your Cart</h2>
                         </div>
-                        <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full text-[#D4AF37]">
+                        <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full ">
                             {cartItems.length} items
                         </span>
                     </div>
@@ -123,7 +123,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, o
                                     >
                                         <div className="w-20 h-20 rounded-xl overflow-hidden shadow-sm shrink-0 border border-gray-100">
                                             <img
-                                                src={item.image}
+                                                src={item.image_url}
                                                 alt={item.name}
                                                 className="w-full h-full object-cover"
                                             />
@@ -221,7 +221,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, o
                                     }
                                     navigate(`/orders/${orderId}`);
                                 }}
-                                className="w-full bg-[#002366] text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-[#001a4d] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                className="w-full bg-[#002366] text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 Order
                                 <svg

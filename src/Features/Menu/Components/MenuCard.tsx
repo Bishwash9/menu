@@ -1,5 +1,5 @@
 import React from 'react';
-import type { MenuItem } from '../../../Lib/data';
+import type { MenuItem } from '../../../Types/menu';
 import { useCart } from '../../Cart';
 
 
@@ -17,15 +17,10 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow duration-200">
             <div className="relative h-48 w-full overflow-hidden">
                 <img
-                    src={item.image}
+                    src={item.image_url}
                     alt={item.name}
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
-                {item.isVeg !== undefined && (
-                    <div className={`absolute top-3 left-3 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white ${item.isVeg ? 'bg-green-500' : 'bg-red-500'}`}>
-                        {item.isVeg ? 'Veg' : 'Non-Veg'}
-                    </div>
-                )}
             </div>
 
             <div className="p-4 flex flex-col flex-1">
