@@ -19,6 +19,7 @@ import WebSocketComponent from './WebSocketComponent'
 import OrderDetailsPage from './Pages/OrderDetailsPage'
 import LoginPage from './Pages/LoginPage'
 import { PublicRoute } from './Features/Auth/Components/PublicRoute'
+import Dummy from './Pages/Dummy'
 
 function App() {
   console.log('📱 App Component Rendering');
@@ -33,6 +34,7 @@ function App() {
 
           <Route element={<PublicRoute />}>
             <Route path='/' element={<LoginPage />} />
+            <Route path ='/dummy' element={<Dummy/>}/>
           </Route>
           {/* Adimin only pages */}
           <Route element={<RoleGaurd allowedRoles={['admin']} />}>
