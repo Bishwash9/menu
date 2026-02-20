@@ -1,18 +1,24 @@
+// src/Types/menu.ts
+
 export interface MenuItem{
     id: number;
-    name: string;
     business_id: number;
+    business_name: string;
     category_id: number;
-    price: number;
+    category_name: string; // "Veg", "Non-Veg", etc.
+    name: string;
     description: string;
+    price: string; // The backend sends this as a string "850.00"
+    image: string | null;
+    spice_level_id: number;
+    spice_level_name: string;
     preparation_time: number;
-    image_url: string;
     is_available: boolean;
     created_at: string;
     updated_at: string;
 }
 
-export interface menuResponse{
+export interface MenuResponse {
     data: MenuItem[];
     message?: string;
 }

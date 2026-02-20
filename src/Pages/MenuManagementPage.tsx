@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { menuService } from '../Services/menuService';
 import { SideBar } from '../Components/Layout/Sidebar';
 import { LayoutGrid, CheckCircle2, Layers } from 'lucide-react';
-import { MOCK_MENU_ITEMS as SHARED_MENU_ITEMS } from '../Lib/data';
+
 import {
     MenuStatCard,
     // MenuModal,
@@ -9,23 +11,80 @@ import {
     type MenuItem,
 } from '../Features/MenuManagement';
 import { DashboardHeader } from '../Components/Layout';
+import { useAuth } from '../Context/AuthContext';
 
 function MenuManagementPage() {
 
-    const initialItems: MenuItem[] = SHARED_MENU_ITEMS.map(item => ({
-        id: item.id.toString(),
-        name: item.name,
-        description: item.description,
-        category: item.category,
-        price: item.price,
-        prepTime: 20,
-        status: 'Available',
-    }));
+    
 
-    const [items] = useState<MenuItem[]>(initialItems);
-    // const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
-    // const [showViewModal, setShowViewModal] = useState(false);
+    //initiliazation
+    const [items, setItems] = useState<MenuItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string |null>(null);
+    
+    const {user} = useAuth();
 
+    //fetching data
+    useEffect(()=>{
+        const fetchMenuItems = async () =>{
+
+            if(!user?.business_id){
+                console.error('User does not have a business_id');
+                return;
+            }
+
+            try{
+                setIsLoading(true);
+                const data = await menuService.getMenuItems(user.business_id);
+
+
+                // maping data
+                    const mappedItems: MenuItem[] = data.map(item => ({
+                    id: item.id.toString(), 
+                    business_id: item.business_id,
+                    business_name: item.business_name,
+                    name: item.name,
+                    description: item.description,
+                    category: item.category_name,
+                    price: parseFloat(item.price),
+                    prepTime: item.preparation_time, 
+                    status: item.is_available ? 'Available' : 'Unavailable',
+                    image: item.image || undefined,
+                    isAvailable: item.is_available,
+                    spiceLevel: item.spice_level_name
+                }));
+                setItems(mappedItems);
+                setError(null);
+
+            }catch(error){
+                console.error('Error fetching menu items:', error);
+                setError('Failed to load menu items. Please try again.');
+            }finally{
+                setIsLoading(false);
+            }
+        };
+        fetchMenuItems();
+    }, [user?.business_id]);
+
+
+    
+   
+    if (isLoading) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-dashboard-bg">
+                <div className="text-xl font-semibold text-slate-600">Loading Menu...</div>
+            </div>
+        );
+    }
+    
+
+    if (error) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-dashboard-bg">
+                 <div className="text-red-500">{error}</div>
+            </div>
+        );
+    }
     const stats = {
         totalItems: items.length,
         availableNow: items.filter(i => i.status === 'Available').length,

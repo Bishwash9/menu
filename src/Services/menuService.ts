@@ -3,8 +3,8 @@ import type { MenuItem } from "../Types/menu";
 
 
 export const menuService = {
-    getMenuItems: async (): Promise<MenuItem[]> => {
-        const response  = await apiClient('menu', {
+    getMenuItems: async (businessId:number): Promise<MenuItem[]> => {
+        const response  = await apiClient(`menu/b${businessId}`, {
             method: 'GET'
         });
         return response.data || response; //handle both cases wheere data is array or object

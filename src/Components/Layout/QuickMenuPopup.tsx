@@ -6,6 +6,7 @@ import { CartSidebar } from "../../Features/Cart/Components/CartSidebar";
 import { menuService } from "../../Services/menuService";
 import type { MenuItem } from "../../Types/menu";
 import { X } from "lucide-react";
+import { useAuth } from "../../Context/AuthContext";
 
 interface QuickMenuPopupProps {
     orderData: { orderType: string; identifier: string };
@@ -18,23 +19,30 @@ export default function QuickMenuPopup({ orderData, onClose }: QuickMenuPopupPro
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchMenuItems = async () => {
-            try {
+    const {user} = useAuth();
+
+   useEffect(()=>{
+        const fetchMenuItems = async () =>{
+
+            if(!user?.business_id){
+                console.error('User does not have a business id');
+                return;
+            }
+
+            try{
                 setLoading(true);
-                const items = await menuService.getMenuItems();
-                setMenuItems(items);
+                const data = await menuService.getMenuItems(user.business_id);
+                setMenuItems(data);
                 setError(null);
-            } catch (err) {
-                console.error("Failed to fetch menu items:", err);
-                setError("Failed to load menu items. Please try again.");
-            } finally {
+            }catch(error){
+                console.error('Error fetching menu items', error);
+                setError('Failed to load menu items. Please try again later.');
+            }finally{
                 setLoading(false);
             }
         };
-
         fetchMenuItems();
-    }, []);
+   },[user?.business_id])
 
     return (
         <CartProvider>
