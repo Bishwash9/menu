@@ -83,7 +83,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const clearCart = () => setCartItems([]);
 
     const cartTotal = useMemo(() => {
-        return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        return cartItems.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0);
     }, [cartItems]);
 
     const cartCount = useMemo(() => {
