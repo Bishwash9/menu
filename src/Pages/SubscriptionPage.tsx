@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { SideBar } from '../Components/Layout/Sidebar';
 import { Check, Zap, Star, Rocket } from 'lucide-react';
-import { DashboardHeader } from '../Components/Layout';
+
 
 const SubscriptionPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>('');
@@ -51,81 +50,69 @@ const SubscriptionPage: React.FC = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-dashboard-bg">
-      <SideBar />
+    <div className="max-w-6xl mx-auto">
+      {/* Page Header */}
+      <div className="text-center mb-12">
+        <h1 className="text-3xl font-bold text-[#002366] mb-2 text-wrap">Choose Your Plan</h1>
+        <p className="text-slate-600">Grow your business with the right tools</p>
+      </div>
 
-      <main className="flex-1 overflow-auto">
-        {/* Header Space */}
-        <div className="h-16 bg-white border-b border-slate-200">
-          <DashboardHeader />
-        </div>
-
-        <div className="p-6">
-          <div className="max-w-6xl mx-auto">
-            {/* Page Header */}
-            <div className="text-center mb-12">
-              <h1 className="text-3xl font-bold text-[#002366] mb-2 text-wrap">Choose Your Plan</h1>
-              <p className="text-slate-600">Grow your business with the right tools</p>
+      {/* Plans Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {plans.map((plan) => (
+          <div
+            key={plan.name}
+            onClick={() => setSelectedPlan(plan.name)}
+            className={`relative rounded-2xl p-8 flex flex-col shadow-sm transition-all hover:shadow-md cursor-pointer border-2 ${selectedPlan === plan.name
+              ? 'border-[#D4AF37] bg-white ring-4 ring-[#D4AF37]/10'
+              : 'border-transparent bg-slate-50'
+              }`}
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-white rounded-xl shadow-sm">
+                {plan.icon}
+              </div>
+              <h3 className="text-xl font-bold text-[#002366]">{plan.name}</h3>
             </div>
 
-            {/* Plans Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {plans.map((plan) => (
-                <div
-                  key={plan.name}
-                  onClick={() => setSelectedPlan(plan.name)}
-                  className={`relative rounded-2xl p-8 flex flex-col shadow-sm transition-all hover:shadow-md cursor-pointer border-2 ${selectedPlan === plan.name
-                    ? 'border-[#D4AF37] bg-white ring-4 ring-[#D4AF37]/10'
-                    : 'border-transparent bg-slate-50'
-                    }`}
-                >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 bg-white rounded-xl shadow-sm">
-                      {plan.icon}
-                    </div>
-                    <h3 className="text-xl font-bold text-[#002366]">{plan.name}</h3>
+            <div className="mb-8">
+              <div className="flex items-baseline gap-1">
+                <span className="text-sm font-bold text-slate-500">Rs. </span>
+                <span className="text-4xl font-black text-[#002366]">{plan.price}</span>
+                <span className="text-slate-500">/mo</span>
+              </div>
+            </div>
+
+            <ul className="mb-10 space-y-4 flex-1">
+              {plan.features.map((feature) => (
+                <li key={feature} className="flex items-start gap-3">
+                  <div className="mt-1 p-0.5 bg-green-100 rounded-full">
+                    <Check size={12} className="text-green-600" />
                   </div>
-
-                  <div className="mb-8">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-sm font-bold text-slate-500">Rs. </span>
-                      <span className="text-4xl font-black text-[#002366]">{plan.price}</span>
-                      <span className="text-slate-500">/mo</span>
-                    </div>
-                  </div>
-
-                  <ul className="mb-10 space-y-4 flex-1">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-3">
-                        <div className="mt-1 p-0.5 bg-green-100 rounded-full">
-                          <Check size={12} className="text-green-600" />
-                        </div>
-                        <span className="text-sm text-slate-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    className={`w-full py-3.5 rounded-xl text-white font-bold transition-transform active:scale-95 shadow-lg ${selectedPlan === plan.name ? 'bg-[#D4AF37]' : plan.buttonColor
-                      }`}
-                  >
-                    Subscribe Now
-                  </button>
-                </div>
+                  <span className="text-sm text-slate-600">{feature}</span>
+                </li>
               ))}
-            </div>
+            </ul>
 
-            {/* FAQ/Support Section */}
-            <div className="mt-16 text-center">
-              <p className="text-slate-500 text-sm">
-                Questions? <button className="text-status-confirmed font-bold hover:underline">Contact our support team</button>
-              </p>
-            </div>
+            <button
+              className={`w-full py-3.5 rounded-xl text-white font-bold transition-transform active:scale-95 shadow-lg ${selectedPlan === plan.name ? 'bg-[#D4AF37]' : plan.buttonColor
+                }`}
+            >
+              Subscribe Now
+            </button>
           </div>
-        </div>
-      </main>
+        ))}
+      </div>
+
+      {/* FAQ/Support Section */}
+      <div className="mt-16 text-center">
+        <p className="text-slate-500 text-sm">
+          Questions? <button className="text-status-confirmed font-bold hover:underline">Contact our support team</button>
+        </p>
+      </div>
     </div>
   );
+
 };
 
 export default SubscriptionPage;

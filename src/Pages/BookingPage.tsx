@@ -1,4 +1,3 @@
-import { SideBar } from '../Components/Layout/Sidebar';
 import { IconCurrencyRupeeNepalese } from '@tabler/icons-react';
 import {
     Users,
@@ -10,7 +9,7 @@ import {
     BookingContent,
     MOCK_BOOKINGS,
 } from '../Features/Booking';
-import { DashboardHeader } from '../Components/Layout';
+
 
 const BookingPage: React.FC = () => {
     const bookings = MOCK_BOOKINGS;
@@ -23,61 +22,50 @@ const BookingPage: React.FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-dashboard-bg">
-            <SideBar />
-
-            <main className="flex-1 overflow-auto">
-                {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200">
-                    <DashboardHeader />
+        <div className="space-y-6">
+            {/* Page Header */}
+            <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
+                <div className="flex gap-3">
                 </div>
+            </div>
 
-                <div className="p-6">
-                    {/* Page Header */}
-                    <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
-                        <div className="flex gap-3">
-                        </div>
-                    </div>
+            {/* Statistics Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <StatCard
+                    title="Total Bookings"
+                    value={stats.total.toString()}
+                    icon={<TrendingUp size={20} />}
+                    iconColor="royal"
+                />
+                <StatCard
+                    title="Checked In"
+                    value={stats.checkedIn.toString()}
+                    icon={<Users size={20} />}
+                    iconColor="golden"
+                />
+                <StatCard
+                    title="Pending"
+                    value={stats.pending.toString()}
+                    icon={<Clock size={20} />}
+                    iconColor="purple"
+                />
+                <StatCard
+                    title="Revenue Today"
+                    value={`${stats.revenue}`}
+                    icon={<IconCurrencyRupeeNepalese size={20} />}
+                    iconColor="green"
+                />
+            </div>
 
-                    {/* Statistics Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                        <StatCard
-                            title="Total Bookings"
-                            value={stats.total.toString()}
-                            icon={<TrendingUp size={20} />}
-                            iconColor="royal"
-                        />
-                        <StatCard
-                            title="Checked In"
-                            value={stats.checkedIn.toString()}
-                            icon={<Users size={20} />}
-                            iconColor="golden"
-                        />
-                        <StatCard
-                            title="Pending"
-                            value={stats.pending.toString()}
-                            icon={<Clock size={20} />}
-                            iconColor="purple"
-                        />
-                        <StatCard
-                            title="Revenue Today"
-                            value={`${stats.revenue}`}
-                            icon={<IconCurrencyRupeeNepalese size={20} />}
-                            iconColor="green"
-                        />
-                    </div>
-
-                    {/* Booking Content */}
-                    <div className="grid grid-cols-1 gap-6">
-                        <BookingContent
-                            bookings={bookings}
-                        />
-                    </div>
-                </div>
-            </main>
-
+            {/* Booking Content */}
+            <div className="grid grid-cols-1 gap-6">
+                <BookingContent
+                    bookings={bookings}
+                />
+            </div>
         </div>
     );
+
 }
 
 export default BookingPage;

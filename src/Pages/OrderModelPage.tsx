@@ -136,12 +136,13 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onNext
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        <div className="flex items-center justify-center p-6">
             <div className="bg-white rounded-2xl p-8 w-full max-w-105 shadow-[0_20px_50px_rgba(0,35,102,0.1)] border border-gray-100">
                 {content}
             </div>
         </div>
     );
+
 }
 
 export default OrderModelPage

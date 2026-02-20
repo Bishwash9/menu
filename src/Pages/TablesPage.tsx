@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { CalendarDays, Users } from 'lucide-react';
-import { SideBar } from '../Components/Layout/Sidebar';
 import { TableModal, TableCard, initialTables, TABLE_AREAS } from '../Features/Tables';
 import type { Table, TableArea } from '../Features/Tables/Types';
-import { DashboardHeader } from '../Components/Layout';
+
 
 const TablesPage: React.FC = () => {
     const [tables, setTables] = useState<Table[]>(initialTables);
@@ -57,86 +56,74 @@ const TablesPage: React.FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-dashboard-bg">
-            <SideBar />
-
-            <main className="flex-1 overflow-auto">
-                {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200">
-                    <DashboardHeader />
+        <div className="space-y-6">
+            {/* Page Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div className="flex gap-3">
+                    <button className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium hover:bg-slate-50 transition-colors">
+                        <CalendarDays size={18} />
+                        Reservations
+                    </button>
                 </div>
+            </div>
 
-                <div className="p-6">
-                    {/* Page Header */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div className="flex gap-3">
-                            <button className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium hover:bg-slate-50 transition-colors">
-                                <CalendarDays size={18} />
-                                Reservations
-                            </button>
-                        </div>
-                    </div>
+            {/* Area Filters */}
+            <div className="flex flex-wrap gap-2 mb-4">
+                <button
+                    onClick={() => setAreaFilter('All')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${areaFilter === 'All'
+                        ? 'bg-[#002366] text-white shadow-md'
+                        : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
+                        }`}
+                >
+                    All
+                </button>
+                {TABLE_AREAS.map(area => (
+                    <button
+                        key={area}
+                        onClick={() => setAreaFilter(area)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${areaFilter === area
+                            ? 'bg-[#002366] text-white shadow-md'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
+                            }`}
+                    >
+                        {area}
+                    </button>
+                ))}
+            </div>
 
-                    {/* Area Filters */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        <button
-                            onClick={() => setAreaFilter('All')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${areaFilter === 'All'
-                                    ? 'bg-[#002366] text-white shadow-md'
-                                    : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                                }`}
-                        >
-                            All
-                        </button>
-                        {TABLE_AREAS.map(area => (
-                            <button
-                                key={area}
-                                onClick={() => setAreaFilter(area)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${areaFilter === area
-                                        ? 'bg-[#002366] text-white shadow-md'
-                                        : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                                    }`}
-                            >
-                                {area}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Status Legend */}
-                    <div className="flex flex-wrap items-center gap-6 mb-6">
-                        <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-                            <span className="text-sm text-slate-600">Available ({stats.available})</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
-                            <span className="text-sm text-slate-600">Occupied ({stats.occupied})</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 bg-orange-500 rounded-full"></span>
-                            <span className="text-sm text-slate-600">Reserved ({stats.reserved})</span>
-                        </div>
-                        <div className="flex items-center gap-2 ml-auto">
-                            <Users size={16} className="text-slate-400" />
-                            <span className="text-sm text-slate-600">Total Capacity ({stats.totalCapacity})</span>
-                        </div>
-                    </div>
-
-                    {/* Tables Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                        {filteredTables.map(table => (
-                            <TableCard
-                                key={table.id}
-                                table={table}
-                                onEdit={handleEditTable}
-                                onDelete={handleDeleteTable}
-                                onClick={handleTableClick}
-                            />
-                        ))}
-                    </div>
+            {/* Status Legend */}
+            <div className="flex flex-wrap items-center gap-6 mb-6">
+                <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                    <span className="text-sm text-slate-600">Available ({stats.available})</span>
                 </div>
-            </main>
+                <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+                    <span className="text-sm text-slate-600">Occupied ({stats.occupied})</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 bg-orange-500 rounded-full"></span>
+                    <span className="text-sm text-slate-600">Reserved ({stats.reserved})</span>
+                </div>
+                <div className="flex items-center gap-2 ml-auto">
+                    <Users size={16} className="text-slate-400" />
+                    <span className="text-sm text-slate-600">Total Capacity ({stats.totalCapacity})</span>
+                </div>
+            </div>
 
+            {/* Tables Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {filteredTables.map(table => (
+                    <TableCard
+                        key={table.id}
+                        table={table}
+                        onEdit={handleEditTable}
+                        onDelete={handleDeleteTable}
+                        onClick={handleTableClick}
+                    />
+                ))}
+            </div>
 
             {/* Modal */}
             <TableModal
@@ -148,6 +135,7 @@ const TablesPage: React.FC = () => {
             />
         </div>
     );
+
 };
 
 export default TablesPage;

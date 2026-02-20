@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Plus, DollarSign, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
-import { SideBar } from '../Components/Layout/Sidebar';
 import { InvoiceTable, InvoiceModal, initialInvoices } from '../Features/Billing';
 import type { Invoice, BillingStats } from '../Features/Billing/Types';
-import { DashboardHeader } from '../Components/Layout';
+
 
 interface StatCardProps {
     title: string;
@@ -126,86 +125,76 @@ const BillingPage: React.FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-dashboard-bg">
-            <SideBar />
-
-            <main className="flex-1 overflow-auto">
-                {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200">
-                    <DashboardHeader />
+        <div className="space-y-6">
+            {/* Page Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h1 className="text-2xl font-bold text-[#002366]">Billing & Invoices</h1>
+                    <p className="text-slate-500">Manage invoices and track payments</p>
                 </div>
+                <button
+                    onClick={() => setIsInvoiceModalOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"
+                >
+                    <Plus size={18} />
+                    Create Invoice
+                </button>
+            </div>
 
-                <div className="p-6">
-                    {/* Page Header */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div>
-                            <h1 className="text-2xl font-bold text-[#002366]">Billing & Invoices</h1>
-                            <p className="text-slate-500">Manage invoices and track payments</p>
-                        </div>
-                        <button
-                            onClick={() => setIsInvoiceModalOpen(true)}
-                            className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"
-                        >
-                            <Plus size={18} />
-                            Create Invoice
-                        </button>
-                    </div>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <StatCard
+                    title="Total Revenue"
+                    value={`Rs. ${stats.totalRevenue.toLocaleString()}`}
+                    icon={<DollarSign size={24} className="text-green-600" />}
+                    iconBgColor="bg-green-100"
+                    valueColor="text-green-600"
+                />
+                <StatCard
+                    title="Pending Payments"
+                    value={`Rs. ${stats.pendingPayments.toLocaleString()}`}
+                    icon={<Clock size={24} className="text-yellow-600" />}
+                    iconBgColor="bg-yellow-100"
+                    valueColor="text-yellow-600"
+                />
+                <StatCard
+                    title="Paid Invoices"
+                    value={String(stats.paidInvoices)}
+                    icon={<CheckCircle size={24} className="text-[#002366]" />}
+                    iconBgColor="bg-[#002366]/10"
+                />
+                <StatCard
+                    title="Overdue Amount"
+                    value={`Rs. ${stats.overdueAmount.toLocaleString()}`}
+                    icon={<AlertTriangle size={24} className="text-red-500" />}
+                    iconBgColor="bg-red-100"
+                    valueColor="text-red-500"
+                />
+            </div>
 
-                    {/* Stats Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                        <StatCard
-                            title="Total Revenue"
-                            value={`Rs. ${stats.totalRevenue.toLocaleString()}`}
-                            icon={<DollarSign size={24} className="text-green-600" />}
-                            iconBgColor="bg-green-100"
-                            valueColor="text-green-600"
-                        />
-                        <StatCard
-                            title="Pending Payments"
-                            value={`Rs. ${stats.pendingPayments.toLocaleString()}`}
-                            icon={<Clock size={24} className="text-yellow-600" />}
-                            iconBgColor="bg-yellow-100"
-                            valueColor="text-yellow-600"
-                        />
-                        <StatCard
-                            title="Paid Invoices"
-                            value={String(stats.paidInvoices)}
-                            icon={<CheckCircle size={24} className="text-[#002366]" />}
-                            iconBgColor="bg-[#002366]/10"
-                        />
-                        <StatCard
-                            title="Overdue Amount"
-                            value={`Rs. ${stats.overdueAmount.toLocaleString()}`}
-                            icon={<AlertTriangle size={24} className="text-red-500" />}
-                            iconBgColor="bg-red-100"
-                            valueColor="text-red-500"
-                        />
-                    </div>
+            {/* Invoice Table */}
+            <InvoiceTable
+                invoices={invoiceStatusFilter === 'All' ? invoices : invoices.filter(i => i.status === invoiceStatusFilter)}
+                onView={handleViewInvoice}
+                onDownload={handleDownloadInvoice}
+                onSendReminder={handleSendReminder}
+                onDelete={handleDeleteInvoice}
+                onMarkPaid={handleMarkPaid}
+            />
 
-                    {/* Invoice Table */}
-                    <InvoiceTable
-                        invoices={invoiceStatusFilter === 'All' ? invoices : invoices.filter(i => i.status === invoiceStatusFilter)}
-                        onView={handleViewInvoice}
-                        onDownload={handleDownloadInvoice}
-                        onSendReminder={handleSendReminder}
-                        onDelete={handleDeleteInvoice}
-                        onMarkPaid={handleMarkPaid}
-                    />
-
-                    {/* Create Invoice Modal */}
-                    <InvoiceModal
-                        isOpen={isInvoiceModalOpen}
-                        onClose={() => setIsInvoiceModalOpen(false)}
-                        onSave={(invoice) => {
-                            setInvoices([invoice, ...invoices]);
-                            setIsInvoiceModalOpen(false);
-                            alert('Invoice created successfully!');
-                        }}
-                    />
-                </div>
-            </main>
+            {/* Create Invoice Modal */}
+            <InvoiceModal
+                isOpen={isInvoiceModalOpen}
+                onClose={() => setIsInvoiceModalOpen(false)}
+                onSave={(invoice) => {
+                    setInvoices([invoice, ...invoices]);
+                    setIsInvoiceModalOpen(false);
+                    alert('Invoice created successfully!');
+                }}
+            />
         </div>
     );
+
 };
 
 export default BillingPage;

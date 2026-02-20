@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { SideBar } from '../Components/Layout/Sidebar';
 import {
     GeneralSettings,
     SecuritySettingsComponent,
@@ -12,7 +11,7 @@ import {
     initialAppearanceSettings,
 } from '../Features/Settings';
 import type { SettingsTab, HotelInfo, NotificationSettings, SecuritySettings, AppearanceSettings } from '../Features/Settings/Types';
-import { DashboardHeader } from '../Components/Layout';
+
 
 const SettingsPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<SettingsTab>('general');
@@ -144,46 +143,33 @@ const SettingsPage: React.FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-dashboard-bg">
-            <SideBar />
-            
-            <main className="flex-1 overflow-auto">
-                {/* Header Space */}
-                <div className="h-16 bg-white border-b border-slate-200">
-                     <DashboardHeader/>
+        <div className="flex flex-col lg:flex-row gap-6">
+            {/* Sidebar Navigation */}
+            <div className="lg:w-64 shrink-0">
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    {SETTINGS_TABS.map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${activeTab === tab.id
+                                ? 'bg-[#002366]/10 text-[#D4AF37] border-l-4 border-[#D4AF37]'
+                                : 'text-slate-600 hover:bg-slate-50 border-l-4 border-transparent'
+                                }`}
+                        >
+                            <span>{tab.icon}</span>
+                            <span className="font-medium">{tab.label}</span>
+                        </button>
+                    ))}
                 </div>
-                
-                <div className="p-6">
-                    <div className="flex flex-col lg:flex-row gap-6">
-                        {/* Sidebar Navigation */}
-                        <div className="lg:w-64 shrink-0">
-                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                                {SETTINGS_TABS.map(tab => (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => setActiveTab(tab.id)}
-                                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                                            activeTab === tab.id
-                                                ? 'bg-[#002366]/10 text-[#D4AF37] border-l-4 border-[#D4AF37]'
-                                                : 'text-slate-600 hover:bg-slate-50 border-l-4 border-transparent'
-                                        }`}
-                                    >
-                                        <span>{tab.icon}</span>
-                                        <span className="font-medium">{tab.label}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+            </div>
 
-                        {/* Main Content */}
-                        <div className="flex-1">
-                            {renderContent()}
-                        </div>
-                    </div>
-                </div>
-            </main>
+            {/* Main Content */}
+            <div className="flex-1">
+                {renderContent()}
+            </div>
         </div>
     );
+
 };
 
 export default SettingsPage;

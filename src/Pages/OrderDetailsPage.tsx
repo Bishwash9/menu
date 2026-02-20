@@ -11,7 +11,7 @@ const OrderDetailsPage = () => {
 
     if (!order) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen">
+            <div className="flex flex-col items-center justify-center min-h-[60vh]">
                 <h2 className="text-xl font-bold">Order Not Found</h2>
                 <Link to="/menu" className="text-[#002366] underline mt-2">Back to Menu</Link>
             </div>
@@ -19,8 +19,8 @@ const OrderDetailsPage = () => {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50 py-4 px-4">
-            <div className="w-[90vw] max-w-2xl h-[85vh] bg-white rounded-[2vw] md:rounded-2xl shadow-xl border border-gray-100 overflow-hidden flex flex-col">
+        <div className="flex items-center justify-center py-4 px-4">
+            <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden flex flex-col">
                 {/* Header Section */}
                 <div className="bg-[#002366] p-[3vh] md:p-8 text-white shrink-0">
                     <div className="flex justify-between items-start">
