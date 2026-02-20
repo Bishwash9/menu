@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCart } from "../Context/CartContext";
+import { useCart } from "../../../Context/CartContext";
 import { useOrders } from "../../../Context/OrderContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
 

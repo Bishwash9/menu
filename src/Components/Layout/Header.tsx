@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useCart } from "../../Features/Cart/Context/CartContext";
+import { useCart } from "../../Context/CartContext";
 
 interface HeaderProps {
     onSearch: (query: string) => void;
