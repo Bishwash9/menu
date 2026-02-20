@@ -123,7 +123,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, o
                                     >
                                         <div className="w-20 h-20 rounded-xl overflow-hidden shadow-sm shrink-0 border border-gray-100">
                                             <img
-                                                src={item.image_url}
+                                                src={item.image || undefined}
                                                 alt={item.name}
                                                 className="w-full h-full object-cover"
                                             />
@@ -177,7 +177,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, o
                                                     </button>
                                                 </div>
                                                 <span className="font-bold text-gray-800 text-sm">
-                                                    Rs. {item.price * item.quantity}
+                                                    Rs. {parseFloat(item.price) * item.quantity}
                                                 </span>
                                             </div>
                                         </div>
