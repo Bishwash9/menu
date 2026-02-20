@@ -20,6 +20,7 @@ import OrderDetailsPage from './Pages/OrderDetailsPage'
 import LoginPage from './Pages/LoginPage'
 import { PublicRoute } from './Features/Auth/Components/PublicRoute'
 import Dummy from './Pages/Dummy'
+import { DashboardLayout } from './Components/Layout'
 
 function App() {
   console.log('📱 App Component Rendering');
@@ -28,14 +29,20 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          <Route element={<RoleGaurd allowedRoles = {['admin', 'staff','housekeeper' ]}/> }>
-            <Route path='/dashboard' element={<DashboardPage />} />
-          </Route>  
-
           <Route element={<PublicRoute />}>
             <Route path='/' element={<LoginPage />} />
             <Route path ='/dummy' element={<Dummy/>}/>
           </Route>
+
+          <Route element={<RoleGaurd allowedRoles = {['admin', 'staff','housekeeper' ]}/> }>
+            <Route path='/dashboard' element={<DashboardPage />} />
+          </Route>
+
+          <Route element={<DashboardLayout />}>
+
+          
+
+          
           {/* Adimin only pages */}
           <Route element={<RoleGaurd allowedRoles={['admin']} />}>
             <Route path='/menu-management' element={<MenuManagementPage />} />
@@ -69,6 +76,8 @@ function App() {
             <Route path='/menu' element={<MenuPage />} />
             <Route path='/orders/:orderId' element={<OrderDetailsPage />} />
           </Route>
+
+        </Route>
         </Routes>
       </BrowserRouter>
     </>
