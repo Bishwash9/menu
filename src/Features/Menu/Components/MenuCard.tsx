@@ -17,7 +17,7 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow duration-200">
             <div className="relative h-48 w-full overflow-hidden">
                 <img
-                    src={item.image_url}
+                    src={item.image || undefined}
                     alt={item.name}
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
