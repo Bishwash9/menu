@@ -7,6 +7,7 @@ import { CartSidebar } from '../Features/Cart/Components/CartSidebar';
 import { FloatingCartBar } from '../Features/Cart/Components/FloatingCartBar';
 import { menuService } from '../Services/menuService';
 import type { MenuItem } from '../Types/menu';
+import { useAuth } from '../Context/AuthContext';
 
 
 
@@ -17,12 +18,20 @@ function MenuPage() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error,setError] = useState<string | null>(null);
 
+    const {user} = useAuth();
+
 
 
     useEffect(() => {
         const fetchMenuItems = async () => {
+
+            if(!user?.business_id){
+                console.error('User does not have a business id');
+                return;
+            }
+
             try {
-                const response = await menuService.getMenuItems();
+                const response = await menuService.getMenuItems(user?.business_id || 1);
                 setMenuItems(response);
                 setError(null);
             } catch (error) {
