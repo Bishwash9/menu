@@ -5,6 +5,7 @@ import App from './App.tsx'
 import { AuthProvider } from './Context/AuthContext.tsx'
 import { OrderProvider } from './Context/OrderContext.tsx'
 import { CartProvider } from './Features/Cart/index.ts'
+import { MenuProvider } from './Context/MenuContext.tsx'
 
 console.log('🏁 main.tsx Loading');
 
@@ -14,11 +15,13 @@ console.log('🏗️ Root Created, rendering App...');
 root.render(
   <StrictMode>
     <AuthProvider>
+      <MenuProvider>
       <OrderProvider>
         <CartProvider>
           <App />
         </CartProvider>
       </OrderProvider>
+      </MenuProvider>
     </AuthProvider>
   </StrictMode>,
 )
