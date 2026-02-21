@@ -10,6 +10,7 @@ export interface MenuItem {
     prepTime: number; // in minutes
     status: MenuItemStatus;
     image?: string;
+    spiceLevel?: string;
 }
 
 export interface MenuStats {

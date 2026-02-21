@@ -76,6 +76,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">CATEGORY</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">PRICE</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">PREP TIME</th>
+                                <th className='px-4 py-3 text-left font-bold text-slate-700'>SPICE LEVEL</th>
                                 <th className="px-4 py-3 text-left font-bold text-slate-700">STATUS</th>
 
                             </tr>
@@ -92,6 +93,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                                     <td className="px-4 py-3 text-slate-600">{item.category}</td>
                                     <td className="px-4 py-3 font-bold text-[#D4AF37]">Rs.{item.price}</td>
                                     <td className="px-4 py-3 text-slate-600">{item.prepTime} min</td>
+                                    <td className="px-4 py-3 text-slate-600">{item.spiceLevel}</td>
 
                                     <td className="px-4 py-3">
                                         <span className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(item.status)}`}>
