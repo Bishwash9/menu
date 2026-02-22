@@ -7,7 +7,6 @@ import { OrderProvider } from './Context/OrderContext.tsx'
 import { CartProvider } from './Features/Cart/index.ts'
 import { MenuProvider } from './Context/MenuContext.tsx'
 
-console.log('🏁 main.tsx Loading');
 
 const root = createRoot(document.getElementById('root')!);
 
