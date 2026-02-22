@@ -47,4 +47,3 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
 }
 
 
-//api.thefoodhubcafe.com.np/api/login 

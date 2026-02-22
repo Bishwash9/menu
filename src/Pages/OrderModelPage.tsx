@@ -16,23 +16,6 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onNext
     const location = useLocation();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const typeFromSidebar = location.state?.orderType as OrderType | undefined;
-
-        if (typeFromSidebar) {
-            handleTypeChange(typeFromSidebar)
-        }
-    }, [location.state]);
-
-    const handleNext = () => {
-        if (onNext) {
-            onNext({ orderType: formData.orderType, identifier: formData.identifier });
-        } else {
-            navigate(`/menu?type=${formData.orderType}&id=${formData.identifier}`)
-        }
-    }
-
-
     const [formData, setFormData] = useState<OrderModel>({
         fullname: '',
         orderType: 'table',
@@ -47,9 +30,25 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onNext
         }));
     };
 
+    useEffect(() => {
+        const typeFromSidebar = location.state?.orderType as OrderType | undefined;
+
+        if (typeFromSidebar) {
+            handleTypeChange(typeFromSidebar)
+        }
+    }, [location.state]);
 
 
 
+
+
+    const handleNext = () => {
+        if (onNext) {
+            onNext({ orderType: formData.orderType, identifier: formData.identifier });
+        } else {
+            navigate(`/menu?type=${formData.orderType}&id=${formData.identifier}`)
+        }
+    }
 
     const content = (
         <>
