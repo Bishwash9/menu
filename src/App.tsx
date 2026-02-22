@@ -23,7 +23,7 @@ import Dummy from './Pages/Dummy'
 import { DashboardLayout } from './Components/Layout'
 
 function App() {
-  console.log('📱 App Component Rendering');
+
   return (
     <>
       <BrowserRouter>
