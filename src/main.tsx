@@ -10,7 +10,6 @@ import { MenuProvider } from './Context/MenuContext.tsx'
 console.log('🏁 main.tsx Loading');
 
 const root = createRoot(document.getElementById('root')!);
-console.log('🏗️ Root Created, rendering App...');
 
 root.render(
   <StrictMode>
