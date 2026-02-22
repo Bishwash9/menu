@@ -60,14 +60,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     // ACTION: Remove an item completely
     const removeFromCart = (itemId: number) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+        const idToCompare = typeof itemId === 'string' ? parseInt(itemId) : itemId;
+        setCartItems((prevItems) => prevItems.filter((item) => {
+            const item_id = typeof item.id === 'string' ? parseInt(item.id) : item.id;
+            return item_id !== idToCompare;
+        }));
     };
 
     // ACTION: Increase or Decrease quantity
     const updateQuantity = (itemId: number, delta: number) => {
+        const idToCompare = typeof itemId === 'string' ? parseInt(itemId) : itemId;
         setCartItems((prevItems) => {
             return prevItems.map((item) => {
-                if (item.id === itemId) {
+                const item_id = typeof item.id === 'string' ? parseInt(item.id) : item.id;
+                if (item_id === idToCompare) {
                     const newQuantity = item.quantity + delta;
                     return { ...item, quantity: Math.max(1, newQuantity) };
                 }
@@ -83,7 +89,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const clearCart = () => setCartItems([]);
 
     const cartTotal = useMemo(() => {
-        return cartItems.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0);
+        return cartItems.reduce((total, item) => {
+            const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+            return total + (price * item.quantity);
+        }, 0);
     }, [cartItems]);
 
     const cartCount = useMemo(() => {
