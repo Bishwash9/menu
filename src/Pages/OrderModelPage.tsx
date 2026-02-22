@@ -39,16 +39,16 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onNext
     }, [location.state]);
 
 
-
-
-
-    const handleNext = () => {
+     const handleNext = () => {
         if (onNext) {
             onNext({ orderType: formData.orderType, identifier: formData.identifier });
         } else {
             navigate(`/menu?type=${formData.orderType}&id=${formData.identifier}`)
         }
     }
+
+
+
 
     const content = (
         <>
