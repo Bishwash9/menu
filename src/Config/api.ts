@@ -12,7 +12,6 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
 
     try {
         const fullUrl = `${BASE_URL}${endpoint}`;
-        console.log('🌐 Fetching:', fullUrl);
 
         const response = await fetch(fullUrl, { ...options, headers });
 
