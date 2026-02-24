@@ -30,7 +30,7 @@ export const MenuProvider : React.FC<{children: React.ReactNode}> = ({children})
             const data = await menuService.getMenuItems(user.business_id);
 
             const mappedItems : MenuItem[]  = data.map(item =>({
-                 id: item.id.toString(),
+                    id: item.id.toString(),
                     business_id: item.business_id,
                     business_name: item.business_name,
                     name: item.name,

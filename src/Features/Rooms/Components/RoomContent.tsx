@@ -1,12 +1,12 @@
 import React from 'react';
-import type { Room } from '../Types';
+import type { Room } from '../../../Types/room';
 import { RoomCard } from './RoomCard';
 
 interface RoomContentProps {
     rooms: Room[];
     onView?: (room: Room) => void;
     onEdit?: (room: Room) => void;
-    onDelete?: (roomId: string) => void;
+    onDelete?: (roomId: number) => void;
 }
 
 export const RoomContent: React.FC<RoomContentProps> = ({

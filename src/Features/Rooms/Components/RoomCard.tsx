@@ -1,12 +1,12 @@
 import React from 'react';
 import { MoreVertical, Eye, Edit2, Trash2 } from 'lucide-react';
-import type { Room } from '../Types';
+import type { Room } from '../../../Types/room';
 
 interface RoomCardProps {
     room: Room;
     onView?: (room: Room) => void;
     onEdit?: (room: Room) => void;
-    onDelete?: (roomId: string) => void;
+    onDelete?: (roomId: number) => void;
 }
 
 export const RoomCard: React.FC<RoomCardProps> = ({
@@ -38,13 +38,13 @@ export const RoomCard: React.FC<RoomCardProps> = ({
             <div className="p-4 border-b border-slate-100">
                 <div className="flex items-start justify-between">
                     <div>
-                        <h3 className="text-xl font-bold text-[#002366]">{room.roomNumber}</h3>
-                        <p className="text-sm text-slate-500">{room.type}</p>
+                        <h3 className="text-xl font-bold text-[#002366]">{room.room_number}</h3>
+                        <p className="text-sm text-slate-500">{room.room_type_name}</p>
                         <p className="text-xs text-slate-400">{room.floor}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${getStatusColor(room.status)}`}>
-                            {room.status}
+                        <span className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${getStatusColor(room.status_name)}`}>
+                            {room.status_name}
                         </span>
                         <div className="relative">
                             <button
@@ -69,7 +69,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({
                                     </button>
                                     <button
                                         onClick={() => { 
-                                            if (confirm(`Delete room ${room.roomNumber}?`)) {
+                                            if (confirm(`Delete room ${room.room_number}?`)) {
                                                 onDelete?.(room.id);
                                             }
                                             setShowMenu(false); 
@@ -87,7 +87,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({
 
             {/* Amenities */}
             <div className="p-4">
-                <div className="flex flex-wrap gap-1.5 mb-3">
+                {/* <div className="flex flex-wrap gap-1.5 mb-3">
                     {room.amenities.slice(0, 3).map((amenity, idx) => (
                         <span
                             key={idx}
@@ -101,7 +101,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({
                             +{room.amenities.length - 3}
                         </span>
                     )}
-                </div>
+                </div> */}
 
                 {/* Price */}
                 <div className="flex items-center justify-between">

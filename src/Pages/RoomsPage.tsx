@@ -1,29 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, BedDouble, CheckCircle, Users, Wrench } from 'lucide-react';
+import { roomService } from '../Services/roomService';
 import {
     RoomStatCard,
     RoomModal,
     RoomContent,
-    initialRooms
+    
 } from '../Features/Rooms';
-import type { Room, RoomStats } from '../Features/Rooms/Types';
+import type {  RoomStats } from '../Features/Rooms/Types';
+import type { Room } from '../Types/room';
 
 
 const RoomsPage: React.FC = () => {
-    const [rooms, setRooms] = useState<Room[]>(initialRooms);
+    const [rooms, setRooms] = useState<Room[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
     const [roomStatusFilter, setRoomStatusFilter] = useState<'All' | 'Available' | 'Occupied' | 'Cleaning' | 'Maintenance'>('All');
 
 
+    useEffect(() => {
+        const fetchRooms = async () =>{
+            try{
+                setLoading(true);
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                const businessId = userData.business_id;
+
+               if(businessId){
+                 const data = await roomService.getRooms(businessId);
+                 const mappedRooms  = data.map((r:Room)=>({
+                    id: r.id,
+                    business_id: r.business_id,
+                    room_number: r.room_number,
+                    room_type_name: r.room_type_name,
+                    business_name: r.business_name,
+                    status_name: r.status_name,
+                    status_id: r.status_id,
+                    floor: r.floor,
+                    capacity: r.capacity,
+                    price: r.price,
+                    created_at: r.created_at,
+                    updated_at: r.updated_at,
+
+                 }));
+                 setRooms(mappedRooms);
+               }
+               
+                
+            }catch(error){
+                setError('Failed to load rooms. Please try again later.');
+
+            }finally{
+                setLoading(false);
+            }
+        };
+        fetchRooms();
+    }, []);
+
+
     // Calculate stats
     const stats: RoomStats = {
         totalRooms: rooms.length,
-        available: rooms.filter(r => r.status === 'Available').length,
-        occupied: rooms.filter(r => r.status === 'Occupied').length,
-        cleaning: rooms.filter(r => r.status === 'Cleaning').length,
-        maintenance: rooms.filter(r => r.status === 'Maintenance').length,
+        available: rooms.filter(r => r.status_name === 'Available').length,
+        occupied: rooms.filter(r => r.status_name === 'Occupied').length,
+        cleaning: rooms.filter(r => r.status_name === 'Cleaning').length,
+        maintenance: rooms.filter(r => r.status_name === 'Maintenance').length,
     };
 
     const handleAddRoom = () => {
@@ -45,7 +88,7 @@ const RoomsPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteRoom = (roomId: string) => {
+    const handleDeleteRoom = (roomId: number) => {
         setRooms(rooms.filter(r => r.id !== roomId));
     };
 
@@ -57,7 +100,7 @@ const RoomsPage: React.FC = () => {
             // Add new room
             const newRoom: Room = {
                 ...roomData,
-                id: Date.now().toString(),
+                id: Date.now(),
             };
             setRooms([...rooms, newRoom]);
         }
@@ -93,7 +136,22 @@ const RoomsPage: React.FC = () => {
                 </div>
             </div>
 
+            {/* Loading State */}
+            {loading && (
+                <div className='flex justify-center items-center py-20'>
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                </div>
+            )}
+
+            {/* Error State */}
+            {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <p className="text-red-700">{error}</p>
+                </div>
+            )}
+
             {/* Stats Cards */}
+            {!loading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <RoomStatCard
                     title="Total Rooms"
@@ -123,11 +181,13 @@ const RoomsPage: React.FC = () => {
                     valueColor="text-orange-600"
                 />
             </div>
+            )}
 
             {/* Room Content */}
+            {!loading && (
             <RoomContent
                 rooms={rooms.filter(r => {
-                    const matchesStatus = roomStatusFilter === 'All' || r.status === roomStatusFilter;
+                    const matchesStatus = roomStatusFilter === 'All' || r.status_name === roomStatusFilter;
 
                     return matchesStatus;
                 })}
@@ -135,6 +195,7 @@ const RoomsPage: React.FC = () => {
                 onEdit={handleEditRoom}
                 onDelete={handleDeleteRoom}
             />
+            )}
 
             {/* Modal */}
             <RoomModal

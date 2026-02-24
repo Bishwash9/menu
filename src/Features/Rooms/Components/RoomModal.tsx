@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import type { Room, RoomType, RoomStatus, FloorType } from '../Types';
-import { ROOM_TYPES, ROOM_STATUSES, FLOORS, AMENITIES } from '../data';
+import type { Room } from '../../../Types/room';
+// import { stat } from 'fs';
+// import { ROOM_TYPES, ROOM_STATUSES, FLOORS, AMENITIES } from '../data';
 
 interface RoomModalProps {
     isOpen: boolean;
@@ -18,51 +19,60 @@ export const RoomModal: React.FC<RoomModalProps> = ({
     room,
     mode,
 }) => {
-    const [formData, setFormData] = useState<Omit<Room, 'id'>>({
-        roomNumber: '',
-        type: 'Single',
-        floor: '1st floor',
-        status: 'Available',
-        price: 0,
-        amenities: [],
-        capacity: 1,
-        description: '',
-    });
+   const [formData, setFormData] = useState({
+        room_number: '',
+        room_type_name: '',
+        floor: 0,
+        status_name: '',
+        price: '',
+        status_id: 0,
+        business_id: 0,
+        capacity: 0,
+        business_name: '',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+   });
 
     useEffect(() => {
         if (room && mode === 'edit') {
             setFormData({
-                roomNumber: room.roomNumber,
-                type: room.type,
+                room_number: room.room_number,
+                room_type_name: room.room_type_name,
                 floor: room.floor,
-                status: room.status,
+                status_name: room.status_name,
                 price: room.price,
-                amenities: room.amenities,
+                status_id: room.status_id,
+                business_id: room.business_id,
                 capacity: room.capacity,
-                description: room.description || '',
+                business_name: room.business_name,
+                created_at: room.created_at,
+                updated_at: room.updated_at,
             });
         } else {
             setFormData({
-                roomNumber: '',
-                type: 'Single',
-                floor: '1st floor',
-                status: 'Available',
-                price: 0,
-                amenities: [],
-                capacity: 1,
-                description: '',
+                room_number: '',
+                room_type_name: '',
+                floor: 0,
+                status_name: '',
+                price: '',
+                status_id: 0,
+                business_id: 0,
+                business_name: '',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                capacity: 0,
             });
         }
     }, [room, mode, isOpen]);
 
-    const handleAmenityToggle = (amenity: string) => {
-        setFormData(prev => ({
-            ...prev,
-            amenities: prev.amenities.includes(amenity)
-                ? prev.amenities.filter(a => a !== amenity)
-                : [...prev.amenities, amenity],
-        }));
-    };
+    // const handleAmenityToggle = (amenity: string) => {
+    //     setFormData(prev => ({
+    //         ...prev,
+    //         amenities: prev.amenities.includes(amenity)
+    //             ? prev.amenities.filter(a => a !== amenity)
+    //             : [...prev.amenities, amenity],
+    //     }));
+    // };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -102,8 +112,8 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                             </label>
                             <input
                                 type="text"
-                                value={formData.roomNumber}
-                                onChange={(e) => setFormData({ ...formData, roomNumber: e.target.value })}
+                                value={formData.room_number}
+                                onChange={(e) => setFormData({ ...formData, room_number: e.target.value })}
                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
                                 required
                             />
@@ -113,13 +123,11 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                                 Room Type *
                             </label>
                             <select
-                                value={formData.type}
-                                onChange={(e) => setFormData({ ...formData, type: e.target.value as RoomType })}
+                                value={formData.room_type_name}
+                                onChange={(e) => setFormData({ ...formData, room_type_name: e.target.value })}
                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
                             >
-                                {ROOM_TYPES.map(type => (
-                                    <option key={type} value={type}>{type}</option>
-                                ))}
+                                
                             </select>
                         </div>
                     </div>
@@ -131,12 +139,10 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                             </label>
                             <select
                                 value={formData.floor}
-                                onChange={(e) => setFormData({ ...formData, floor: e.target.value as FloorType })}
+                                onChange={(e) => setFormData({ ...formData, floor: Number(e.target.value) })}
                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
                             >
-                                {FLOORS.map(floor => (
-                                    <option key={floor} value={floor}>{floor}</option>
-                                ))}
+                           
                             </select>
                         </div>
                         <div>
@@ -144,13 +150,15 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                                 Status
                             </label>
                             <select
-                                value={formData.status}
-                                onChange={(e) => setFormData({ ...formData, status: e.target.value as RoomStatus })}
+                                value={formData.status_name}
+                                onChange={(e) => setFormData({ ...formData, status_name: e.target.value })}
                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
                             >
-                                {ROOM_STATUSES.map(status => (
-                                    <option key={status} value={status}>{status}</option>
-                                ))}
+                                    <option value="Available">Available</option>
+                                    <option value="Occupied">Occupied</option>
+                                    <option value="Cleaning">Cleaning</option>
+                                    <option value="Maintenance">Maintenance</option>
+
                             </select>
                         </div>
                     </div>
@@ -163,7 +171,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                             <input
                                 type="number"
                                 value={formData.price}
-                                onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
                                 min="0"
                                 required
@@ -184,7 +192,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                         </div>
                     </div>
 
-                    <div>
+                    {/* <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
                             Amenities
                         </label>
@@ -204,9 +212,9 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                                 </button>
                             ))}
                         </div>
-                    </div>
+                    </div> */}
 
-                    <div>
+                    {/* <div>
                         <label className="block text-sm font-medium text-slate-700 mb-1">
                             Description
                         </label>
@@ -217,7 +225,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                             rows={3}
                             placeholder="Optional room description..."
                         />
-                    </div>
+                    </div> */}
 
                     {/* Footer */}
                     <div className="flex gap-3 pt-4">
