@@ -28,13 +28,26 @@ export const orderService ={
     },
 
     //create order for room
-    createOrder: async (businessId: number,roomId: number, orderData: any): Promise<Order> =>{
+    createOrderRoom: async (businessId: number,roomId: number, orderData: any): Promise<Order> =>{
         const response = await apiClient(`orders/`, {
             method: 'POST',
             body: JSON.stringify({
              ...orderData,
              room_id: roomId,
              business_id: businessId  
+            })
+        });
+        return response.data || response;
+    },
+
+    //create order for table
+    createOrderTable: async (businessId: number,tableId: number, orderData: any): Promise<Order> => {
+        const response = await apiClient(`orders/`, {
+            method: 'POST',
+            body: JSON.stringify({
+                ...orderData,
+                table_id: tableId,
+                business_id: businessId
             })
         });
         return response.data || response;

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Users, Receipt, MoreVertical, Edit2, Trash2 } from 'lucide-react';
-import type { Table } from '../Types';
+import { Users, MoreVertical, Edit2, Trash2 } from 'lucide-react';
+import type { Table } from '../../../Types/table';
 
 interface TableCardProps {
     table: Table;
     onEdit?: (table: Table) => void;
-    onDelete?: (tableId: string) => void;
+    onDelete?: (tableId: number) => void;
     onClick?: (table: Table) => void;
 }
 
@@ -25,6 +25,8 @@ export const TableCard: React.FC<TableCardProps> = ({
                 return 'bg-blue-500';
             case 'Reserved':
                 return 'bg-orange-500';
+            case 'Unavailable':
+                return 'bg-red-500';
             default:
                 return 'bg-gray-500';
         }
@@ -38,6 +40,8 @@ export const TableCard: React.FC<TableCardProps> = ({
                 return 'border-blue-200 hover:border-blue-400';
             case 'Reserved':
                 return 'border-orange-200 hover:border-orange-400';
+            case 'Unavailable':
+                return 'border-red-200 hover:border-red-400';
             default:
                 return 'border-slate-200';
         }
@@ -45,11 +49,11 @@ export const TableCard: React.FC<TableCardProps> = ({
 
     return (
         <div 
-            className={`relative bg-white rounded-xl border-2 ${getBorderColor(table.status)} shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer p-5`}
+            className={`relative bg-white rounded-xl border-2 ${getBorderColor(table.status_name)} shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer p-5`}
             onClick={() => onClick?.(table)}
         >
             {/* Status Indicator */}
-            <div className={`absolute top-3 right-3 w-3 h-3 rounded-full ${getStatusColor(table.status)}`} />
+            <div className={`absolute top-3 right-3 w-3 h-3 rounded-full ${getStatusColor(table.status_name)}`} />
 
             {/* Menu Button */}
             <div className="absolute top-2 right-8">
@@ -70,7 +74,7 @@ export const TableCard: React.FC<TableCardProps> = ({
                         <button
                             onClick={(e) => { 
                                 e.stopPropagation();
-                                if (confirm(`Delete table ${table.tableNumber}?`)) {
+                                if (confirm(`Delete table ${table.table_number}?`)) {
                                     onDelete?.(table.id);
                                 }
                                 setShowMenu(false); 
@@ -85,29 +89,16 @@ export const TableCard: React.FC<TableCardProps> = ({
 
             {/* Content */}
             <div className="text-center">
-                {table.currentOrder ? (
-                    <Receipt size={32} className="mx-auto text-[#002366] mb-2" />
-                ) : (
-                    <div className="w-10 h-10 mx-auto bg-slate-100 rounded-lg flex items-center justify-center mb-2">
-                        <Users size={20} className="text-slate-400" />
-                    </div>
-                )}
                 
-                <h3 className="text-xl font-bold text-[#002366]">{table.tableNumber}</h3>
                 
-                {table.currentOrder ? (
-                    <div className="mt-1">
-                        <p className="text-[#D4AF37] font-semibold">RS{table.currentOrder.amount}</p>
-                        <p className="text-xs text-slate-500">{table.currentOrder.items} Items</p>
-                    </div>
-                ) : (
-                    <p className="text-sm text-slate-500 mt-1">
+                <h3 className="text-xl font-bold text-[#002366]">{table.table_number}</h3>
+                
+                <p className="text-sm text-slate-500 mt-1">
                         <Users size={14} className="inline mr-1" />
                         {table.seats} Seats
                     </p>
-                )}
                 
-                <p className="text-xs text-slate-400 mt-2">{table.area}</p>
+                <p className="text-xs text-slate-400 mt-2">{table.location}</p>
             </div>
         </div>
     );
