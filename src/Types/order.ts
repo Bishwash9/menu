@@ -3,14 +3,15 @@ export type OrderType = 'table' | 'room';
 export interface OrderModel {
     fullname : string;
     orderType : OrderType;
-    identifier : string; //yo chai MOCK_ORDER_DATA ho
+    identifier : string | number;
 }
 
 export interface Order{
     id: number;
     business_id: string;
     order_number: string;
-    table_id: number;
+    table_id?: number;
+    room_id?: number;
     guest_id: number;
     order_type_id: number;
     status_id: number;

@@ -268,7 +268,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-[#001a4d] transition-colors"
+                            className="flex-1 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-primary transition-colors"
                         >
                             {mode === 'add' ? 'Create Order' : 'Save Changes'}
                         </button>

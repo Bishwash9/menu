@@ -1,11 +1,17 @@
 import {apiClient} from '../Config/api';
 import type { Order } from '../Types/order';
 export const orderService ={
-    getOrders: async (tableId?:number): Promise<Order[]> =>{
-        const endpoint = tableId? `orders/?table_id=${tableId}` : 'orders/';
-        const response = await apiClient(endpoint,{
-            method: 'GET'
-        });
+    getOrders: async (tableId?:number, roomId?:number): Promise<Order[]> =>{
+      let endpoint = 'orders/';
+      if(tableId){
+        endpoint += `?table_id=${tableId}`;
+      }
+      if(roomId){
+        endpoint += `?room_id=${roomId}`;
+      }
+      const response = await apiClient(endpoint, {
+        method: 'GET'
+      });
         if(response?.orders && Array.isArray(response.orders)){
             return response.orders;
         }
@@ -19,5 +25,18 @@ export const orderService ={
             method: 'GET'
         });
         return response
+    },
+
+    //create order for room
+    createOrder: async (businessId: number,roomId: number, orderData: any): Promise<Order> =>{
+        const response = await apiClient(`orders/`, {
+            method: 'POST',
+            body: JSON.stringify({
+             ...orderData,
+             room_id: roomId,
+             business_id: businessId  
+            })
+        });
+        return response.data || response;
     }
 }
