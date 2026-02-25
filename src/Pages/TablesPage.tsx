@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { CalendarDays, } from 'lucide-react';
-import { TableModal, TableCard, TABLE_AREAS } from '../Features/Tables';
-import type {  TableArea } from '../Features/Tables/Types';
+import { CalendarDays } from 'lucide-react';
+import { TableModal, TableCard, } from '../Features/Tables';
 import  { tableService } from '../Services/tableService';
 import type { Table } from '../Types/table';
- 
 
+const LOCATIONS = ['Main Hall', 'Garden', 'Rooftop', 'Private'];
 
 const TablesPage: React.FC = () => {
     const [tables, setTables] = useState<Table[]>([]); // Start with empty array
@@ -16,7 +15,7 @@ const TablesPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedTable, setSelectedTable] = useState<Table | null>(null);
-    const [areaFilter, setAreaFilter] = useState<TableArea | 'All'>('All');
+    const [selectedLocation, setSelectedLocation] = useState<string>('All');
 
 
     useEffect(() => {
@@ -72,7 +71,7 @@ const TablesPage: React.FC = () => {
     };
 
     const filteredTables = tables.filter(t =>
-        areaFilter === 'All' || t.location === areaFilter
+        selectedLocation === 'All' || t.location === selectedLocation
     );
 
     const handleEditTable = (table: Table) => {
@@ -128,26 +127,29 @@ const TablesPage: React.FC = () => {
             {/* Area Filters */}
             <div className="flex flex-wrap gap-2 mb-4">
                 <button
-                    onClick={() => setAreaFilter('All')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${areaFilter === 'All'
+                    onClick={() => setSelectedLocation('All')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedLocation === 'All'
                         ? 'bg-[#002366] text-white shadow-md'
                         : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
                         }`}
                 >
                     All
                 </button>
-                {TABLE_AREAS.map(area => (
-                    <button
-                        key={area}
-                        onClick={() => setAreaFilter(area)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${areaFilter === area
-                            ? 'bg-[#002366] text-white shadow-md'
-                            : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                            }`}
-                    >
-                        {area}
-                    </button>
-                ))}
+
+             {LOCATIONS.map(location => (
+                <button
+                 key={location}
+                 onClick={() => setSelectedLocation(location)}
+                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedLocation === location
+                    ? 'bg-[#002366] text-white shadow-md'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
+                 }`}
+                >
+                    {location}
+                </button>
+             ))}
+        
             </div>
 
              {/* Loading State */}
