@@ -103,14 +103,14 @@ const TablesPage: React.FC = () => {
 
     
 
-    const handleTableClick = (table: Table) => {
-        // Toggle status or open order if occupied
-        if (table.status_name === 'Available') {
-            setTables(tables.map(t =>
-                t.id === table.id ? { ...t, status_name: 'Occupied' as const } : t
-            ));
-        }
-    };
+    // const handleTableClick = (table: Table) => {
+    //     // Toggle status or open order if occupied
+    //     if (table.status_name === 'Available') {
+    //         setTables(tables.map(t =>
+    //             t.id === table.id ? { ...t, status_name: 'Occupied' as const } : t
+    //         ));
+    //     }
+    // };
 
     return (
         <div className="space-y-6">
@@ -195,7 +195,7 @@ const TablesPage: React.FC = () => {
                         table={table}
                         onEdit={handleEditTable}
                         onDelete={handleDeleteTable}
-                        onClick={handleTableClick}
+                        // onClick={handleTableClick}
                     />
                 ))}
             </div>
