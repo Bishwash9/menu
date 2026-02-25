@@ -5,7 +5,7 @@ export interface Table {
     table_number: number;
     location: string;
     status_name: string;
-    reserved_by: string | null;
+    reserved_by: number | null;
     created_at: string;
     updated_at: string;
 }
