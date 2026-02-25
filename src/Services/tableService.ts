@@ -2,7 +2,7 @@ import { apiClient } from "../Config/api";
 
 export const tableService = {
     getTables: async (businessId:number) =>{
-        const response = await apiClient(`tables/b${businessId}`, {
+        const response = await apiClient(`table/b${businessId}`, {
             method: 'GET'
         });
 
