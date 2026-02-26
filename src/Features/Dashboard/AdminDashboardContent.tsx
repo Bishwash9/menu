@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { IconCurrencyRupeeNepalese } from '@tabler/icons-react';
 import Banner from '@assets/Banner.svg';
+import { useAuth } from '../../Context/AuthContext';
 import {
   BedDouble,
   Users,
@@ -96,6 +97,8 @@ function AdminDashboardContent() {
   });
 
   const availableRooms = ['101', '102', '110', '203', '205', '301', '308', '401', '405'];
+
+  const {user} = useAuth();
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -205,11 +208,20 @@ function AdminDashboardContent() {
         <div className="absolute inset-0 bg-linear-to-r from-white via-transparent to-transparent z-10" />
 
         <div className="relative z-20 h-full flex flex-col justify-center px-[5vw]">
-          <div className="flex items-center gap-[1vw] mb-[1.5vh]">
-            <span className="text-dashboard-primary text-[0.8vw] font-light uppercase tracking-widest">
-              Admin Panel
-            </span>
-            <div className="h-px w-[5vw] bg-dashboard-primary/10" />
+          <div className="flex items-center justify-between mb-[1.5vh]">
+            <div className="flex items-center gap-[1vw]">
+              <span className="text-dashboard-primary text-[0.8vw] font-light uppercase tracking-widest">
+                Admin Panel
+              </span>
+              <div className="h-px w-[5vw] bg-dashboard-primary/10" />
+            </div>
+            
+            <div className="flex mr-[5vw] items-center gap-[1vw]">
+              <div className="h-px w-[5vw] bg-dashboard-primary/10" />
+              <span className="text-dashboard-primary text-[0.8vw]  font-light uppercase tracking-widest">
+                {user?.business_uid || 'N/A'}
+              </span>
+            </div>
           </div>
 
           <div className="flex justify-between items-end">
