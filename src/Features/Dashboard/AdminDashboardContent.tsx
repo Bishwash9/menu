@@ -199,7 +199,7 @@ function AdminDashboardContent() {
   return (
     <div className="w-full h-[calc(100vh-3.5rem)] flex flex-col bg-white overflow-hidden font-light">
       {/* Soft Viewport Header Section */}
-      <div className="relative w-full h-[25vh] shrink-0 overflow-hidden border-b border-slate-100">
+      <div className="relative w-full h-[25vh] shrink-0 overflow-hidden">
         <img
           src={Banner}
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-40"
