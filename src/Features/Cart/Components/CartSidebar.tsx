@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useCart } from "../../../Context/CartContext";
 import { useOrders } from "../../../Context/OrderContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "../../../Context/AuthContext";
+import { orderService } from "../../../Services/orderService";
+import type { CreateOrderItem, CreateOrderRequest } from "../../../Types/order";
 
 
 interface CartSidebarProps {
@@ -21,6 +24,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, o
         clearCart,
     } = useCart();
     const { createOrder } = useOrders();
+    const { user } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -44,6 +48,61 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, o
     // Calculate tax and total
     const taxAmount = cartTotal * 0.13; // 13% tax
     const grandTotal = cartTotal + taxAmount; // subtotal + tax + delivery fee
+
+    const handlePlaceOrder = async () => {
+        const locationIdentifier = orderData?.identifier || searchParams.get('id') || 'General';
+        const orderType = (orderData?.orderType as 'table' | 'room') || (searchParams.get('type') as 'table' | 'room') || 'table';
+
+        if (user?.business_id && cartItems.length > 0) {
+            try {
+                const parsedLocationId = Number.parseInt(locationIdentifier, 10);
+                const locationId = Number.isNaN(parsedLocationId) ? null : parsedLocationId;
+
+                const orderItems: CreateOrderItem[] = cartItems.map((item) => ({
+                    food_item_id: item.id,
+                    quantity: item.quantity,
+                    status_id: 1,
+                }));
+
+                const payload: CreateOrderRequest = {
+                    business_id: user.business_id,
+                    order_number: `ORD-${Date.now()}`,
+                    table_id: orderType === 'table' ? locationId : null,
+                    room_id: orderType === 'room' ? locationId : null,
+                    order_type_id: orderType === 'room' ? 2 : 1,
+                    status_id: 1,
+                    guest_id: null, 
+                    subtotal: cartTotal.toFixed(2),
+                    tax: taxAmount.toFixed(2),
+                    discount: '0.00',
+                    total_amount: grandTotal.toFixed(2),
+                    served_by: user.business_id,
+                    notes: undefined,
+                    is_room_order: orderType === 'room',
+                    items: orderItems,
+                };
+
+                await orderService.createOrder(user.business_id, payload);
+            } catch (error) {
+                console.error('Failed to persist order via API:', error);
+            }
+        }
+
+        const orderId = createOrder({
+            locationId: locationIdentifier,
+            type: orderType,
+            items: cartItems,
+        });
+
+        localStorage.removeItem('cartItems');
+        clearCart();
+        toggleCart();
+
+        if(onOrderComplete){
+            onOrderComplete();
+        }
+        navigate(`/orders/${orderId}`);
+    };
 
     return (
         <>
@@ -206,21 +265,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, o
 
 
                             <button
-                                onClick={() => {
-                                    const orderId = createOrder({
-                                        locationId: orderData?.identifier || searchParams.get('id') || 'General',
-                                        type: (orderData?.orderType as 'table' | 'room') || (searchParams.get('type') as 'table' | 'room') || 'table',
-                                        items: cartItems,
-                                    });
-                                    localStorage.removeItem('cartItems');
-                                    clearCart();
-                                    toggleCart();
-
-                                    if(onOrderComplete){
-                                        onOrderComplete();
-                                    }
-                                    navigate(`/orders/${orderId}`);
-                                }}
+                                onClick={handlePlaceOrder}
                                 className="w-full bg-[#002366] text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 Order

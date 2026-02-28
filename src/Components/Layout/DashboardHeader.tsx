@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Bell, User, LogOut, CheckCircle, Info, AlertCircle, Plus, X } from "lucide-react";
+import { Bell, User, LogOut, CheckCircle, Info, AlertCircle, Plus } from "lucide-react";
 import OrderModelPage from "../../Pages/OrderModelPage";
 import QuickMenuPopup from "./QuickMenuPopup";
 import { authService } from "../../Services/authService";
@@ -150,16 +150,11 @@ export default function DashboardHeader({ initials = "" }) {
 
             {!currentOrderData ? (
               /*  Show Form */
-              <div className="max-w-lg mx-auto bg-white rounded-2xl p-8 relative">
-                <button
-                  onClick={() => setIsOrderModalOpen(false)}
-                  className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 transition-colors z-50 rounded-full hover:bg-slate-100"
-                >
-                  <X size={20} />
-                </button>
+              <div className="max-w-lg mx-auto">
                 <OrderModelPage
                   isModal={true}
-                  onNext={(data) => setCurrentOrderData(data as any)} // Sets the data to "Step 2"
+                  onClose={() => setIsOrderModalOpen(false)}
+                  onNext={(data: { orderType: string; identifier: string }) => setCurrentOrderData(data)} // Sets the data to "Step 2"
                 />
               </div>
             ) : (

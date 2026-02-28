@@ -1,5 +1,5 @@
 import {apiClient} from '../Config/api';
-import type { Order } from '../Types/order';
+import type { CreateOrderRequest, Order } from '../Types/order';
 export const orderService ={
     getOrders: async (businessId: number, tableId?: number, roomId?: number): Promise<Order[]> =>{
       let endpoint = `order/b${businessId}/`;
@@ -26,35 +26,18 @@ export const orderService ={
     
     //get orders by ID
     getOrderById: async (orderId:number): Promise<Order> =>{
-        const response = await apiClient (`orders/${orderId}/`,{
+        const response = await apiClient (`order/${orderId}/`,{
             method: 'GET'
         });
         return response
     },
 
-    //create order for room
-    createOrderRoom: async (businessId: number,roomId: number, orderData: any): Promise<Order> =>{
-        const response = await apiClient(`orders/`, {
+    createOrder: async (businessId: number, orderData: CreateOrderRequest): Promise<Order> => {
+        const response = await apiClient(`order/b${businessId}/`, {
             method: 'POST',
-            body: JSON.stringify({
-             ...orderData,
-             room_id: roomId,
-             business_id: businessId  
-            })
+            body: JSON.stringify(orderData)
         });
         return response.data || response;
-    },
 
-    //create order for table
-    createOrderTable: async (businessId: number,tableId: number, orderData: any): Promise<Order> => {
-        const response = await apiClient(`orders/`, {
-            method: 'POST',
-            body: JSON.stringify({
-                ...orderData,
-                table_id: tableId,
-                business_id: businessId
-            })
-        });
-        return response.data || response;
     }
 }

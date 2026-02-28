@@ -48,6 +48,31 @@ export interface OrderItem{
     updated_at: string; 
 }
 
+export interface CreateOrderItem{
+    food_item_id: number;
+    quantity: number;
+    status_id: number;
+    note?: string;
+}
+
+export interface CreateOrderRequest{
+    business_id: number;
+    table_id?: number | null;
+    room_id?: number | null;
+    guest_id?: number | null;
+    order_type_id: number;
+    order_number: string;
+    status_id: number;
+    subtotal: string;
+    tax: string;
+    discount: string;
+    total_amount: string;
+    served_by?: number | null;
+    notes?: string;
+    is_room_order: boolean
+    items: CreateOrderItem[];
+}
+
 export interface GetOrderResponse{
     orders: Order[];
 }

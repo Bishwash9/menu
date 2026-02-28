@@ -1,129 +1,180 @@
-import { useParams, Link } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Clock3, MapPin, Plus, ReceiptText } from 'lucide-react';
 import { useOrders } from '../Context/OrderContext';
 import QuickMenuPopup from '../Components/Layout/QuickMenuPopup';
-import { useState } from 'react';
+
+interface OrderItem {
+    id: number;
+    name: string;
+    price: string | number;
+    quantity: number;
+}
 
 const OrderDetailsPage = () => {
     const { orderId } = useParams();
+    const navigate = useNavigate();
     const { orders } = useOrders();
-    const order = orders[orderId!];
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const order = orderId ? orders[orderId] : undefined;
+
+    const subtotal = useMemo(() => {
+        if (!order) return 0;
+        return order.items.reduce((sum: number, item: OrderItem) => {
+            const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+            return sum + price * item.quantity;
+        }, 0);
+    }, [order]);
+
+    const tax = subtotal * 0.13;
+    const total = subtotal + tax;
 
     if (!order) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh]">
-                <h2 className="text-xl font-bold">Order Not Found</h2>
-                <Link to="/menu" className="text-[#002366] underline mt-2">Back to Menu</Link>
+            <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
+                <h2 className="text-2xl font-bold text-slate-800">Order Not Found</h2>
+                <p className="text-slate-500 mt-2">This order may be closed, missing, or not created yet.</p>
+                <div className="mt-6 flex gap-3">
+                    <Link to="/orderForm" className="px-4 py-2 bg-[#002366] text-white rounded-lg font-semibold hover:bg-primary transition-colors">
+                        Create New Order
+                    </Link>
+                    <Link to="/menu" className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors">
+                        Back to Menu
+                    </Link>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="flex items-center justify-center py-4 px-4">
-            <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden flex flex-col">
-                {/* Header Section */}
-                <div className="bg-[#002366] p-[3vh] md:p-8 text-white shrink-0">
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <p className="text-blue-200 text-[1.5vh] md:text-sm uppercase tracking-wider font-semibold">Order Confirmed</p>
-                            <h1 className="text-[3vh] md:text-3xl font-bold mt-1">#{order.orderId.slice(0, 8)}</h1>
+        <div className="max-w-5xl mx-auto p-4 md:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-[#002366] text-white px-5 py-4 md:px-6 md:py-5">
+                        <div className="flex items-start justify-between gap-3">
+                            <div>
+                                <p className="text-blue-200 text-xs md:text-sm uppercase tracking-wider font-semibold">Order Confirmed</p>
+                                <h1 className="text-2xl md:text-3xl font-bold mt-1">#{order.orderId.slice(0, 8)}</h1>
+                            </div>
+                            <span className="bg-white/15 px-3 py-1.5 rounded-lg text-sm font-bold capitalize">
+                                {order.status}
+                            </span>
                         </div>
-                        <div className="bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm">
-                            <span className="text-[1.5vh] md:text-sm font-bold capitalize">{order.status}</span>
+                    </div>
+
+                    <div className="p-5 md:p-6 border-b border-slate-100">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="flex items-start gap-3">
+                                <MapPin size={18} className="text-[#002366] mt-1" />
+                                <div>
+                                    <p className="text-xs uppercase font-bold tracking-widest text-slate-400">Location</p>
+                                    <p className="text-base font-bold text-slate-800 capitalize">
+                                        {order.type}: {order.locationId}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <Clock3 size={18} className="text-[#002366] mt-1" />
+                                <div>
+                                    <p className="text-xs uppercase font-bold tracking-widest text-slate-400">Created</p>
+                                    <p className="text-base font-bold text-slate-800">
+                                        {new Date(order.createdAt).toLocaleString([], {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    <div className="p-5 md:p-6">
+                        <h3 className="text-lg font-bold text-slate-800 mb-4">Order Items</h3>
+                        {order.items.length === 0 ? (
+                            <div className="text-sm text-slate-500 bg-slate-50 border border-slate-200 rounded-xl p-4">
+                                No items in this order.
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                {order.items.map((item: OrderItem) => {
+                                    const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+                                    return (
+                                        <div key={item.id} className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-3">
+                                            <div className="flex items-center gap-3">
+                                                <span className="w-8 h-8 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-xs font-bold text-[#002366]">
+                                                    {item.quantity}x
+                                                </span>
+                                                <span className="font-semibold text-slate-700">{item.name}</span>
+                                            </div>
+                                            <span className="font-bold text-slate-900">
+                                                Rs. {(price * item.quantity).toFixed(2)}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Details Wrapper - Flex Column for Layout */}
-                <div className="flex flex-col flex-1 min-h-0">
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 md:p-6 h-fit">
+                    <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <ReceiptText size={18} className="text-[#002366]" />
+                        Bill Summary
+                    </h3>
 
-                    {/* Location & Date (Fixed Top) */}
-                    <div className="px-[3vh] pt-[3vh] md:px-8 md:pt-8 shrink-0">
-                        <div className="grid grid-cols-2 gap-8 pb-[2vh] border-b border-gray-100">
-                            <div>
-                                <p className="text-gray-400 text-[1.2vh] md:text-xs uppercase font-bold tracking-widest">Location</p>
-                                <p className="text-[1.8vh] md:text-lg font-bold text-gray-800 capitalize">{order.type}: {order.locationId}</p>
-                            </div>
-                            <div>
-                                <p className="text-gray-400 text-[1.2vh] md:text-xs uppercase font-bold tracking-widest">Date</p>
-                                <p className="text-[1.8vh] md:text-lg font-bold text-gray-800">
-                                    {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                </p>
-                            </div>
+                    <div className="space-y-2 text-sm">
+                        <div className="flex justify-between text-slate-600">
+                            <span>Subtotal</span>
+                            <span>Rs. {subtotal.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-slate-600">
+                            <span>Tax (13%)</span>
+                            <span>Rs. {tax.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-base font-bold text-slate-900 pt-3 mt-2 border-t border-slate-200">
+                            <span>Total Amount</span>
+                            <span>Rs. {total.toFixed(2)}</span>
                         </div>
                     </div>
 
-                    {/* Items List Header (non-scrollable) */}
-                    <div className="px-[3vh] md:px-8 pt-[2vh] shrink-0">
-                        <h3 className="text-gray-800 font-bold mb-[1.5vh]">Order Summary</h3>
-                    </div>
+                    <div className="mt-5 space-y-3">
+                        <button
+                            onClick={() => setIsPopupOpen(true)}
+                            className="w-full py-3 bg-[#002366] text-white rounded-xl font-bold hover:bg-primary transition-all flex items-center justify-center gap-2"
+                        >
+                            <Plus size={16} />
+                            Add Items
+                        </button>
 
-                    {/* Items List (Scrollable Middle) */}
-                    <div className="px-[3vh] md:px-8 pb-[2vh] overflow-y-auto flex-1">
-                        <div className="space-y-[1.5vh] md:space-y-4">
-                            {order.items.map((item: any) => (
-                                <div key={item.id} className="flex justify-between items-center">
-                                    <div className="flex items-center gap-3">
-                                        <span className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center text-sm font-bold text-[#002366] shrink-0">
-                                            {item.quantity}x
-                                        </span>
-                                        <span className="font-medium text-gray-700">{item.name}</span>
-                                    </div>
-                                    <span className="font-bold text-gray-900 shrink-0">Rs. {(item.price * item.quantity).toFixed(2)}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                        <button
+                            onClick={() => navigate('/orderForm')}
+                            className="w-full py-3 bg-white border border-slate-300 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-colors"
+                        >
+                            New Order
+                        </button>
 
-                    {/*  Total & Buttons (Fixed Bottom) */}
-                    <div className="px-[3vh] pb-[3vh] md:px-8 md:pb-8 pt-[2vh] bg-gray-50/50 border-t border-gray-100 shrink-0">
-                        <div className="flex justify-between items-center mb-[2vh]">
-                            <span className="text-[2vh] md:text-xl font-bold text-gray-800">Total Amount</span>
-                            <span className="text-[2.5vh] md:text-2xl font-black text-[#002366]">
-                                Rs. {order.items.reduce((sum: number, i: any) => sum + (i.price * i.quantity), 0).toFixed(2)}
-                            </span>
-                        </div>
-
-                        <div className="flex flex-col gap-[1.5vh] md:gap-3">
-                            {/*  Add Order (Keep Context) */}
-                            <Link
-                                to='/cafe-orders'
-                                className="block text-center w-full py-[1.5vh] md:py-4 bg-[#002366] text-white font-bold rounded-xl transition-all hover:bg-primary shadow-lg shadow-[#002366]/10"
-                            >
-                                Order
-                            </Link>
-
-                            <div className="grid grid-cols-2 gap-3">
-                                <button
-                                    onClick={() => setIsPopupOpen(true)}
-                                    className="block text-center w-full py-[1.5vh] md:py-4 bg-white border-2 border-[#002366] text-[#002366] font-bold rounded-xl transition-all hover:bg-slate-50 cursor-pointer text-sm md:text-base"
-                                >
-                                    Add Items
-                                </button>
-
-                                {/*  All Orders (View List) */}
-                                <Link
-                                    to="/orderForm"
-                                    className=" text-center w-full py-[1.2vh] md:py-3 bg-gray-200 text-gray-600 font-semibold rounded-xl hover:bg-gray-300 transition-colors flex items-center justify-center"
-                                >
-                                    New Order
-                                </Link>
-                            </div>
-                        </div>
+                        <button
+                            onClick={() => navigate('/cafe-orders')}
+                            className="w-full py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
+                        >
+                            All Orders
+                        </button>
                     </div>
                 </div>
             </div>
 
-            {/* Modal Overlay moved outside the card for better coverage */}
             {isPopupOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
                         onClick={() => setIsPopupOpen(false)}
                     />
 
-                    {/* Popup Content */}
                     <div className="relative z-10 w-full max-w-6xl mx-auto animate-in zoom-in-95 duration-200">
                         <QuickMenuPopup
                             orderData={{ orderType: order.type, identifier: order.locationId }}
