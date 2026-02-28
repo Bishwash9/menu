@@ -59,7 +59,8 @@ export const LoginForm: React.FC = () => {
                         role: mainBusiness.role,
                         username: mainBusiness.username || '',
                         business_id: mainBusiness.business_id,
-                        business_type: mainBusiness.business_type
+                        business_type: mainBusiness.business_type,
+                        business_uid: mainBusiness.business_uid
                     });
                
                 }else if(response.staff){
@@ -82,7 +83,8 @@ export const LoginForm: React.FC = () => {
                         role: staff.role,
                         username: '',
                         business_id: staff.business_id,
-                        business_type: '' // Staff might not have this, or backend needs to send it
+                        business_type: '', // Staff might not have this, or backend needs to send it
+                        business_uid: '' //fallback to empty string
                     });
                 }
 

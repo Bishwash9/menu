@@ -1,48 +1,87 @@
-import React, { useState } from 'react';
-import { Clock, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Clock, Users, TrendingUp } from 'lucide-react';
 import { IconCurrencyRupeeNepalese } from '@tabler/icons-react';
-import {
-    CafeStatCard,
-    OrderTable,
-    initialOrders,
-
-} from '../Features/CafeOrders';
-import type { CafeOrder, OrderStatus } from '../Features/CafeOrders/Types';
-
+import { CafeStatCard, OrderTable, OrderModal } from '../Features/CafeOrders';
+import type { Order } from '../Types/order';
+import { orderService } from '../Services/orderService';
+import { useAuth } from '../Context/AuthContext';
 
 const CafeOrdersPage: React.FC = () => {
-    const [orders, setOrders] = useState<CafeOrder[]>(initialOrders);
-    const [statusFilter] = useState<OrderStatus | 'All'>('All');
+    const { user } = useAuth();
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    useEffect(() => {
+        fetchOrders();
+    }, []);
 
-    // Calculate stats
+    const fetchOrders = async () => {
+        if (!user?.business_id) {
+            setError('Business ID not found');
+            return;
+        }
+
+        setIsLoading(true);
+        setError('');
+        try {
+            const response = await orderService.getOrders(user.business_id);
+            setOrders(response || []);
+        } catch (err: any) {
+            setError(err.message || 'Failed to fetch orders');
+            console.error('Error fetching orders:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Calculate stats from actual data
     const stats = {
-        pendingOrders: orders.filter(o => o.status === 'Pending' || o.status === 'Preparing').length,
-        activeTables: new Set(orders.filter(o => o.tableNumber && o.status !== 'Completed' && o.status !== 'Cancelled').map(o => o.tableNumber)).size,
-        todayRevenue: orders.filter(o => o.status !== 'Cancelled').reduce((sum, o) => sum + o.total, 0),
+        pendingOrders: orders.filter(o => 
+            o.status_name.toLowerCase().includes('pending') || 
+            o.status_name.toLowerCase().includes('preparing')
+        ).length,
+        activeTables: new Set(
+            orders
+                .filter(o => 
+                    o.table_id && 
+                    !o.status_name.toLowerCase().includes('complete') && 
+                    !o.status_name.toLowerCase().includes('cancelled')
+                )
+                .map(o => o.table_number)
+        ).size,
+        todayRevenue: orders
+            .filter(o => !o.status_name.toLowerCase().includes('cancelled'))
+            .reduce((sum, o) => sum + parseFloat(o.total_amount || '0'), 0),
+        completedOrders: orders.filter(o => 
+            o.status_name.toLowerCase().includes('complete')
+        ).length,
     };
 
-
-
-
-
-    const handleDeleteOrder = (orderId: string) => {
-        setOrders(orders.filter(o => o.id !== orderId));
+    const handleViewOrder = (order: Order) => {
+        setSelectedOrder(order);
+        setIsModalOpen(true);
     };
 
-    const handleStatusChange = (orderId: string, status: OrderStatus) => {
-        setOrders(orders.map(o => o.id === orderId ? { ...o, status } : o));
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedOrder(null);
     };
-
-
-
-
-
 
     return (
         <div className="space-y-6">
+
+            {/* Error Message */}
+            {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                    {error}
+                </div>
+            )}
+
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <CafeStatCard
                     title="Pending Orders"
                     value={stats.pendingOrders}
@@ -57,26 +96,43 @@ const CafeOrdersPage: React.FC = () => {
                 />
                 <CafeStatCard
                     title="Today's Revenue"
-                    value={`${stats.todayRevenue.toFixed(2)}`}
-                    icon={<IconCurrencyRupeeNepalese size={24} className="text-dashboard-accent" />}
+                    value={`Rs. ${stats.todayRevenue.toFixed(2)}`}
+                    icon={<IconCurrencyRupeeNepalese size={24} className="text-[#D4AF37]" />}
                     iconBgColor="bg-[#D4AF37]/20"
                 />
-
+                <CafeStatCard
+                    title="Completed"
+                    value={stats.completedOrders}
+                    icon={<TrendingUp size={24} className="text-blue-600" />}
+                    iconBgColor="bg-blue-100"
+                />
             </div>
 
             {/* Main Content */}
             <div className="w-full">
-                <div className="w-full overflow-x-auto">
+                {isLoading ? (
+                    <div className="bg-white rounded-xl p-8 text-center">
+                        <p className="text-slate-500">Loading orders...</p>
+                    </div>
+                ) : (
                     <OrderTable
-                        orders={statusFilter === 'All' ? orders : orders.filter(o => o.status === statusFilter)}
-                        onDelete={handleDeleteOrder}
-                        onStatusChange={handleStatusChange}
+                        orders={orders}
+                        onView={handleViewOrder}
+                        onRefresh={fetchOrders}
                     />
-                </div>
+                )}
             </div>
+
+            {/* Order Modal */}
+            {selectedOrder && (
+                <OrderModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    order={selectedOrder}
+                />
+            )}
         </div>
     );
-
 };
 
 export default CafeOrdersPage;

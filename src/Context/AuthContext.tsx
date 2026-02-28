@@ -10,7 +10,7 @@ type UserInfo = {
     username: string;
     business_id: number;
     business_type: string;
-    business_uid: string;
+    business_uid?: string;
 }
 
 //defining what the context will hold

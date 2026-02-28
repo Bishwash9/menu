@@ -1,279 +1,183 @@
-import React, { useState, useEffect } from 'react';
-import { X, Plus, Minus, Trash2 } from 'lucide-react';
-import type { CafeOrder, OrderItem, OrderType, OrderStatus, Priority } from '../Types';
-import { ORDER_TYPES, ORDER_STATUSES, PRIORITIES } from '../data';
+import React from 'react';
+import { X, Calendar, Hash, User, MapPin, ShoppingBag } from 'lucide-react';
+import type { Order } from '../../../Types/order';
 
 interface OrderModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSave: (order: Omit<CafeOrder, 'id' | 'orderNumber' | 'createdAt'> | CafeOrder) => void;
-    order?: CafeOrder | null;
-    mode: 'add' | 'edit';
+    order: Order;
 }
 
-export const OrderModal: React.FC<OrderModalProps> = ({
-    isOpen,
-    onClose,
-    onSave,
-    order,
-    mode,
-}) => {
-    const [formData, setFormData] = useState<Omit<CafeOrder, 'id' | 'orderNumber' | 'createdAt'>>({
-        customer: '',
-        type: 'Dine In',
-        items: [],
-        total: 0,
-        status: 'Pending',
-        paymentStatus: 'Pending',
-        priority: 'Normal',
-    });
-
-    useEffect(() => {
-        if (order && mode === 'edit') {
-            setFormData({
-                customer: order.customer,
-                type: order.type,
-                tableNumber: order.tableNumber,
-                roomNumber: order.roomNumber,
-                items: order.items,
-                total: order.total,
-                status: order.status,
-                paymentStatus: order.paymentStatus,
-                priority: order.priority,
-                notes: order.notes,
-            });
-        } else {
-            setFormData({
-                customer: '',
-                type: 'Dine In',
-                items: [],
-                total: 0,
-                status: 'Pending',
-                paymentStatus: 'Pending',
-                priority: 'Normal',
-            });
-        }
-    }, [order, mode, isOpen]);
-
-    const calculateTotal = (items: OrderItem[]) => {
-        return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    };
-
-
-    const updateItemQuantity = (itemId: string, change: number) => {
-        const newItems = formData.items.map(item => {
-            if (item.id === itemId) {
-                const newQty = Math.max(0, item.quantity + change);
-                return { ...item, quantity: newQty };
-            }
-            return item;
-        }).filter(item => item.quantity > 0);
-        
-        setFormData({ ...formData, items: newItems, total: calculateTotal(newItems) });
-    };
-
-    const removeItem = (itemId: string) => {
-        const newItems = formData.items.filter(item => item.id !== itemId);
-        setFormData({ ...formData, items: newItems, total: calculateTotal(newItems) });
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (mode === 'edit' && order) {
-            onSave({ ...formData, id: order.id, orderNumber: order.orderNumber, createdAt: order.createdAt });
-        } else {
-            onSave(formData);
-        }
-        onClose();
-    };
-
+export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, order }) => {
     if (!isOpen) return null;
 
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+    };
+
+    const getStatusColor = (status: string) => {
+        const statusLower = status.toLowerCase();
+        if (statusLower.includes('pending')) return 'bg-yellow-100 text-yellow-700';
+        if (statusLower.includes('preparing')) return 'bg-blue-100 text-blue-700';
+        if (statusLower.includes('ready')) return 'bg-purple-100 text-purple-700';
+        if (statusLower.includes('served')) return 'bg-green-100 text-green-700';
+        if (statusLower.includes('complete')) return 'bg-slate-100 text-slate-700';
+        if (statusLower.includes('cancel')) return 'bg-red-100 text-red-700';
+        return 'bg-slate-100 text-slate-600';
+    };
+
+    const getItemStatusColor = (status: string) => {
+        const statusLower = status.toLowerCase();
+        if (statusLower.includes('pending')) return 'bg-yellow-50 text-yellow-700 border-yellow-200';
+        if (statusLower.includes('cooking') || statusLower.includes('preparing')) return 'bg-orange-50 text-orange-700 border-orange-200';
+        if (statusLower.includes('cooked') || statusLower.includes('ready')) return 'bg-green-50 text-green-700 border-green-200';
+        return 'bg-slate-50 text-slate-700 border-slate-200';
+    };
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-            <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-slate-200 sticky top-0 bg-white">
-                    <h2 className="text-xl font-bold text-[#002366]">
-                        {mode === 'add' ? 'New Order' : 'Edit Order'}
-                    </h2>
+                <div className="sticky top-0 bg-white p-6 border-b border-slate-200 flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-[#002366]/10 rounded-lg">
+                            <ShoppingBag size={24} className="text-[#002366]" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl md:text-2xl font-bold text-[#002366]">
+                                Order #{order.order_number}
+                            </h2>
+                            <p className="text-sm text-slate-500">{order.business_name}</p>
+                        </div>
+                    </div>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-slate-100 rounded-full transition-colors"
                     >
-                        <X size={20} className="text-slate-500" />
+                        <X size={24} />
                     </button>
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Customer Name
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.customer}
-                                onChange={(e) => setFormData({ ...formData, customer: e.target.value })}
-                                placeholder="Walk-in Customer"
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
-                            />
+                {/* Content */}
+                <div className="p-6 space-y-6">
+                    {/* Order Info */}
+                    <div className="bg-slate-50 p-4 rounded-lg space-y-3">
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                                <Hash size={18} className="text-[#002366]" />
+                                <span className="text-sm text-slate-600">Order ID:</span>
+                                <span className="font-semibold text-slate-900">{order.id}</span>
+                            </div>
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status_name)}`}>
+                                {order.status_name}
+                            </span>
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Order Type
-                            </label>
-                            <select
-                                value={formData.type}
-                                onChange={(e) => setFormData({ ...formData, type: e.target.value as OrderType })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
-                            >
-                                {ORDER_TYPES.map(type => (
-                                    <option key={type} value={type}>{type}</option>
-                                ))}
-                            </select>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="flex items-center gap-2">
+                                <MapPin size={18} className="text-[#002366]" />
+                                <span className="text-sm text-slate-600">Location:</span>
+                                <span className="font-medium text-slate-900">
+                                    {order.is_room_order ? `Room ${order.room_id}` : `Table ${order.table_id || order.table_id}`}
+                                </span>
+                            </div>
+                            
+                            <div className="flex items-center gap-2">
+                                <User size={18} className="text-[#002366]" />
+                                <span className="text-sm text-slate-600">Type:</span>
+                                <span className="font-medium text-slate-900">{order.order_type_name}</span>
+                            </div>
+                            
+                            <div className="flex items-center gap-2">
+                                <Calendar size={18} className="text-[#002366]" />
+                                <span className="text-sm text-slate-600">Created:</span>
+                                <span className="font-medium text-slate-900 text-sm">{formatDate(order.created_at)}</span>
+                            </div>
+                            
+                            {order.served_by && (
+                                <div className="flex items-center gap-2">
+                                    <User size={18} className="text-[#002366]" />
+                                    <span className="text-sm text-slate-600">Served By:</span>
+                                    <span className="font-medium text-slate-900">{order.served_by}</span>
+                                </div>
+                            )}
                         </div>
                     </div>
-
-                    {formData.type === 'Dine In' && (
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Table Number
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.tableNumber || ''}
-                                onChange={(e) => setFormData({ ...formData, tableNumber: e.target.value })}
-                                placeholder="e.g., T1"
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
-                            />
-                        </div>
-                    )}
-
-                    {formData.type === 'Room Service' && (
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Room Number
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.roomNumber || ''}
-                                onChange={(e) => setFormData({ ...formData, roomNumber: e.target.value })}
-                                placeholder="e.g., 201"
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
-                            />
-                        </div>
-                    )}
-
 
                     {/* Order Items */}
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Order Items
-                        </label>
-                        <div className="border border-slate-200 rounded-lg overflow-hidden">
-                            {formData.items.length === 0 ? (
-                                <div className="p-4 text-center text-slate-500">
-                                    No items added yet
-                                </div>
-                            ) : (
-                                <div className="divide-y divide-slate-100">
-                                    {formData.items.map(item => (
-                                        <div key={item.id} className="flex items-center justify-between p-3 hover:bg-slate-50">
-                                            <div>
-                                                <p className="font-medium text-slate-800">{item.name}</p>
-                                                <p className="text-sm text-slate-500">RS{item.price} each</p>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex items-center gap-2">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => updateItemQuantity(item.id, -1)}
-                                                        className="p-1 hover:bg-slate-200 rounded"
-                                                    >
-                                                        <Minus size={16} />
-                                                    </button>
-                                                    <span className="w-8 text-center font-medium">{item.quantity}</span>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => updateItemQuantity(item.id, 1)}
-                                                        className="p-1 hover:bg-slate-200 rounded"
-                                                    >
-                                                        <Plus size={16} />
-                                                    </button>
-                                                </div>
-                                                <span className="font-medium text-[#002366] w-20 text-right">
-                                                    RS{item.price * item.quantity}
+                        <h3 className="text-lg font-semibold text-slate-700 mb-3">Order Items</h3>
+                        <div className="space-y-2">
+                            {order.items.map((item) => (
+                                <div key={item.id} className="bg-white border border-slate-200 rounded-lg p-4">
+                                    <div className="flex justify-between items-start gap-4">
+                                        <div className="flex-1">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <h4 className="font-semibold text-slate-900">{item.food_item_name}</h4>
+                                                <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getItemStatusColor(item.status_name)}`}>
+                                                    {item.status_name}
                                                 </span>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeItem(item.id)}
-                                                    className="p-1 text-red-500 hover:bg-red-50 rounded"
-                                                >
-                                                    <Trash2 size={16} />
-                                                </button>
                                             </div>
+                                            <div className="flex items-center gap-4 text-sm text-slate-600">
+                                                <span>Qty: <strong>{item.quantity}</strong></span>
+                                                <span>@ Rs. {parseFloat(item.unit_price).toFixed(2)}</span>
+                                                <span className="ml-auto font-semibold text-slate-900">Rs. {parseFloat(item.total_price).toFixed(2)}</span>
+                                            </div>
+                                            {item.note && (
+                                                <p className="text-sm text-slate-500 mt-2 italic">Note: {item.note}</p>
+                                            )}
                                         </div>
-                                    ))}
+                                    </div>
                                 </div>
-                            )}
-                            <div className="bg-slate-50 p-3 flex justify-between items-center border-t border-slate-200">
-                                <span className="font-medium text-slate-700">Total</span>
-                                <span className="text-xl font-bold text-[#002366]">RS{formData.total.toFixed(2)}</span>
-                            </div>
+                            ))}
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    {/* Order Notes */}
+                    {order.notes && (
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Status
-                            </label>
-                            <select
-                                value={formData.status}
-                                onChange={(e) => setFormData({ ...formData, status: e.target.value as OrderStatus })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
-                            >
-                                {ORDER_STATUSES.map(status => (
-                                    <option key={status} value={status}>{status}</option>
-                                ))}
-                            </select>
+                            <h3 className="text-lg font-semibold text-slate-700 mb-2">Order Notes</h3>
+                            <p className="text-slate-600 bg-slate-50 p-3 rounded-lg">{order.notes}</p>
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Priority
-                            </label>
-                            <select
-                                value={formData.priority}
-                                onChange={(e) => setFormData({ ...formData, priority: e.target.value as Priority })}
-                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
-                            >
-                                {PRIORITIES.map(priority => (
-                                    <option key={priority} value={priority}>{priority}</option>
-                                ))}
-                            </select>
+                    )}
+
+                    {/* Price Breakdown */}
+                    <div className="bg-slate-50 p-4 rounded-lg space-y-2">
+                        <h3 className="text-lg font-semibold text-slate-700 mb-3">Price Breakdown</h3>
+                        <div className="flex justify-between text-sm">
+                            <span className="text-slate-600">Subtotal:</span>
+                            <span className="font-medium">Rs. {parseFloat(order.subtotal).toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                            <span className="text-slate-600">Tax:</span>
+                            <span className="font-medium">Rs. {parseFloat(order.tax).toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                            <span className="text-slate-600">Discount:</span>
+                            <span className="font-medium text-green-600">- Rs. {parseFloat(order.discount).toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-lg font-bold border-t border-slate-300 pt-2 mt-2">
+                            <span>Total Amount:</span>
+                            <span className="text-[#002366]">Rs. {parseFloat(order.total_amount).toFixed(2)}</span>
                         </div>
                     </div>
 
-                    {/* Footer */}
-                    <div className="flex gap-3 pt-4">
+                    {/* Close Button */}
+                    <div className="flex justify-end pt-4 border-t">
                         <button
-                            type="button"
                             onClick={onClose}
-                            className="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+                            className="px-6 py-2.5 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
                         >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="flex-1 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-primary transition-colors"
-                        >
-                            {mode === 'add' ? 'Create Order' : 'Save Changes'}
+                            Close
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

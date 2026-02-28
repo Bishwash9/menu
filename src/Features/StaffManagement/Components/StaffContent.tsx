@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
-import type { Employee, EmployeeStatus } from '../Types';
-import { STATUSES } from '../data';
+import type { Staff as Employee } from '../../../Types/staff';
 
 interface StaffContentProps {
     employees: Employee[];
@@ -14,42 +13,34 @@ export const StaffContent: React.FC<StaffContentProps> = ({
 
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [statusFilter, setStatusFilter] = useState<EmployeeStatus | 'All'>('All');
+    const [statusFilter, setStatusFilter] = useState<string>('All');
+
+    const uniqueStatuses = ['All', ...new Set(employees.map(emp => emp.status_name))];
 
     const filteredEmployees = employees.filter(emp => {
-        const matchesSearch = emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            emp.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        const matchesSearch = 
+            emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             emp.phone.includes(searchQuery);
-        const matchesStatus = statusFilter === 'All' || emp.status === statusFilter;
+        const matchesStatus = statusFilter === 'All' || emp.status_name === statusFilter;
         return matchesSearch && matchesStatus;
     });
 
     const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'Active':
+        switch (status.toLowerCase()) {
+            case 'active':
                 return 'bg-green-100 text-green-700';
-            case 'On Leave':
+            case 'on leave':
                 return 'bg-yellow-100 text-yellow-700';
-            case 'Inactive':
+            case 'inactive':
                 return 'bg-red-100 text-red-700';
             default:
                 return 'bg-gray-100 text-gray-700';
         }
     };
 
-    const getShiftColor = (shift: string) => {
-        switch (shift) {
-            case 'Morning Shift':
-                return 'text-blue-600';
-            case 'Evening Shift':
-                return 'text-purple-600';
-            case 'Night Shift':
-                return 'text-slate-600';
-            default:
-                return 'text-slate-600';
-        }
-    };
+  
 
+   
     return (
         <div className="space-y-4">
             {/* Search and Filter */}
@@ -58,19 +49,18 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                     <Search className="absolute left-3 top-3 text-slate-400" size={18} />
                     <input
                         type="text"
-                        placeholder="Search staff by name, email, or phone..."
+                        placeholder="Search staff by name or phone..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
+                        className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20"
                     />
                 </div>
                 <select
                     value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value as any)}
-                    className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-status-confirmed/20"
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20"
                 >
-                    <option value="All">All Status</option>
-                    {STATUSES.map(status => (
+                    {uniqueStatuses.map(status => (
                         <option key={status} value={status}>{status}</option>
                     ))}
                 </select>
@@ -85,78 +75,45 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                 </button>
             </div>
 
-            {/* Tabs */}
-            <div className="flex gap-2 border-b border-slate-300">
-                <button className="px-4 py-2 text-[#D4AF37] font-bold border-b-2 border-[#D4AF37]">
-                    All Staff
-                </button>
-                <button className="px-4 py-2 text-slate-600 font-bold hover:text-slate-800">
-                    Active
-                </button>
-                <button className="px-4 py-2 text-slate-600 font-bold hover:text-slate-800">
-                    On Leave
-                </button>
-                <button className="px-4 py-2 text-slate-600 font-bold hover:text-slate-800">
-                    Recently Joined
-                </button>
-            </div>
-
-            {/* Table */}
+            {/* Staff List */}
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                        <thead className="bg-slate-100 border-b border-slate-200">
-                            <tr className="bg-slate-100">
-                                <th className="px-4 py-3 text-left font-bold text-slate-700">EMPLOYEE</th>
-                                <th className="px-4 py-3 text-left font-bold text-slate-700">CONTACT</th>
-                                <th className="px-4 py-3 text-left font-bold text-slate-700">ROLE</th>
-                                <th className="px-4 py-3 text-left font-bold text-slate-700">SHIFT</th>
-                                <th className="px-4 py-3 text-left font-bold text-slate-700">STATUS</th>
-
+                <table className="w-full">
+                    <thead className="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th className="px-6 py-3 text-left text-sm font-bold text-slate-700">Name</th>
+                            <th className="px-6 py-3 text-left text-sm font-bold text-slate-700">Phone</th>
+                            <th className="px-6 py-3 text-left text-sm font-bold text-slate-700">Role</th>
+                            <th className="px-6 py-3 text-left text-sm font-bold text-slate-700">Shift</th>
+                            <th className="px-6 py-3 text-left text-sm font-bold text-slate-700">Status</th>
+                            <th className="px-6 py-3 text-left text-sm font-bold text-slate-700">Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredEmployees.map(emp => (
+                            <tr key={emp.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                                <td className="px-6 py-4 text-sm font-medium text-slate-800">{emp.name}</td>
+                                <td className="px-6 py-4 text-sm text-slate-600">{emp.phone}</td>
+                                <td className="px-6 py-4 text-sm text-slate-600">{emp.role_name}</td>
+                                <td className="px-6 py-4 text-sm text-slate-600">{emp.shift_name}</td>
+                                <td className="px-6 py-4">
+                                    <span className={`text-xs font-bold px-3 py-1 rounded-full ${getStatusColor(emp.status_name)}`}>
+                                        {emp.status_name}
+                                    </span>
+                                </td>
+                                <td className="px-6 py-4 text-sm text-slate-600">
+                                    {new Date(emp.created_at).toLocaleDateString()}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-200">
-                            {filteredEmployees.map((employee) => (
-                                <tr key={employee.id} className="hover:bg-slate-50 transition-colors">
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${employee.avatarColor === 'royal' ? 'bg-status-confirmed' : 'bg-dashboard-accent'}`}>
-                                                {employee.name.charAt(0)}
-                                            </div>
-                                            <div>
-                                                <p className="font-bold text-slate-800">{employee.name}</p>
-                                                <p className="text-xs text-slate-500">Joined: {new Date(employee.joinDate).toLocaleDateString()}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <div className="text-sm">
-                                            <p className="text-slate-800"> {employee.email}</p>
-                                            <p className="text-slate-600"> {employee.phone}</p>
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-3 text-slate-800 font-medium"> {employee.role}</td>
-                                    <td className={`px-4 py-3 font-medium ${getShiftColor(employee.shift)}`}>
-                                        {employee.shift}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <span className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(employee.status)}`}>
-                                            {employee.status}
-                                        </span>
-                                    </td>
+                        ))}
+                    </tbody>
+                </table>
 
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                {filteredEmployees.length === 0 && (
+                    <div className="text-center py-8 text-slate-500">
+                        No staff members found
+                    </div>
+                )}
             </div>
-
-            {filteredEmployees.length === 0 && (
-                <div className="text-center py-8 text-slate-500">
-                    No employees found. Try adjusting your filters.
-                </div>
-            )}
         </div>
     );
 };

@@ -4,7 +4,7 @@ export type {OrderItem} from './Types';
 export type {PaymentStatus} from './Types';
 export type {Priority} from './Types';
 export type {CafeOrder} from './Types';
-export {ORDER_STATUSES,ORDER_TYPES,PRIORITIES,initialOrders} from './data';
+// export {ORDER_STATUSES,ORDER_TYPES,PRIORITIES,initialOrders} from './data';
 export {CafeStatCard} from './Components/CafeStatCard';
 export {OrderModal} from './Components/OrderModal';
 export {OrderTable} from './Components/OrderTable';
