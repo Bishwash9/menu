@@ -11,6 +11,13 @@ export interface Guest {
     updated_at: string;
 }
 
+export interface CreateGuestRequest{
+    name: string;
+    phone: string;
+    verify_id: number;
+    status_id: number;
+}
+
 export interface GuestResponse{
     data: Guest[];
 }

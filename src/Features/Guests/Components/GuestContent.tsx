@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import type { Guest } from '../../../Types/guest';
 
 interface GuestContentProps {
     guests: Guest[];
     onEdit?: (guest: Guest) => void;
     onDelete?: (guestId: number) => void;
+    onAddNew: () => void;
 }
 
 export const GuestContent: React.FC<GuestContentProps> = ({
     guests,
+    onAddNew,
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('All');
@@ -62,12 +64,20 @@ export const GuestContent: React.FC<GuestContentProps> = ({
                         <option key={status} value={status}>{status}</option>
                     ))}
                 </select>
+
+                <button
+                onClick={onAddNew}
+                className='px-4 py-2 bg-primary text-white rounded-lg flex items-center gap-2 hover:bg-primary-dark transition-colors font-bold'>
+    
+                    <Plus size={18} />
+                    Add Guest
+                </button>
                 <button
                     onClick={() => {
                         setSearchQuery('');
                         setStatusFilter('All');
                     }}
-                    className="px-4 py-2 text-[#D4AF37] font-bold hover:underline"
+                    className="px-4 py-2 text-accent font-bold hover:underline"
                 >
                     Clear
                 </button>

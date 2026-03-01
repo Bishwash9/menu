@@ -108,6 +108,10 @@ function GuestsPage() {
                         guests={guests}
                         onEdit={handleViewGuest}
                         onDelete={() => {}}
+                        onAddNew={() =>{
+                            setSelectedGuest(null)
+                            setIsModalOpen(true)
+                        }}
                     />
                 )}
             </div>
@@ -120,6 +124,7 @@ function GuestsPage() {
                     setSelectedGuest(null);
                 }}
                 guest={selectedGuest || undefined}
+                onGuestAdded={fetchGuests}
             />
         </div>
     );
