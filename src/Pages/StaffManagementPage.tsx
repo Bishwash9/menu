@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Users, UserCheck, UserX, Briefcase } from 'lucide-react';
+import {  Users, UserCheck, UserX, Briefcase } from 'lucide-react';
 import {
     StaffStatCard,
     StaffModal,
@@ -29,7 +29,7 @@ function StaffManagementPage() {
     }
 
     setIsLoading(true);
-    setError('')
+    setError('');
     try {
         const response = await staffService.getStaff(user?.business_id);
         
@@ -54,24 +54,11 @@ function StaffManagementPage() {
         setIsModalOpen(true);
     };
 
-    const handleAddStaff = () => {
-        // TODO: Implement when API endpoint is ready
-        alert('Add staff feature coming soon!');
-    };
+    
 
     return (
         <div className="space-y-6">
-            {/* Page Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              
-                <button
-                    onClick={handleAddStaff}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#002366] text-white font-bold hover:bg-primary-hover transition-colors shadow-sm cursor-pointer"
-                >
-                    <Plus size={18} />
-                    Add Staff
-                </button>
-            </div>
+          
 
             {/* Error Message */}
             {error && (
