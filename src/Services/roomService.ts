@@ -1,10 +1,10 @@
 import { apiClient } from "../Config/api";
-import type { Room } from "../Types/room";
+import type { CreateRoomRequest, Room } from "../Types/room";
 
 export const roomService = {
 
     getRooms: async (businessId: number): Promise<Room[]> => {
-        const response = await apiClient(`room/b${businessId}`, {
+        const response = await apiClient(`room/b${businessId}/`, {
             method: 'GET'
         });
 
@@ -16,7 +16,7 @@ export const roomService = {
     },
 
     getRoomById: async (businessId: number, roomId: number): Promise<Room> => {
-        const response = await apiClient(`room/b${businessId}/${roomId}`, {
+        const response = await apiClient(`room/b${businessId}/${roomId}/`, {
             method: 'GET'
         });
 
@@ -27,8 +27,8 @@ export const roomService = {
         return response.data || response;
     },
 
-    createRoom: async (businessId: number, roomData: Omit<Room, 'id'>): Promise<Room> => {
-        const response = await apiClient(`room/b${businessId}`, {
+    createRoom: async (businessId: number,roomData:CreateRoomRequest): Promise<Room> => {
+        const response = await apiClient(`room/b${businessId}/`, {
             method: 'POST',
             body: JSON.stringify(roomData)
         });
@@ -37,6 +37,6 @@ export const roomService = {
             throw new Error('Failed to create room. Please try again later.');
         }
 
-        return response.data || response;
+        return response.room || response.data || response;
     }
 }

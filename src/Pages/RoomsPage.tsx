@@ -8,7 +8,10 @@ import {
     
 } from '../Features/Rooms';
 import type {  RoomStats } from '../Features/Rooms/Types';
-import type { Room } from '../Types/room';
+import type {  Room } from '../Types/room';
+import { useAuth } from '../Context/AuthContext';
+
+
 
 
 const RoomsPage: React.FC = () => {
@@ -20,6 +23,7 @@ const RoomsPage: React.FC = () => {
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
     const [roomStatusFilter, setRoomStatusFilter] = useState<'All' | 'Available' | 'Occupied' | 'Cleaning' | 'Maintenance'>('All');
 
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchRooms = async () =>{
@@ -35,6 +39,7 @@ const RoomsPage: React.FC = () => {
                     business_id: r.business_id,
                     room_number: r.room_number,
                     room_type_name: r.room_type_name,
+                    room_type_id: r.room_type_id,
                     business_name: r.business_name,
                     status_name: r.status_name,
                     status_id: r.status_id,
@@ -93,19 +98,17 @@ const RoomsPage: React.FC = () => {
         setRooms(rooms.filter(r => r.id !== roomId));
     };
 
-    const handleSaveRoom = (roomData: Omit<Room, 'id'> | Room) => {
-        if ('id' in roomData) {
-            // Update existing room
-            setRooms(rooms.map(r => r.id === roomData.id ? roomData : r));
-        } else {
-            // Add new room
-            const newRoom: Room = {
-                ...roomData,
-                id: Date.now(),
-            };
-            setRooms([...rooms, newRoom]);
-        }
-    };
+        const handleSaveRoom = async (roomData: any) => {
+                const businessId = user?.business_id || JSON.parse(localStorage.getItem('userData') || '{}')?.business_id;
+
+                if (!businessId) {
+                        throw new Error('Business ID not found. Please log in again.');
+                }
+
+                if (modalMode === 'add') {
+                        await roomService.createRoom(businessId, roomData);
+                }
+        };
 
     return (
         <div className="space-y-6">
@@ -202,7 +205,17 @@ const RoomsPage: React.FC = () => {
             <RoomModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSave={handleSaveRoom}
+                onSave={async (roomData) => {
+                    try {
+                        await handleSaveRoom(roomData);
+                        setIsModalOpen(false);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 100);
+                    } catch (err: any) {
+                        setError(err?.message || 'Failed to save room.');
+                    }
+                }}
                 room={selectedRoom}
                 mode={modalMode}
             />

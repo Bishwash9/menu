@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import type { Amenities, Room } from '../../../Types/room';
-// import { stat } from 'fs';
-// import { ROOM_TYPES, ROOM_STATUSES, FLOORS, AMENITIES } from '../data';
+import type { Room } from '../../../Types/room';
 
 interface RoomModalProps {
     isOpen: boolean;
@@ -21,70 +19,42 @@ export const RoomModal: React.FC<RoomModalProps> = ({
 }) => {
    const [formData, setFormData] = useState({
         room_number: '',
-        room_type_name: '',
-        floor: 0,
-        status_name: '',
+        room_type_id: 0,
+        status_id: 1,
+        floor: 1,
         price: '',
-        status_id: 0,
-        business_id: 0,
-        capacity: 0,
-        business_name: '',
-        amenities: [] as Amenities[],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        capacity: 1,
+        amenity_ids: [] as number[],
    });
 
     useEffect(() => {
         if (room && mode === 'edit') {
             setFormData({
                 room_number: room.room_number,
-                room_type_name: room.room_type_name,
-                floor: room.floor,
-                status_name: room.status_name,
-                price: room.price,
+                room_type_id: room.room_type_id || 0,
                 status_id: room.status_id,
-                business_id: room.business_id,
+                floor: room.floor,
+                price: room.price,
                 capacity: room.capacity,
-                business_name: room.business_name,
-                amenities: room.amenities || [],
-                created_at: room.created_at,
-                updated_at: room.updated_at,
+                amenity_ids: room.amenities?.map(a => a.amenity_id) || [],
             });
         } else {
             setFormData({
                 room_number: '',
-                room_type_name: '',
-                floor: 0,
-                status_name: '',
+                room_type_id: 0,
+                status_id: 1,
+                floor: 1,
                 price: '',
-                status_id: 0,
-                business_id: 0,
-                business_name: '',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-                capacity: 0,
-                amenities: [],
+                capacity: 1,
+                amenity_ids: [],
             });
         }
     }, [room, mode, isOpen]);
 
-    // const handleAmenityToggle = (amenity: string) => {
-    //     setFormData(prev => ({
-    //         ...prev,
-    //         amenities: prev.amenities.includes(amenity)
-    //             ? prev.amenities.filter(a => a !== amenity)
-    //             : [...prev.amenities, amenity],
-    //     }));
-    // };
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit =  (e: React.FormEvent) => {
         e.preventDefault();
-        if (mode === 'edit' && room) {
-            onSave({ ...formData, id: room.id, amenities: formData.amenities});
-        } else {
-            onSave({...formData, amenities: formData.amenities});
-        }
-        onClose();
+        onSave(formData as any);
+    
     };
 
     if (!isOpen) return null;
@@ -126,11 +96,14 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                                 Room Type *
                             </label>
                             <select
-                                value={formData.room_type_name}
-                                onChange={(e) => setFormData({ ...formData, room_type_name: e.target.value })}
+                                value={formData.room_type_id}
+                                onChange={(e) => setFormData({ ...formData, room_type_id: Number(e.target.value) })}
                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
                             >
-                                
+                                <option value="0">Select Type</option>
+                                <option value="1">Normal</option>
+                                <option value="2">Deluxe</option>
+                                <option value="3">Suite</option>
                             </select>
                         </div>
                     </div>
@@ -145,7 +118,11 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                                 onChange={(e) => setFormData({ ...formData, floor: Number(e.target.value) })}
                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
                             >
-                           
+                                <option value="1">1st Floor</option>
+                                <option value="2">2nd Floor</option>
+                                <option value="3">3rd Floor</option>
+                                <option value="4">4th Floor</option>
+                                <option value="5">5th Floor</option>
                             </select>
                         </div>
                         <div>
@@ -153,15 +130,14 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                                 Status
                             </label>
                             <select
-                                value={formData.status_name}
-                                onChange={(e) => setFormData({ ...formData, status_name: e.target.value })}
+                                value={formData.status_id}
+                                onChange={(e) => setFormData({ ...formData, status_id: Number(e.target.value) })}
                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366]"
                             >
-                                    <option value="Available">Available</option>
-                                    <option value="Occupied">Occupied</option>
-                                    <option value="Cleaning">Cleaning</option>
-                                    <option value="Maintenance">Maintenance</option>
-
+                                <option value="1">Available</option>
+                                <option value="2">Occupied</option>
+                                <option value="3">Cleaning</option>
+                                <option value="4">Maintenance</option>
                             </select>
                         </div>
                     </div>
@@ -195,40 +171,43 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                         </div>
                     </div>
 
-                    {/* <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                    {/* Amenities */}
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-3">
                             Amenities
                         </label>
-                        <div className="flex flex-wrap gap-2">
-                            {AMENITIES.map(amenity => (
-                                <button
-                                    key={amenity}
-                                    type="button"
-                                    onClick={() => handleAmenityToggle(amenity)}
-                                    className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
-                                        formData.amenities.includes(amenity)
-                                            ? 'bg-[#002366] text-white border-[#002366]'
-                                            : 'bg-white text-slate-600 border-slate-300 hover:border-[#002366]'
-                                    }`}
-                                >
-                                    {amenity}
-                                </button>
+                        <div className="grid grid-cols-3 gap-3">
+                            {[
+                                { id: 1, name: 'WiFi' },
+                                { id: 2, name: 'TV' },
+                                { id: 3, name: 'AC' },
+                                { id: 4, name: 'Mini Bar' },
+                                { id: 5, name: 'Hot Water' },
+                            ].map(amenity => (
+                                <label key={amenity.id} className="flex items-center gap-2 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.amenity_ids.includes(amenity.id)}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    amenity_ids: [...prev.amenity_ids, amenity.id]
+                                                }));
+                                            } else {
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    amenity_ids: prev.amenity_ids.filter(id => id !== amenity.id)
+                                                }));
+                                            }
+                                        }}
+                                        className="w-4 h-4"
+                                    />
+                                    <span className="text-sm text-slate-600">{amenity.name}</span>
+                                </label>
                             ))}
                         </div>
-                    </div> */}
-
-                    {/* <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">
-                            Description
-                        </label>
-                        <textarea
-                            value={formData.description}
-                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20 focus:border-[#002366] resize-none"
-                            rows={3}
-                            placeholder="Optional room description..."
-                        />
-                    </div> */}
+                    </div>
 
                     {/* Footer */}
                     <div className="flex gap-3 pt-4">
@@ -241,7 +220,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-primary transition-colors"
+                            className="flex-1 px-4 py-2.5 bg-[#002366] text-white rounded-lg font-medium hover:bg-[#001a47] transition-colors"
                         >
                             {mode === 'add' ? 'Add Room' : 'Save Changes'}
                         </button>

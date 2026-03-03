@@ -3,6 +3,7 @@ export interface Room {
     business_id: number;
     business_name: string;
     room_number: string;
+    room_type_id: number;
     room_type_name: string; //UI will use this instead of room_type_id
     capacity: number;
     price: string;
@@ -17,6 +18,16 @@ export interface Room {
 export interface Amenities{
     amenity_id: number;
     amenity_name: string;
+}
+
+export interface CreateRoomRequest{
+    room_number: string;
+    room_type_id: number;
+    status_id: number;
+    capacity: number;
+    price: string;
+    floor: number;
+    amenity_ids: number[];
 }
 
 export interface RoomResponse {
