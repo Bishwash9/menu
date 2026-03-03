@@ -32,6 +32,7 @@ function StaffManagementPage() {
     setError('')
     try {
         const response = await staffService.getStaff(user?.business_id);
+        
         setEmployees(response || []);
     } catch (err: any) {
         setError(err.message || 'Failed to fetch staff');
@@ -122,6 +123,10 @@ function StaffManagementPage() {
                         employees={employees}
                         onEdit={handleViewStaff}
                         onDelete={() => {}}
+                        onAddNew={() => {
+                            setSelectedStaff(null);
+                            setIsModalOpen(true);
+                        }}
                     />
                 )}
             </div>
@@ -129,11 +134,9 @@ function StaffManagementPage() {
             {/* Staff Details Modal */}
             <StaffModal
                 isOpen={isModalOpen}
-                onClose={() => {
-                    setIsModalOpen(false);
-                    setSelectedStaff(null);
-                }}
+                onClose = {() => setIsModalOpen(false)}
                 staff={selectedStaff || undefined}
+                onStaffAdded={fetchStaff}
             />
         </div>
     );

@@ -1,5 +1,5 @@
 import { apiClient } from "../Config/api";
-import type { Staff } from "../Types/staff";
+import type { CreateStaffRequest, Staff } from "../Types/staff";
 
 export const staffService = {
     getStaff: async (businessId: number): Promise<Staff[]> => {
@@ -11,6 +11,22 @@ export const staffService = {
             throw new Error('Failed to fetch staff. Please try again later.');
         }
 
-        return Array.isArray(response) ? response : (response.data || response);
+        return response?.staff || [];
+    },
+    
+    addStaff: async (businessId: number, staffData: CreateStaffRequest) => {
+        const response = await apiClient (`staff/b${businessId}/`, {
+            method: 'POST',
+            body: JSON.stringify(staffData)
+        });
+
+         if(!response){
+            throw new Error('Failed to create staff. Please try again later.');
+         }
+
+        return response.staff || response;
     }
+
+
+   
 }

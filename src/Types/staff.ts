@@ -14,6 +14,14 @@ export interface Staff{
     updated_at: string;
 }
 
+export interface CreateStaffRequest {
+    role: number;
+    shift: number;
+    name: string;
+    phone: string;
+    password: string;
+}
+
 export interface StaffResponse {
     data: Staff[];
 }

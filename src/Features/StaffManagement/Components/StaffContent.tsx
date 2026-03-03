@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Plus } from 'lucide-react';
 import type { Staff as Employee } from '../../../Types/staff';
 
 interface StaffContentProps {
     employees: Employee[];
     onEdit?: (employee: Employee) => void;
     onDelete?: (employeeId: string) => void;
+    onAddNew?: () => void;
 }
 
 export const StaffContent: React.FC<StaffContentProps> = ({
     employees,
+    onAddNew,
 
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -64,6 +66,14 @@ export const StaffContent: React.FC<StaffContentProps> = ({
                         <option key={status} value={status}>{status}</option>
                     ))}
                 </select>
+
+                <button
+                onClick={onAddNew}
+                className="px-4 py-2 bg-[#002366] text-white font-bold rounded-lg hover:bg-[#001a47] transition-colors flex items-center gap-2">
+                    <Plus size={18} />
+                    Add Staff
+                </button>
+
                 <button
                     onClick={() => {
                         setSearchQuery('');
