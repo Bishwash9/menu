@@ -87,21 +87,19 @@ export const RoomCard: React.FC<RoomCardProps> = ({
 
             {/* Amenities */}
             <div className="p-4">
-                {/* <div className="flex flex-wrap gap-1.5 mb-3">
-                    {room.amenities.slice(0, 3).map((amenity, idx) => (
+             {room.amenities && room.amenities.length > 0 && (
+                <div className="mb-3 flex items-center gap-2 flex-wrap">
+                    <label className="font-bold text-slate-400">Amenities:</label>
+                    {room.amenities.map((amenity) => (
                         <span
-                            key={idx}
-                            className="px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded"
+                            key={amenity.amenity_id}
+                            className="px-[0.3vw] py-[0.3vh] bg-accent text-primary text-xs font-bold rounded-md"
                         >
-                            {amenity}
+                            {amenity.amenity_name}
                         </span>
                     ))}
-                    {room.amenities.length > 3 && (
-                        <span className="px-2 py-0.5 text-xs bg-[#002366]/10 text-[#002366] rounded">
-                            +{room.amenities.length - 3}
-                        </span>
-                    )}
-                </div> */}
+                </div>
+             )}
 
                 {/* Price */}
                 <div className="flex items-center justify-between">

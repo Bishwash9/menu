@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import type { Room } from '../../../Types/room';
+import type { Amenities, Room } from '../../../Types/room';
 // import { stat } from 'fs';
 // import { ROOM_TYPES, ROOM_STATUSES, FLOORS, AMENITIES } from '../data';
 
@@ -29,6 +29,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({
         business_id: 0,
         capacity: 0,
         business_name: '',
+        amenities: [] as Amenities[],
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
    });
@@ -45,6 +46,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                 business_id: room.business_id,
                 capacity: room.capacity,
                 business_name: room.business_name,
+                amenities: room.amenities || [],
                 created_at: room.created_at,
                 updated_at: room.updated_at,
             });
@@ -61,6 +63,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString(),
                 capacity: 0,
+                amenities: [],
             });
         }
     }, [room, mode, isOpen]);
@@ -77,9 +80,9 @@ export const RoomModal: React.FC<RoomModalProps> = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (mode === 'edit' && room) {
-            onSave({ ...formData, id: room.id });
+            onSave({ ...formData, id: room.id, amenities: formData.amenities});
         } else {
-            onSave(formData);
+            onSave({...formData, amenities: formData.amenities});
         }
         onClose();
     };

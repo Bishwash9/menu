@@ -12,7 +12,7 @@ export const roomService = {
             throw new Error('Failed to fetch rooms. Please try again later.');
         }
 
-        return Array.isArray(response) ? response : (response.data || response);
+        return Array.isArray(response) ? response : (response.data || []);
     },
 
     getRoomById: async (businessId: number, roomId: number): Promise<Room> => {

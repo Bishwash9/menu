@@ -41,6 +41,7 @@ const RoomsPage: React.FC = () => {
                     floor: r.floor,
                     capacity: r.capacity,
                     price: r.price,
+                    amenities: r.amenities || [],
                     created_at: r.created_at,
                     updated_at: r.updated_at,
 

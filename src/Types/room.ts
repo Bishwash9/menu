@@ -9,8 +9,14 @@ export interface Room {
     floor: number;
     status_name: string;
     status_id: number;
+    amenities: Amenities[];
     created_at: string;
     updated_at: string;
+}
+
+export interface Amenities{
+    amenity_id: number;
+    amenity_name: string;
 }
 
 export interface RoomResponse {
