@@ -5,16 +5,14 @@ import {
     RoomStatCard,
     RoomModal,
     RoomContent,
-    
 } from '../Features/Rooms';
-import type {  RoomStats } from '../Features/Rooms/Types';
-import type {  Room } from '../Types/room';
+import type { RoomStats } from '../Features/Rooms/Types';
+import type { Room } from '../Types/room';
 import { useAuth } from '../Context/AuthContext';
-
-
-
+import CartReviewPopup from '../Components/CartReviewPopup';
 
 const RoomsPage: React.FC = () => {
+    const { user } = useAuth();
     const [rooms, setRooms] = useState<Room[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -23,18 +21,22 @@ const RoomsPage: React.FC = () => {
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
     const [roomStatusFilter, setRoomStatusFilter] = useState<'All' | 'Available' | 'Occupied' | 'Cleaning' | 'Maintenance'>('All');
 
-    const { user } = useAuth();
+    // Popup state
+    const [showCartReview, setShowCartReview] = useState(false);
 
     useEffect(() => {
-        const fetchRooms = async () =>{
-            try{
-                setLoading(true);
-                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-                const businessId = userData.business_id;
+        fetchRooms();
+    }, []);
 
-               if(businessId){
-                 const data = await roomService.getRooms(businessId);
-                 const mappedRooms  = data.map((r:Room)=>({
+    const fetchRooms = async () => {
+        try {
+            setLoading(true);
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const businessId = userData.business_id;
+
+            if (businessId) {
+                const data = await roomService.getRooms(businessId);
+                const mappedRooms = data.map((r: Room) => ({
                     id: r.id,
                     business_id: r.business_id,
                     room_number: r.room_number,
@@ -49,24 +51,16 @@ const RoomsPage: React.FC = () => {
                     amenities: r.amenities || [],
                     created_at: r.created_at,
                     updated_at: r.updated_at,
-
-                 }));
-                 setRooms(mappedRooms);
-               }
-               
-                
-            }catch(error){
-                setError('Failed to load rooms. Please try again later.');
-
-            }finally{
-                setLoading(false);
+                }));
+                setRooms(mappedRooms);
             }
-        };
-        fetchRooms();
-    }, []);
+        } catch (error) {
+            setError('Failed to load rooms. Please try again later.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-
-    // Calculate stats
     const stats: RoomStats = {
         totalRooms: rooms.length,
         available: rooms.filter(r => r.status_name === 'Available').length,
@@ -87,44 +81,54 @@ const RoomsPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const handleViewRoom = (room: Room) => {
-        // For now, just open in edit mode for viewing
-        setModalMode('edit');
+    const handleViewRoom = async (room: Room) => {
+        if (!user?.business_id) {
+            alert('Please log in');
+            return;
+        }
+
         setSelectedRoom(room);
-        setIsModalOpen(true);
+        setShowCartReview(true);
+    };
+
+    const handleCartReviewClose = () => {
+        setShowCartReview(false);
+        setSelectedRoom(null);
+        // Optionally refresh rooms to update status
+        fetchRooms();
     };
 
     const handleDeleteRoom = (roomId: number) => {
         setRooms(rooms.filter(r => r.id !== roomId));
     };
 
-        const handleSaveRoom = async (roomData: any) => {
-                const businessId = user?.business_id || JSON.parse(localStorage.getItem('userData') || '{}')?.business_id;
+    const handleSaveRoom = async (roomData: any) => {
+        const businessId = user?.business_id || JSON.parse(localStorage.getItem('userData') || '{}')?.business_id;
 
-                if (!businessId) {
-                        throw new Error('Business ID not found. Please log in again.');
-                }
+        if (!businessId) {
+            throw new Error('Business ID not found. Please log in again.');
+        }
 
-                if (modalMode === 'add') {
-                        await roomService.createRoom(businessId, roomData);
-                }
-        };
+        if (modalMode === 'add') {
+            await roomService.createRoom(businessId, roomData);
+        }
+    };
 
     return (
         <div className="space-y-6">
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-
                 <div className="flex gap-3 flex-wrap w-full justify-between">
                     <div className="flex gap-2 flex-wrap">
                         {['All', 'Available', 'Occupied', 'Cleaning', 'Maintenance'].map(status => (
                             <button
                                 key={status}
                                 onClick={() => setRoomStatusFilter(status as any)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${roomStatusFilter === status
-                                    ? 'bg-[#002366] text-white'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                                    }`}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    roomStatusFilter === status
+                                        ? 'bg-[#002366] text-white'
+                                        : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                                }`}
                             >
                                 {status}
                             </button>
@@ -142,7 +146,7 @@ const RoomsPage: React.FC = () => {
 
             {/* Loading State */}
             {loading && (
-                <div className='flex justify-center items-center py-20'>
+                <div className="flex justify-center items-center py-20">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
             )}
@@ -154,10 +158,10 @@ const RoomsPage: React.FC = () => {
                 </div>
             )}
 
-            {/* Stats Cards */}
+            {/* Room Stats */}
             {!loading && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <RoomStatCard
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <RoomStatCard
                     title="Total Rooms"
                     value={stats.totalRooms}
                     icon={<BedDouble size={24} className="text-[#002366]" />}
@@ -184,24 +188,32 @@ const RoomsPage: React.FC = () => {
                     iconBgColor="bg-orange-100"
                     valueColor="text-orange-600"
                 />
-            </div>
+                </div>
             )}
 
             {/* Room Content */}
             {!loading && (
-            <RoomContent
-                rooms={rooms.filter(r => {
-                    const matchesStatus = roomStatusFilter === 'All' || r.status_name === roomStatusFilter;
-
-                    return matchesStatus;
-                })}
-                onView={handleViewRoom}
-                onEdit={handleEditRoom}
-                onDelete={handleDeleteRoom}
-            />
+                <RoomContent
+                    rooms={rooms.filter(r => {
+                        const matchesStatus = roomStatusFilter === 'All' || r.status_name === roomStatusFilter;
+                        return matchesStatus;
+                    })}
+                    onView={handleViewRoom}
+                    onEdit={handleEditRoom}
+                    onDelete={handleDeleteRoom}
+                />
             )}
 
-            {/* Modal */}
+            {/* Cart Review Popup */}
+            {showCartReview && selectedRoom && (
+                <CartReviewPopup
+                    target={{ type: 'room', id: selectedRoom.id }}
+                    identifier={selectedRoom.room_number.toString()}
+                    onClose={handleCartReviewClose}
+                />
+            )}
+
+            {/* Room Modal */}
             <RoomModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
@@ -221,7 +233,6 @@ const RoomsPage: React.FC = () => {
             />
         </div>
     );
-
 };
 
 export default RoomsPage;

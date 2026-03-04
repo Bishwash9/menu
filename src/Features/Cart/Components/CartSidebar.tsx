@@ -1,293 +1,142 @@
-import { useEffect } from "react";
-import { useCart } from "../../../Context/CartContext";
-import { useOrders } from "../../../Context/OrderContext";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAuth } from "../../../Context/AuthContext";
-import { orderService } from "../../../Services/orderService";
-import type { CreateOrderItem, CreateOrderRequest } from "../../../Types/order";
-
+import  { useState } from 'react';
+import { useCart } from '../../../Context/CartContext';
+import { useAuth } from '../../../Context/AuthContext';
+import { cartService } from '../../../Services/cartService';
+import type { CartAddRequest } from '../../../Types/cart';
 
 interface CartSidebarProps {
-    isPopupView?: boolean;
-    orderData?: { orderType: string; identifier: string; };
-    onOrderComplete? : () => void;
+    target: { type: 'table' | 'room'; id: number };
+    identifier: string; // table/room number
+    onCartSubmitted: () => void; // Callback after successfully adding to cart
 }
 
-export const CartSidebar: React.FC<CartSidebarProps> = ({ isPopupView = false, orderData = null, onOrderComplete}) => {
-    const {
-        isCartOpen,
-        toggleCart,
-        cartItems,
-        updateQuantity,
-        removeFromCart,
-        cartTotal,
-        clearCart,
-    } = useCart();
-    const { createOrder } = useOrders();
+export function CartSidebar({ target, identifier, onCartSubmitted }: CartSidebarProps) {
+    const { localCartItems, clearLocalCart } = useCart();
     const { user } = useAuth();
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (isCartOpen && !isPopupView) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "unset";
+    const subtotal = localCartItems.reduce(
+        (sum, item) => sum + (item.unit_price * item.quantity), 
+        0
+    );
+    const tax = subtotal * 0.13;
+    const total = subtotal + tax;
+
+    const handleAddToCart = async () => {
+        if (!user?.business_id || localCartItems.length === 0) {
+            setError('No items to add');
+            return;
         }
-    }, [isCartOpen, isPopupView]);
 
-    // Slide-up for mobile, Slide-from-right for desktop
-    const sidebarClass = isPopupView
-        ? "flex flex-col h-full bg-white"
-        : `fixed bottom-0 left-0 right-0 h-3/4 md:top-0 md:h-full md:left-auto md:right-0 md:w-[450px] bg-gray-50 md:bg-white shadow-2xl z-[60] transform transition-transform duration-500 ease-in-out ${isCartOpen ? "translate-y-0 md:translate-x-0" : "translate-y-full md:translate-x-full md:translate-y-0"}`;
+        if (!target || !target.type || !target.id) {
+            console.error('Target validation failed:', target);
+            setError('No target specified');
+            return;
+        }
 
-    const overlayClass = isPopupView
-        ? "hidden"
-        : `fixed inset-0 bg-white-70 backdrop-blur-[2px] z-[55] transition-opacity duration-500 ${isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`;
+        setIsSubmitting(true);
+        setError(null);
 
-    // Calculate tax and total
-    const taxAmount = cartTotal * 0.13; // 13% tax
-    const grandTotal = cartTotal + taxAmount; // subtotal + tax + delivery fee
+        try {
+            // Prepare cart items
+            const cartItems: CartAddRequest[] = localCartItems.map(item => ({
+                food_item_id: item.food_item_id,
+                quantity: item.quantity,
+                unit_price: item.unit_price
+            }));
 
-    const handlePlaceOrder = async () => {
-        const locationIdentifier = orderData?.identifier || searchParams.get('id') || 'General';
-        const orderType = (orderData?.orderType as 'table' | 'room') || (searchParams.get('type') as 'table' | 'room') || 'table';
-
-        if (user?.business_id && cartItems.length > 0) {
-            try {
-                const parsedLocationId = Number.parseInt(locationIdentifier, 10);
-                const locationId = Number.isNaN(parsedLocationId) ? null : parsedLocationId;
-
-                const orderItems: CreateOrderItem[] = cartItems.map((item) => ({
-                    food_item_id: item.id,
-                    quantity: item.quantity,
-                    status_id: 1,
-                }));
-
-                const payload: CreateOrderRequest = {
-                    business_id: user.business_id,
-                    order_number: `ORD-${Date.now()}`,
-                    table_id: orderType === 'table' ? locationId : null,
-                    room_id: orderType === 'room' ? locationId : null,
-                    order_type_id: orderType === 'room' ? 2 : 1,
-                    status_id: 1,
-                    guest_id: null, 
-                    subtotal: cartTotal.toFixed(2),
-                    tax: taxAmount.toFixed(2),
-                    discount: '0.00',
-                    total_amount: grandTotal.toFixed(2),
-                    served_by: user.business_id,
-                    notes: undefined,
-                    is_room_order: orderType === 'room',
-                    items: orderItems,
-                };
-
-                await orderService.createOrder(user.business_id, payload);
-            } catch (error) {
-                console.error('Failed to persist order via API:', error);
+            // POST to cart API
+            if (target.type === 'table') {
+                await cartService.addToTableCart(user.business_id, target.id, cartItems);
+            } else {
+                await cartService.addToRoomCart(user.business_id, target.id, cartItems);
             }
+
+            // Clear local cart after successful submission
+            clearLocalCart();
+            
+            // Notify parent component
+            onCartSubmitted();
+        } catch (err: any) {
+            console.error('Error adding to cart:', err);
+            setError(err.message || 'Failed to add items to cart');
+        } finally {
+            setIsSubmitting(false);
         }
-
-        const orderId = createOrder({
-            locationId: locationIdentifier,
-            type: orderType,
-            items: cartItems,
-        });
-
-        localStorage.removeItem('cartItems');
-        clearCart();
-        toggleCart();
-
-        if(onOrderComplete){
-            onOrderComplete();
-        }
-        navigate(`/orders/${orderId}`);
     };
 
     return (
-        <>
-            <div className={overlayClass} onClick={toggleCart} />
+        <div className="flex flex-col h-full bg-white">
+            {/* Header */}
+            <div className="p-4 border-b border-slate-200">
+                <h3 className="font-bold text-slate-800">Cart</h3>
+                <p className="text-xs text-slate-500 mt-1">
+                    {target ? `${target.type === 'table' ? 'Table' : 'Room'}: ${identifier}` : 'Select items'}
+                </p>
+            </div>
 
-            <div className={sidebarClass}>
-                <div className="flex flex-col h-full">
-                    <div className="p-5 border-b border-gray-100 flex items-center justify-between bg-white">
-                        {/* Back Arrow for Mobile / Close Title for Desktop */}
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={toggleCart}
-                                className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors text-gray-800"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={2}
-                                    stroke="currentColor"
-                                    className="w-5 h-5"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M15.75 19.5 8.25 12l7.5-7.5"
-                                    />
-                                </svg>
-                            </button>
-                            <h2 className="text-xl font-bold text-gray-800">Your Cart</h2>
+            {/* Error Message */}
+            {error && (
+                <div className="mx-4 mt-4 bg-red-50 border border-red-200 rounded-lg p-3">
+                    <p className="text-red-700 text-sm">{error}</p>
+                </div>
+            )}
+
+            {/* Cart Items */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                {localCartItems.length === 0 ? (
+                    <p className="text-center text-slate-500 text-sm py-8">
+                        No items added yet
+                    </p>
+                ) : (
+                    localCartItems.map((item) => (
+                        <div key={item.food_item_id} className="bg-slate-50 p-3 rounded-lg">
+                            <div className="flex justify-between items-start mb-2">
+                                <span className="text-sm font-semibold text-slate-800">
+                                    {item.name}
+                                </span>
+                                <span className="text-xs bg-[#002366] text-white px-2 py-1 rounded">
+                                    {item.quantity}x
+                                </span>
+                            </div>
+                            <div className="flex justify-between text-xs text-slate-600">
+                                <span>Unit: Rs. {item.unit_price.toFixed(2)}</span>
+                                <span className="font-bold text-slate-900">
+                                    Rs. {(item.unit_price * item.quantity).toFixed(2)}
+                                </span>
+                            </div>
                         </div>
-                        <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full ">
-                            {cartItems.length} items
-                        </span>
-                    </div>
+                    ))
+                )}
+            </div>
 
-                    <div className="flex-1 overflow-y-auto p-5 no-scrollbar bg-gray-50/50">
-                        {cartItems.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-                                <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-10 h-10 text-primary/50"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                                        />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-bold text-gray-800">
-                                        Your cart is empty
-                                    </h3>
-                                    <p className="text-sm text-gray-500 mt-1">
-                                        Add some delicious food to get started!
-                                    </p>
-                                </div>
-                                <button
-                                    onClick={toggleCart}
-                                    className="mt-4 text-primary font-bold hover:underline"
-                                >
-                                    Browse Menu
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {cartItems.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className="bg-white p-3 rounded-2xl flex gap-4 shadow-sm border border-gray-100 animate-in  slide-in-from-bottom-2 duration-300"
-                                    >
-                                        <div className="w-20 h-20 rounded-xl overflow-hidden shadow-sm shrink-0 border border-gray-100">
-                                            <img
-                                                src={item.image || undefined}
-                                                alt={item.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
+            {/* Summary */}
+            <div className="p-4 border-t border-slate-200 space-y-2">
+                <div className="flex justify-between text-sm">
+                    <span className="text-slate-600">Subtotal:</span>
+                    <span className="font-semibold">Rs. {subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                    <span className="text-slate-600">Tax (13%):</span>
+                    <span className="font-semibold">Rs. {tax.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-base font-bold pt-2 border-t border-slate-200">
+                    <span>Total:</span>
+                    <span className="text-[#002366]">Rs. {total.toFixed(2)}</span>
+                </div>
+            </div>
 
-                                        <div className="flex-1 flex flex-col justify-center">
-                                            <div className="flex justify-between items-start">
-                                                <h4 className="font-bold text-gray-800 text-sm leading-tight">
-                                                    {item.name}
-                                                </h4>
-                                                <button
-                                                    onClick={() => removeFromCart(item.id)}
-                                                    className="text-gray-300 hover:text-red-500 transition-colors"
-                                                >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                        strokeWidth={1.5}
-                                                        stroke="currentColor"
-                                                        className="w-4 h-4"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            d="M6 18 18 6M6 6l12 12"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            <p className="text-primary font-bold text-xs mt-1 uppercase tracking-wider">
-                                                Rs. {item.price}
-                                            </p>
-
-                                            <div className="flex items-center justify-between mt-3">
-                                                <div className="flex items-center bg-gray-50 rounded-full p-0.5 border border-gray-100 shadow-inner">
-                                                    <button
-                                                        onClick={() => updateQuantity(item.id, -1)}
-                                                        className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm  hover:text-primary active:scale-95 disabled:opacity-50"
-                                                    >
-                                                        -
-                                                    </button>
-                                                    <span className="text-sm font-bold min-w-8 text-center">
-                                                        {item.quantity}
-                                                    </span>
-                                                    <button
-                                                        onClick={() => updateQuantity(item.id, 1)}
-                                                        className="w-8 h-8 flex items-center justify-center bg-primary rounded-full shadow-sm  hover:bg-primary-hover active:scale-95"
-                                                    >
-                                                        +
-                                                    </button>
-                                                </div>
-                                                <span className="font-bold text-gray-800 text-sm">
-                                                    Rs. {parseFloat(item.price) * item.quantity}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-
-                    {cartItems.length > 0 && (
-                        <div className="border-t border-gray-100 p-6 bg-white space-y-4">
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-gray-500 text-sm">
-                                    <span>Subtotal</span>
-                                    <span>Rs. {cartTotal.toFixed(0)}</span>
-                                </div>
-                                <div className="flex justify-between text-gray-500 text-sm">
-                                    <span>Tax (13%)</span>
-                                    <span>Rs. {taxAmount.toFixed(0)}</span>
-                                </div>
-                                <div className="flex justify-between text-gray-900 font-bold text-lg pt-4 mt-2 border-t border-gray-100">
-                                    <span>Total Amount</span>
-                                    <span>Rs. {grandTotal.toFixed(0)}</span>
-                                </div>
-                            </div>
-
-
-                            <button
-                                onClick={handlePlaceOrder}
-                                className="w-full bg-[#002366] text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                            >
-                                Order
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={2}
-                                    stroke="currentColor"
-                                    className="w-5 h-5"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                                    />
-                                </svg>
-                            </button>
-                        </div >
-                    )}
-                </div >
-            </div >
-        </>
+            {/* Add to Cart Button */}
+            <div className="p-4 border-t border-slate-200">
+                <button
+                    onClick={handleAddToCart}
+                    disabled={localCartItems.length === 0 || isSubmitting}
+                    className="w-full py-3 bg-[#002366] hover:bg-[#001a47] text-white font-bold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    {isSubmitting ? 'Adding to Cart...' : 'Add to Cart'}
+                </button>
+            </div>
+        </div>
     );
-};
+}

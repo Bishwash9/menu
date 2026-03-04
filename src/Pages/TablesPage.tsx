@@ -1,78 +1,93 @@
 import React, { useEffect, useState } from 'react';
 import { CalendarDays } from 'lucide-react';
-import { TableModal, TableCard, } from '../Features/Tables';
-import  { tableService } from '../Services/tableService';
+import { TableModal, TableCard } from '../Features/Tables';
+import { tableService } from '../Services/tableService';
 import type { Table } from '../Types/table';
+import CartReviewPopup from '../Components/CartReviewPopup';
+import { useAuth } from '../Context/AuthContext';
 
 const LOCATIONS = ['Main Hall', 'Garden', 'Rooftop', 'Private'];
 
 const TablesPage: React.FC = () => {
-    const [tables, setTables] = useState<Table[]>([]); // Start with empty array
-    const [loading, setLoading] = useState(true);   // Track loading state
+    const { user } = useAuth();
+    const [tables, setTables] = useState<Table[]>([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedTable, setSelectedTable] = useState<Table | null>(null);
     const [selectedLocation, setSelectedLocation] = useState<string>('All');
 
+    // Popup state
+    const [showCartReview, setShowCartReview] = useState(false);
 
     useEffect(() => {
-        const fetchTables = async () => {
-
-            try{
-                setLoading(true);
-                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-                const businessId = userData.business_id;
-
-                if(businessId){
-                    const data = await tableService.getTables(businessId);
-
-                    const mappedTables = data.map((t:Table) => ({
-                        id: t.id,
-                        business_id: t.business_id,
-                        table_number: t.table_number,
-                        location: t.location,
-                        seats: t.seats,
-                        status_name: t.status_name,
-                        status_id: t.status_id,
-                        business_name: t.business_name,
-                        reserved_by: t.reserved_by,
-                        created_at: t.created_at,
-                        updated_at: t.updated_at,
-                    }));
-
-                    setTables(mappedTables);
-                    setError(null);
-                }else{
-                    setError('Business ID not found. Please log in again.');
-                }
-            }catch(error){
-                console.error('Failed to fetch tables:', error);
-            }finally{
-                setLoading(false);
-            }
-        };
         fetchTables();
     }, []);
 
+    const fetchTables = async () => {
+        try {
+            setLoading(true);
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const businessId = userData.business_id;
 
+            if (businessId) {
+                const data = await tableService.getTables(businessId);
+                const mappedTables = data.map((t: Table) => ({
+                    id: t.id,
+                    business_id: t.business_id,
+                    table_number: t.table_number,
+                    location: t.location,
+                    seats: t.seats,
+                    status_name: t.status_name,
+                    status_id: t.status_id,
+                    business_name: t.business_name,
+                    reserved_by: t.reserved_by,
+                    created_at: t.created_at,
+                    updated_at: t.updated_at,
+                }));
+                setTables(mappedTables);
+                setError(null);
+            } else {
+                setError('Business ID not found. Please log in again.');
+            }
+        } catch (error) {
+            console.error('Failed to fetch tables:', error);
+            setError('Failed to load tables');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-
-    // Calculate stats
     const stats = {
         total: tables.length,
         available: tables.filter(t => t.status_name === 'Available').length,
         occupied: tables.filter(t => t.status_name === 'Occupied').length,
         reserved: tables.filter(t => t.status_name === 'Reserved').length,
         unavailable: tables.filter(t => t.status_name === 'Unavailable').length,
-        
     };
 
     const filteredTables = tables.filter(t =>
         selectedLocation === 'All' || t.location === selectedLocation
     );
+
+    const handleTableClick = async (table: Table) => {
+        if (!user?.business_id) {
+            alert('Please log in');
+            return;
+        }
+
+        setSelectedTable(table);
+        setShowCartReview(true);
+    };
+
+    const handleCartReviewClose = () => {
+        setShowCartReview(false);
+        setSelectedTable(null);
+        // Optionally refresh tables to update status
+        fetchTables();
+    };
 
     const handleEditTable = (table: Table) => {
         setModalMode('edit');
@@ -85,32 +100,21 @@ const TablesPage: React.FC = () => {
     };
 
     const handleSaveTable = async (tableData: Table) => {
-    try{
-        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-        const businessId = userData.business_id;
+        try {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const businessId = userData.business_id;
 
-        if(businessId){
-            if(modalMode === 'add'){
-                const newTable = await tableService.createTable(businessId, tableData);
-                setTables([...tables, newTable]);
-            } 
+            if (businessId) {
+                if (modalMode === 'add') {
+                    const newTable = await tableService.createTable(businessId, tableData);
+                    setTables([...tables, newTable]);
+                }
+            }
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error('Failed to save table:', error);
         }
-        setIsModalOpen(false);
-    } catch(error){
-        console.error('Failed to save table:', error);
-    }
-}
-
-    
-
-    // const handleTableClick = (table: Table) => {
-    //     // Toggle status or open order if occupied
-    //     if (table.status_name === 'Available') {
-    //         setTables(tables.map(t =>
-    //             t.id === table.id ? { ...t, status_name: 'Occupied' as const } : t
-    //         ));
-    //     }
-    // };
+    };
 
     return (
         <div className="space-y-6">
@@ -128,33 +132,32 @@ const TablesPage: React.FC = () => {
             <div className="flex flex-wrap gap-2 mb-4">
                 <button
                     onClick={() => setSelectedLocation('All')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedLocation === 'All'
-                        ? 'bg-[#002366] text-white shadow-md'
-                        : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                        }`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                        selectedLocation === 'All'
+                            ? 'bg-[#002366] text-white shadow-md'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
+                    }`}
                 >
                     All
                 </button>
-
-             {LOCATIONS.map(location => (
-                <button
-                 key={location}
-                 onClick={() => setSelectedLocation(location)}
-                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    selectedLocation === location
-                    ? 'bg-[#002366] text-white shadow-md'
-                    : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                 }`}
-                >
-                    {location}
-                </button>
-             ))}
-        
+                {LOCATIONS.map(location => (
+                    <button
+                        key={location}
+                        onClick={() => setSelectedLocation(location)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                            selectedLocation === location
+                                ? 'bg-[#002366] text-white shadow-md'
+                                : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
+                        }`}
+                    >
+                        {location}
+                    </button>
+                ))}
             </div>
 
-             {/* Loading State */}
+            {/* Loading State */}
             {loading && (
-                <div className='flex justify-center items-center py-20'>
+                <div className="flex justify-center items-center py-20">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
             )}
@@ -165,7 +168,6 @@ const TablesPage: React.FC = () => {
                     <p className="text-red-700">{error}</p>
                 </div>
             )}
-
 
             {/* Status Legend */}
             <div className="flex flex-wrap items-center gap-6 mb-6">
@@ -182,7 +184,7 @@ const TablesPage: React.FC = () => {
                     <span className="text-sm text-slate-600">Reserved ({stats.reserved})</span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 bg-red-500 rounded-full"></span>  
+                    <span className="w-3 h-3 bg-red-500 rounded-full"></span>
                     <span className="text-sm text-slate-600">Unavailable ({stats.unavailable})</span>
                 </div>
             </div>
@@ -195,12 +197,21 @@ const TablesPage: React.FC = () => {
                         table={table}
                         onEdit={handleEditTable}
                         onDelete={handleDeleteTable}
-                        // onClick={handleTableClick}
+                        onClick={handleTableClick}
                     />
                 ))}
             </div>
 
-            {/* Modal */}
+            {/* Cart Review Popup */}
+            {showCartReview && selectedTable && (
+                <CartReviewPopup
+                    target={{ type: 'table', id: selectedTable.id }}
+                    identifier={selectedTable.table_number.toString()}
+                    onClose={handleCartReviewClose}
+                />
+            )}
+
+            {/* Table Modal */}
             <TableModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
@@ -210,10 +221,6 @@ const TablesPage: React.FC = () => {
             />
         </div>
     );
-
 };
 
-
-
 export default TablesPage;
-

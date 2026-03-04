@@ -12,6 +12,7 @@ interface FormData {
     identifier: string;
     orderType: 'table' | 'room';
     notes: string;
+    locationId?: number;
 }
 
 interface OrderModelPageProps {
@@ -150,8 +151,11 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
             return;
         }
 
+        const locationId = formData.orderType === 'table' ? selectedTableId : selectedRoomId;
+        const dataWithLocation = { ...formData, locationId: locationId || undefined };
+
         if (onNext) {
-            onNext(formData);
+            onNext(dataWithLocation);
             return;
         }
 
@@ -293,12 +297,18 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
     );
 
     if (isModalOpen) {
+        const locationId = formData.orderType === 'table' ? selectedTableId : selectedRoomId;
+        
         return (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
                 <QuickMenuPopup
                     orderData={{
                         orderType: formData.orderType,
                         identifier: formData.identifier,
+                    }}
+                    target={{
+                        type: formData.orderType,
+                        id: locationId || 0
                     }}
                     onClose={() => setIsModalOpen(false)}
                 />

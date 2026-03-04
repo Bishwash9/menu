@@ -1,56 +1,37 @@
-import { createContext, useContext, useState, useMemo, useEffect } from 'react';
+
+
+import { createContext, useContext, useState,  } from 'react';
 import type { ReactNode } from 'react';
-import type { MenuItem } from '../Types/menu';
 
-
-// TYPES & INTERFACES
-
-
-export interface CartItem extends MenuItem {
+export interface LocalCartItem {
+    food_item_id: number;
+    name: string;
     quantity: number;
+    unit_price: number;
 }
 
 interface CartContextType {
-    cartItems: CartItem[];
-    isCartOpen: boolean;
-    cartTotal: number;
-    cartCount: number;
-
-    addToCart: (item: MenuItem) => void;
-    removeFromCart: (itemId: number) => void;
-    updateQuantity: (itemId: number, delta: number) => void;
-    toggleCart: () => void;
-    clearCart: () => void;
+    localCartItems: LocalCartItem[];
+    addToLocalCart: (item: Omit<LocalCartItem, 'quantity'>) => void;
+    updateLocalQuantity: (foodItemId: number, delta: number) => void;
+    removeFromLocalCart: (foodItemId: number) => void;
+    clearLocalCart: () => void;
 }
-
-// CONTEXT CREATION
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-
-// PROVIDER COMPONENT
-
-
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-        const savedCart = localStorage.getItem('cartItems');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
-    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [localCartItems, setLocalCartItems] = useState<LocalCartItem[]>([]);
 
-    // EFFECT: Save to localStorage whenever cart changes
-    useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
-
-    // ACTION: Add an item to the cart
-    const addToCart = (item: MenuItem) => {
-        setCartItems((prevItems) => {
-            const existingItem = prevItems.find((i) => i.id === item.id);
-
+    const addToLocalCart = (item: Omit<LocalCartItem, 'quantity'>) => {
+        setLocalCartItems((prevItems) => {
+            const existingItem = prevItems.find((i) => i.food_item_id === item.food_item_id);
+            
             if (existingItem) {
                 return prevItems.map((i) =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+                    i.food_item_id === item.food_item_id 
+                        ? { ...i, quantity: i.quantity + 1 } 
+                        : i
                 );
             } else {
                 return [...prevItems, { ...item, quantity: 1 }];
@@ -58,65 +39,41 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         });
     };
 
-    // ACTION: Remove an item completely
-    const removeFromCart = (itemId: number) => {
-        const idToCompare = typeof itemId === 'string' ? parseInt(itemId) : itemId;
-        setCartItems((prevItems) => prevItems.filter((item) => {
-            const item_id = typeof item.id === 'string' ? parseInt(item.id) : item.id;
-            return item_id !== idToCompare;
-        }));
-    };
-
-    // ACTION: Increase or Decrease quantity
-    const updateQuantity = (itemId: number, delta: number) => {
-        const idToCompare = typeof itemId === 'string' ? parseInt(itemId) : itemId;
-        setCartItems((prevItems) => {
+    const updateLocalQuantity = (foodItemId: number, delta: number) => {
+        setLocalCartItems((prevItems) => {
             return prevItems.map((item) => {
-                const item_id = typeof item.id === 'string' ? parseInt(item.id) : item.id;
-                if (item_id === idToCompare) {
+                if (item.food_item_id === foodItemId) {
                     const newQuantity = item.quantity + delta;
-                    return { ...item, quantity: Math.max(1, newQuantity) };
+                    if (newQuantity <= 0) {
+                        return null; // Will be filtered out
+                    }
+                    return { ...item, quantity: newQuantity };
                 }
                 return item;
-            });
+            }).filter((item): item is LocalCartItem => item !== null);
         });
     };
 
-    // ACTION: Toggle sidebar visibility
-    const toggleCart = () => setIsCartOpen(!isCartOpen);
+    const removeFromLocalCart = (foodItemId: number) => {
+        setLocalCartItems((prevItems) => 
+            prevItems.filter(item => item.food_item_id !== foodItemId)
+        );
+    };
 
-    // ACTION: Clear the entire cart
-    const clearCart = () => setCartItems([]);
-
-    const cartTotal = useMemo(() => {
-        return cartItems.reduce((total, item) => {
-            const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
-            return total + (price * item.quantity);
-        }, 0);
-    }, [cartItems]);
-
-    const cartCount = useMemo(() => {
-        return cartItems.reduce((count, item) => count + item.quantity, 0);
-    }, [cartItems]);
+    const clearLocalCart = () => {
+        setLocalCartItems([]);
+    };
 
     const value = {
-        cartItems,
-        isCartOpen,
-        cartTotal,
-        cartCount,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        toggleCart,
-        clearCart,
+        localCartItems,
+        addToLocalCart,
+        updateLocalQuantity,
+        removeFromLocalCart,
+        clearLocalCart,
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
-
-
-// CUSTOM HOOK
-
 
 export const useCart = () => {
     const context = useContext(CartContext);

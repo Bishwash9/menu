@@ -178,6 +178,10 @@ const OrderDetailsPage = () => {
                     <div className="relative z-10 w-full max-w-6xl mx-auto animate-in zoom-in-95 duration-200">
                         <QuickMenuPopup
                             orderData={{ orderType: order.type, identifier: order.locationId }}
+                            target={{ 
+                                type: order.type, 
+                                id: parseInt(order.locationId) 
+                            }}
                             onClose={() => setIsPopupOpen(false)}
                         />
                     </div>

@@ -53,6 +53,7 @@ function App() {
               <Route path='/rooms' element={<RoomsPage />} />
               <Route path='/reports' element={<ReportsPage />} />
               <Route path='/subscription' element={<SubscriptionPage />} />
+              <Route path='/orders/:orderId' element={<OrderDetailsPage />} />
             </Route>
 
             {/* Staff only pages */}

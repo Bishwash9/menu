@@ -10,7 +10,7 @@ export default function DashboardHeader({ initials = "" }) {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-  const [currentOrderData, setCurrentOrderData] = useState<{ orderType: string; identifier: string } | null>(null);
+  const [currentOrderData, setCurrentOrderData] = useState<{ orderType: 'table' | 'room'; identifier: string; locationId?: number } | null>(null);
 
   const profileRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
@@ -154,7 +154,7 @@ export default function DashboardHeader({ initials = "" }) {
                 <OrderModelPage
                   isModal={true}
                   onClose={() => setIsOrderModalOpen(false)}
-                  onNext={(data: { orderType: string; identifier: string }) => setCurrentOrderData(data)} // Sets the data to "Step 2"
+                  onNext={(data: { orderType: 'table' | 'room'; identifier: string; locationId?: number }) => setCurrentOrderData(data)} // Sets the data to "Step 2"
                 />
               </div>
             ) : (
@@ -162,6 +162,10 @@ export default function DashboardHeader({ initials = "" }) {
               <div className="max-w-6xl mx-auto">
                 <QuickMenuPopup
                   orderData={currentOrderData as any}
+                  target={{
+                    type: currentOrderData.orderType,
+                    id: currentOrderData.locationId || 0
+                  }}
                   onClose={() => setIsOrderModalOpen(false)}
                 />
               </div>
