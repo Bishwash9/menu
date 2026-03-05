@@ -2,8 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { CartProvider } from '../Features/Cart';
 import { CategoryFilter } from '../Features/Menu/Components/CategoryFilter';
 import { FoodCard } from '../Features/Menu/Components/MenuCard';
-import { CartSidebar } from '../Features/Cart/Components/CartSidebar';
-import { FloatingCartBar } from '../Features/Cart/Components/FloatingCartBar';
+// import { FloatingCartBar } from '../Features/Cart/Components/FloatingCartBar';
 import { menuService } from '../Services/menuService';
 import type { MenuItem } from '../Types/menu';
 import { useAuth } from '../Context/AuthContext';
@@ -68,7 +67,7 @@ function MenuPage() {
 
     return (
         <CartProvider>
-            <div className="max-w-7xl mx-auto -mt-6"> {/* Reduced margin-top because DashboardLayout adds padding */}
+            <div className="max-w-7xl mx-auto -mt-6"> 
                 <div className="sticky top-14 z-40 bg-gray-50/95 backdrop-blur-sm pt-2 pb-2">
                     <CategoryFilter
                         activeCategory={activeCategory}
@@ -123,8 +122,8 @@ function MenuPage() {
                 </main>
             </div>
 
-            <CartSidebar />
-            <FloatingCartBar />
+            {/* <CartSidebar /> */}
+            {/* <FloatingCartBar /> */}
         </CartProvider>
     );
 
