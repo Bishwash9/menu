@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { X, ShoppingCart } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
@@ -23,6 +21,20 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
     const [loading, setLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const [selectedItems, setSelectedItems] = useState<number[]>([]); 
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    //toggle selection
+    const toggleSelection = (foodItemId: number) => {
+        setSelectedItems(prev =>{
+            if(prev.includes(foodItemId)){
+                return prev.filter(id => id! == foodItemId);
+            }else{
+                return [...prev, foodItemId]
+            }
+        });
+    };
 
     // Fetch cart items on mount
     useEffect(() => {
@@ -90,10 +102,11 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
             // Create the order
             const createdOrder = await orderService.createOrder(user.business_id, orderPayload);
 
-            // Try to clear cart after successful order (non-blocking)
+            const foodItemIds = cartItems.map(item => item.food_item_id);
+
             const clearSuccess = target.type === 'table'
-                ? await cartService.clearTableCart(user.business_id, target.id)
-                : await cartService.clearRoomCart(user.business_id, target.id);
+                ? await cartService.clearTableCart(user.business_id, target.id,foodItemIds)
+                : await cartService.clearRoomCart(user.business_id, target.id,foodItemIds);
 
             if (!clearSuccess) {
                 console.warn('Cart clear endpoint is not supported; order was created successfully.');
@@ -107,6 +120,31 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
             setError(err.message || 'Failed to create order');
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const handleDeleteSelected = async () => {
+        if(!user?.business_id || selectedItems.length === 0) return;
+
+        setIsDeleting(true);
+        setError(null);
+
+        try{
+            const deleteSuccess = target.type === 'table'
+                ? await cartService.clearTableCart(user.business_id, target.id, selectedItems)
+                : await cartService.clearRoomCart(user.business_id, target.id, selectedItems);
+
+                if(deleteSuccess){
+                    setCartItems(prev => prev.filter(item => !selectedItems.includes(item.food_item_id)));
+                    setSelectedItems([]);
+                }else{
+                    setError('Failed to delete selected items');
+                }
+        }catch(error){
+            console.error('Error deleting items:', error);
+            setError('Failed to delete selected items');    
+        }finally{
+            setIsDeleting(false);
         }
     };
 
@@ -148,7 +186,7 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
                 {/* Loading State */}
                 {loading ? (
                     <div className="flex-1 flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#002366]"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
                     </div>
                 ) : (
                     <>
@@ -160,6 +198,20 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
                                     <p className="text-slate-500">Your cart is empty</p>
                                 </div>
                             ) : (
+                                
+                                <>
+                                {selectedItems.length > 0 && (
+                                        <div className="flex justify-end mb-3">
+                                            <button 
+                                                onClick={handleDeleteSelected}
+                                                disabled={isDeleting}
+                                                className="px-4 py-2 bg-red-50 text-red-600 rounded-lg font-semibold hover:bg-red-100 transition-colors text-sm disabled:opacity-50 flex items-center gap-2"
+                                            >
+                                                {isDeleting ? 'Deleting...' : `Delete ${selectedItems.length} Selected`}
+                                            </button>
+                                        </div>
+                                )}
+                             
                                 <div className="space-y-3">
                                     {cartItems.map((item) => (
                                         <div
@@ -168,6 +220,12 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
                                         >
                                             <div className="flex-1">
                                                 <div className="flex items-center gap-3">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        className="w-5 h-5 cursor-pointer bg-primary text-white rounded border-slate-300"
+                                                        checked={selectedItems.includes(item.food_item_id)}
+                                                        onChange={() => toggleSelection(item.food_item_id)}
+                                                    />
                                                     <span className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center text-xs font-bold">
                                                         {item.quantity}x
                                                     </span>
@@ -190,6 +248,7 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
                                         </div>
                                     ))}
                                 </div>
+                                </>
                             )}
                         </div>
 

@@ -7,22 +7,16 @@ const normalizeCartItems = (response: any) => {
     return [];
 };
 
-const tryClearCart = async (endpoint: string) => {
+const tryClearCart = async (endpoint: string, foodItemIds: number[]) => {
     try {
-        await apiClient(endpoint, {
-            method: 'DELETE'
+        apiClient(endpoint, {
+            method: 'DELETE',
+            body: JSON.stringify({food_item_id: foodItemIds})
         });
         return true;
-    } catch {
-        try {
-            await apiClient(endpoint, {
-                method: 'POST',
-                body: JSON.stringify([])
-            });
-            return true;
-        } catch {
-            return false;
-        }
+    }catch(error){
+        console.error('Failed to clear cart:', error);
+        return false;
     }
 };
 
@@ -62,11 +56,11 @@ export const cartService = {
     },
 
     // Clear cart
-    clearTableCart: async (businessId: number, tableId: number) => {
-        return tryClearCart(`cart/b${businessId}/t${tableId}/`);
+    clearTableCart: async (businessId: number, tableId: number, foodItemIds: number[]) => {
+        return tryClearCart(`cart/b${businessId}/t${tableId}/`, foodItemIds);
     },
 
-    clearRoomCart: async (businessId: number, roomId: number) => {
-        return tryClearCart(`cart/b${businessId}/r${roomId}/`);
+    clearRoomCart: async (businessId: number, roomId: number, foodItemIds: number[]) => {
+        return tryClearCart(`cart/b${businessId}/r${roomId}/`, foodItemIds);
     }
 };
