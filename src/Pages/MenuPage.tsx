@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { CartProvider } from '../Features/Cart';
 import { CategoryFilter } from '../Features/Menu/Components/CategoryFilter';
 import { FoodCard } from '../Features/Menu/Components/MenuCard';
-// import { FloatingCartBar } from '../Features/Cart/Components/FloatingCartBar';
 import { menuService } from '../Services/menuService';
 import type { MenuItem } from '../Types/menu';
 import { useAuth } from '../Context/AuthContext';
