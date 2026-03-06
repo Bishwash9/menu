@@ -14,6 +14,19 @@ export interface Booking{
     updated_at: string;
 }
 
+export interface CreateBookingRequest{
+    room_id: number;
+    guest_id: number;
+    check_in: string;
+    check_out: string;
+}
+
+export interface CreateBookingResponse{
+    message: string;
+    booking: Booking;
+    status: string;
+}
+
 export interface BookingResponse{
     bookings: Booking[];
 }

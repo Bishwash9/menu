@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
 import { IconCurrencyRupeeNepalese } from '@tabler/icons-react';
 import { Users, Clock, TrendingUp } from 'lucide-react';
-import { StatCard, BookingContent, type Booking } from '../Features/Booking';
+import { StatCard, BookingContent, BookingHeader, AddBookingModal, type Booking } from '../Features/Booking';
 import { bookingService } from '../Services/bookingService';
 import { useAuth } from '../Context/AuthContext';
+import { useEffect, useState } from 'react';
 
 const BookingPage: React.FC = () => {
     const { user } = useAuth();
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Fetch bookings data on component mount
     useEffect(() => {
@@ -50,14 +51,16 @@ const BookingPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
-         
+            {/* Header with New Booking button */}
+            <BookingHeader
+                onAddBooking={() => setIsModalOpen(true)}
+            />
             {/* Error Message */}
             {error && (
                 <div className="bg-red-50 border border-red-200 px-4 py-3 rounded-lg text-red-700 text-sm">
                     {error}
                 </div>
             )}
-
             {/* Statistics Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <StatCard
@@ -80,12 +83,11 @@ const BookingPage: React.FC = () => {
                 />
                 <StatCard
                     title="Revenue Today"
-                    value={`${stats.revenue}`}
+                    value={`${stats.revenue.toFixed(2)}`}
                     icon={<IconCurrencyRupeeNepalese size={20} />}
                     iconColor="green"
                 />
             </div>
-
             {/* Booking Content */}
             <div className="grid grid-cols-1 gap-6">
                 {isLoading ? (
@@ -100,6 +102,12 @@ const BookingPage: React.FC = () => {
                     <BookingContent bookings={bookings} />
                 )}
             </div>
+            {/* Create Booking Modal */}
+            <AddBookingModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSuccess={fetchBookings}
+            />
         </div>
     );
 };
