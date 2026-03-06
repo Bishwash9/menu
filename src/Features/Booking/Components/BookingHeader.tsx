@@ -8,14 +8,6 @@ interface BookingHeaderProps {
 export const BookingHeader: React.FC<BookingHeaderProps> = ({onAddBooking }) => {
     return (
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-status-confirmed mb-1">
-                    Bookings Management
-                </h1>
-                <p className="text-slate-500 text-sm md:text-base">
-                    Manage all hotel bookings and reservations in one place
-                </p>
-            </div>
 
             <div className="flex items-center gap-3 w-full md:w-auto">
 
