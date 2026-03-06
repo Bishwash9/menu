@@ -138,7 +138,7 @@ export const BookingContent: React.FC<BookingContentProps> = ({
                                             </div>
                                         </td>
                                         <td className="p-4 text-sm text-slate-600 font-medium">
-                                            Room {booking.room_number}
+                                            Room {booking.room_number_display}
                                         </td>
                                         <td className="p-4 text-sm text-slate-600">
                                             {formatDate(booking.check_in)}

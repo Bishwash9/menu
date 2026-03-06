@@ -19,12 +19,20 @@ export function SideBar() {
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(user?.name || "The Food Hub Cafe");
 
+  const [companies, setCompanies] = useState<string[]>([]);
+
   //  ADD: auto-collapse on small screens
   useEffect(() => {
-    if(user?.name){
+    if (user?.name) {
       setSelectedCompany(user.name);
     }
   }, [user]);
+
+  // TODO: Replace setCompanies([]) with actual API call when ready
+  // e.g. companyService.getCompanies(user.business_id).then(setCompanies)
+  useEffect(() => {
+    setCompanies([]);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -90,26 +98,34 @@ export function SideBar() {
           </button>
 
           {isCompanyOpen && (
-           <div className="absolute top-full left-3 right-3 mt-2 bg-primary border border-white/10 rounded-xl shadow-2xl z-100 overflow-hidden animate-in fade-in slide-in-from-top-2">
-              <div className="p-1">
-                {['The Food Hub Cafe', 'Company 1', 'Company 2'].map((company) => (
-                  <button
-                    key={company}
-                    onClick={() => {
-                      setSelectedCompany(company);
-                      setIsCompanyOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedCompany === company ? 'bg-accent text-white' : 'hover:bg-white/5 text-white/80'
-                      }`}
-                  >
-                    {company}
-                  </button>
-                ))}
-              </div>
-              <div className="p-1 border-t border-white/10 bg-white/5">
-                <button className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-accent hover:bg-accent/10 rounded-lg transition-colors">
+            <div className={`absolute top-full left-3 right-3 mt-2 bg-primary border border-white/10 rounded-xl shadow-2xl z-100 overflow-hidden transition-all duration-300`}>
+
+              {companies.length > 0 && (
+                <div className="p-1 max-h-48 overflow-y-auto">
+                  {companies.map((company) => (
+                    <button
+                      key={company}
+                      onClick={() => {
+                        setSelectedCompany(company)
+                        setIsCompanyOpen(false)
+                      }}
+                      className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedCompany === company ? 'bg-accent text-white' : 'hover:bg-white/5 text-white/80'}`}>
+
+                      {company}
+
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className={`p-1 ${companies.length > 0 ? 'border-t border-white/10 bg-white/5' : ''}`}>
+                <button
+                  onClick={() => {
+                    // TODO: open add company modal/flow
+                    setIsCompanyOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-accent hover:bg-accent/10 rounded-lg transition-colors" >
                   <Plus size={14} />
-                  Add New Company
+                  Add Company
                 </button>
               </div>
             </div>

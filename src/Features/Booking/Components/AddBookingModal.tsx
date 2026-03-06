@@ -21,7 +21,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
     const [error, setError] = useState<string | null>(null);
 
     const [formData, setFormData] = useState({
-        room_id: '',
+        room_number: '',
         guest_id: '',
         check_in: '',
         check_out: '',
@@ -60,7 +60,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
     }
 
     const payload: CreateBookingRequest = {
-        room_id: Number(formData.room_id),
+        room_number: Number(formData.room_number),
         guest_id: Number(formData.guest_id),
         check_in: checkInDate.toISOString(),
         check_out: checkOutDate.toISOString(),
@@ -74,7 +74,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
         onClose();
 
         //reset form data
-        setFormData({room_id: '', guest_id: '', check_in: '', check_out: ''});
+        setFormData({room_number: '', guest_id: '', check_in: '', check_out: ''});
 
     } catch (err) {
         setError('Failed to create booking');
@@ -113,12 +113,12 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
                         </label>
                         <input
                             type="number"
-                            name="room_id"
-                            value={formData.room_id}
+                            name="room_number"
+                            value={formData.room_number}
                             onChange={handleChange}
                             required
                             min={1}
-                            placeholder="Enter room ID"
+                            placeholder="Enter room number"
                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20"
                         />
                     </div>
