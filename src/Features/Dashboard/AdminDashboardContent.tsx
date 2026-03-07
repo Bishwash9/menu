@@ -768,13 +768,13 @@ function StatusCard({ title, value, icon, color, isCurrency }: { title: string, 
   };
 
   return (
-    <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex justify-between items-center gap-[1.2vw]">
+    <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex justify-between items-center gap-[1.2vw] ">
       <div className={`p-[0.8vw] rounded-xl shrink-0 ${colors[color] || colors.royal} transition-all`}>
         {icon}
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col min-w-0 ">
         <p className="text-slate-400 text-[0.8vw] font-light uppercase tracking-wider mb-[0.2vh]">{title}</p>
-        <h3 className={`${isCurrency ? 'text-[1.8vw]' : 'text-[2vw]'} font-light text-slate-700 leading-none tabular-nums`}>
+        <h3 className={`${isCurrency ? 'text-[clamp(0.7rem,1.1vw,1.6rem)]' : 'text-[clamp(0.75rem,1.2vw,1.8rem)]'} font-light text-slate-700 leading-none tabular-nums break-all`}>
           {value.toLocaleString()}
         </h3>
       </div>
