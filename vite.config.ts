@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(),tailwindcss()],
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@assets': '/src/Assets'
     }
