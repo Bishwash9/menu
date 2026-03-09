@@ -8,10 +8,10 @@ import RoomsPage from './Pages/RoomsPage'
 import TablesPage from './Pages/TablesPage'
 import CafeOrdersPage from './Pages/CafeOrdersPage'
 import ReportsPage from './Pages/ReportsPage'
-import SettingsPage from './Pages/SettingsPage'
+// import SettingsPage from './Pages/SettingsPage'
 import GuestsPage from './Pages/GuestsPage'
 import BillingPage from './Pages/BillingPage'
-import RolesAccessPage from './Pages/RolesAccessPage'
+// import RolesAccessPage from './Pages/RolesAccessPage'
 import DashboardPage from './Pages/DashboardPage'
 // import SubscriptionPage from './Pages/SubscriptionPage'
 import { RoleGaurd } from './Components/RoleGaurd/RoleGaurd'
@@ -48,12 +48,16 @@ function App() {
             <Route element={<RoleGaurd allowedRoles={['admin']} />}>
               <Route path='/menu-management' element={<MenuManagementPage />} />
               <Route path='/staff-management' element={<StaffManagementPage />} />
-              <Route path='/settings' element={<SettingsPage />} />
-              <Route path='/roles-access' element={<RolesAccessPage />} />
+              {/* <Route path='/settings' element={<SettingsPage />} /> */}
+              {/* <Route path='/roles-access' element={<RolesAccessPage />} /> */}
               <Route path='/rooms' element={<RoomsPage />} />
               <Route path='/reports' element={<ReportsPage />} />
               {/* <Route path='/subscription' element={<SubscriptionPage />} /> */}
               <Route path='/orders/:orderId' element={<OrderDetailsPage />} />
+              <Route path='/bookings' element={<BookingPage />} />
+              <Route path='/guests' element={<GuestsPage />} />
+              <Route path='/tables' element={<TablesPage />} />
+              <Route path='/cafe-orders' element={<CafeOrdersPage />} />
             </Route>
 
             {/* Staff only pages */}

@@ -8,6 +8,8 @@ import { useAuth } from '../Context/AuthContext';
 
 const LOCATIONS = ['Main Hall', 'Garden', 'Rooftop', 'Private'];
 
+const { role } = useAuth(); 
+
 const TablesPage: React.FC = () => {
     const { user } = useAuth();
     const [tables, setTables] = useState<Table[]>([]);
@@ -125,6 +127,17 @@ const TablesPage: React.FC = () => {
                         <CalendarDays size={18} />
                         Reservations
                     </button>
+
+                    {role === 'admin' && (
+                        <button
+                         onClick={() => {setModalMode('add'); setSelectedTable(null); setIsModalOpen(true);}}
+                         className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-colors">
+
+                            + Add Table
+
+                        </button>
+                    )}
+
                 </div>
             </div>
 
@@ -195,8 +208,8 @@ const TablesPage: React.FC = () => {
                     <TableCard
                         key={table.id}
                         table={table}
-                        onEdit={handleEditTable}
-                        onDelete={handleDeleteTable}
+                        onEdit={role === 'admin' ? handleEditTable : undefined}
+                        onDelete={role === 'admin' ? handleDeleteTable : undefined}
                         onClick={handleTableClick}
                     />
                 ))}

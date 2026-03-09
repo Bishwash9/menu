@@ -17,7 +17,7 @@ export function SideBar() {
   //  ADD: collapse state
   const [collapsed, setCollapsed] = useState(false);
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState(user?.name || "The Food Hub Cafe");
+  const [selectedCompany, setSelectedCompany] = useState("");
 
   const [companies, setCompanies] = useState<string[]>([]);
 

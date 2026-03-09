@@ -33,7 +33,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
             const error = await response.json().catch(() => ({}));
             throw {
                 status: response.status,
-                message: error.message || 'API request failed. Please try again.',
+                message: error.message || ' Oops something went wrong. Please try again later.',
             };
         }
 
