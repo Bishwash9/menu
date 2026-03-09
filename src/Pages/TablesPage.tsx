@@ -8,10 +8,10 @@ import { useAuth } from '../Context/AuthContext';
 
 const LOCATIONS = ['Main Hall', 'Garden', 'Rooftop', 'Private'];
 
-const { role } = useAuth(); 
+
 
 const TablesPage: React.FC = () => {
-    const { user } = useAuth();
+    const { user, role } = useAuth();
     const [tables, setTables] = useState<Table[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
