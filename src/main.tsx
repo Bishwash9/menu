@@ -21,5 +21,5 @@ root.render(
       </OrderProvider>
       </MenuProvider>
     </AuthProvider>
-  </StrictMode>,
+  </StrictMode>
 )
