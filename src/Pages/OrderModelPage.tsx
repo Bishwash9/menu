@@ -62,7 +62,8 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
             const response = await tableService.getTables(user.business_id);
             const availableTables = response.filter((table: Table) =>
                 table.status_name?.toLowerCase() === 'available' ||
-                table.status_name?.toLowerCase() === 'reserved'
+                table.status_name?.toLowerCase() === 'reserved'  ||
+                table.status_name?.toLowerCase() === 'occupied'
             );
             setTables(availableTables);
         } catch (error) {
@@ -165,7 +166,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
     const content = (
         <>
             <div className="flex items-start justify-between mb-8">
-                <h2 className="text-2xl font-bold text-[#002366] text-center tracking-tight w-full">
+                <h2 className="text-2xl font-bold text-primary text-center tracking-tight w-full">
                     Create Order
                 </h2>
                 {onClose && (
@@ -180,7 +181,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
 
             <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="flex flex-col gap-1.5">
-                    <label className="text-[13px] font-semibold text-[#002366] ml-1">
+                    <label className="text-[13px] font-semibold text-primary ml-1">
                         Full Name
                     </label>
                     <input
@@ -193,13 +194,13 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                    <label className="text-[13px] font-semibold text-[#002366] ml-1">
+                    <label className="text-[13px] font-semibold text-primary ml-1">
                         Select Type
                     </label>
                     <div className="bg-gray-50 border border-gray-200 rounded-xl p-1 flex gap-1 h-11.5">
                         <div
                             className={`flex-1 flex items-center justify-center cursor-pointer rounded-lg text-xs font-bold transition-all ${formData.orderType === 'table'
-                                ? 'bg-white text-[#002366] shadow-sm ring-1 ring-gray-100'
+                                ? 'bg-white text-primary shadow-sm ring-1 ring-gray-100'
                                 : 'text-gray-400 hover:text-gray-600'
                                 }`}
                             onClick={() => handleTypeChange('table')}
@@ -208,7 +209,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
                         </div>
                         <div
                             className={`flex-1 flex items-center justify-center cursor-pointer rounded-lg text-xs font-bold transition-all ${formData.orderType === 'room'
-                                ? 'bg-white text-[#002366] shadow-sm ring-1 ring-gray-100'
+                                ? 'bg-white text-primary shadow-sm ring-1 ring-gray-100'
                                 : 'text-gray-400 hover:text-gray-600'
                                 }`}
                             onClick={() => handleTypeChange('room')}
@@ -220,7 +221,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
             </div>
 
             <div className="flex flex-col gap-1.5 mb-8">
-                <label className="text-[13px] font-semibold text-[#002366] ml-1">
+                <label className="text-[13px] font-semibold text-primary ml-1">
                     {formData.orderType === 'table' ? 'Table Number' : 'Room Number'}
                 </label>
 
@@ -245,7 +246,7 @@ const OrderModelPage: React.FC<OrderModelPageProps> = ({ isModal = false, onClos
                         value={selectedTableId || ''}
                         onChange={handleTableChange}
                         disabled={isLoadingTables}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 transition-all focus:outline-none focus:border-[#002366] focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 transition-all focus:outline-none focus:border-primary focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <option value="">
                             {isLoadingTables ? 'Loading tables...' : 'Select a table'}
