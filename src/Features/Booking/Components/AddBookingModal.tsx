@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import { X, Calendar, User, DoorOpen } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { X, Calendar, User } from 'lucide-react';
 import { bookingService } from '../../../Services/bookingService';
 import { useAuth } from '../../../Context/AuthContext';
 import type { CreateBookingRequest } from '../../../Types/booking';
+import type { Room } from '../../../Types/room'
+import { roomService } from '../../../Services/roomService';
+    
 
 interface AddBookingModalProps {
     isOpen: boolean;
@@ -19,6 +22,28 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
     const {user} = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [rooms, setRooms] = useState<Room[]>([]);
+    const [isLoadingRooms, setIsLoadingRooms] = useState(false);
+
+    useEffect(() => {
+        const fetchRooms = async () => {
+            if(!user?.business_id) return;
+            try{
+                setIsLoadingRooms(true);
+                const response = await roomService.getRooms(user.business_id)
+
+                const availableRooms = response.filter(r => r.status_name.toLocaleLowerCase() === 'available');
+                setRooms(availableRooms);
+                setError(null);
+                
+            } catch (err) {
+                setError('Failed to fetch rooms');
+            } finally {
+                setIsLoadingRooms(false);
+            }
+        };
+        fetchRooms();
+    }, [user?.business_id]);
 
     const [formData, setFormData] = useState({
         room_number: '',
@@ -29,7 +54,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
 
     if(!isOpen) return null;
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         setFormData(prev => ({
             ...prev,
             [e.target.name]: e.target.value
@@ -105,23 +130,26 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
                             {error}
                         </div>
                     )}
-                    {/* Room ID */}
-                    <div className="space-y-1">
-                        <label className="text-sm font-semibold text-slate-600 flex items-center gap-2">
-                            <DoorOpen size={16} className="text-status-confirmed" />
-                            Room Number
-                        </label>
-                        <input
-                            type="number"
-                            name="room_number"
-                            value={formData.room_number}
-                            onChange={handleChange}
-                            required
-                            min={1}
-                            placeholder="Enter room number"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20"
-                        />
-                    </div>
+                    {/* Room Number */}
+                    <select 
+                    name="room_number"
+                    value={formData.room_number}
+                    onChange={handleChange}
+                    required
+                    disabled={isLoadingRooms && rooms.length === 0}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20" >
+
+                      <option>
+                        {isLoadingRooms ? 'Loading rooms...' : 'Select a room'}
+                      </option>
+                      {rooms.map(room => (
+                        <option value={room.room_number} key={room.id}>
+                            Room {room.room_number} - {room.room_type_name}
+                        </option>
+                      ))}
+
+                    </select>
+                    
                     {/* Guest Name */}
                     <div className="space-y-1">
                         <label className="text-sm font-semibold text-slate-600 flex items-center gap-2">
