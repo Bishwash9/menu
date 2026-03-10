@@ -13,7 +13,7 @@ const CafeOrdersPage: React.FC = () => {
     const [error, setError] = useState('');
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [visibleCount, setVisibleCount] = useState(8);
+    const [visibleCount, setVisibleCount] = useState(5);
 
     useEffect(() => {
         fetchOrders();
@@ -127,8 +127,8 @@ const CafeOrdersPage: React.FC = () => {
                     {visibleCount < orders.length && (
                         <div className='flex justify-center pt-4'>
                             <button
-                             onClick={() => setVisibleCount(prev => prev + 8)}
-                             className="px-8 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm active:scale-95"
+                             onClick={() => setVisibleCount(prev => prev + 5)}
+                             className="px-8 py-2.5 bg-primary border border-slate-200 text-white rounded-lg font-semibold hover:bg-primary-hover transition-all shadow-sm active:scale-95"
                              >
                                 Load More Orders
 
