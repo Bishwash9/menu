@@ -13,6 +13,7 @@ const CafeOrdersPage: React.FC = () => {
     const [error, setError] = useState('');
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(8);
 
     useEffect(() => {
         fetchOrders();
@@ -115,11 +116,31 @@ const CafeOrdersPage: React.FC = () => {
                         <p className="text-slate-500">Loading orders...</p>
                     </div>
                 ) : (
+                
+                <>
                     <OrderTable
-                        orders={orders}
+                        orders={orders.slice(0, visibleCount)}
                         onView={handleViewOrder}
                         onRefresh={fetchOrders}
                     />
+
+                    {visibleCount < orders.length && (
+                        <div className='flex justify-center pt-4'>
+                            <button
+                             onClick={() => setVisibleCount(prev => prev + 8)}
+                             className="px-8 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm active:scale-95"
+                             >
+                                Load More Orders
+
+                            </button>
+                        </div>
+                    )}
+                    {visibleCount >= orders.length && orders.length > 0 && (
+                        <p className="text-center text-slate-400 text-sm pt-4">
+                            All {orders.length} orders loaded
+                        </p>
+                    )}
+                </>
                 )}
             </div>
 
