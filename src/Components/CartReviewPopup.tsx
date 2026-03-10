@@ -74,6 +74,7 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
             // Prepare order items from cart
             const orderItems: CreateOrderItem[] = cartItems.map(item => ({
                 food_item_id: item.food_item_id,
+                food_item_name: item.food_item_name,
                 quantity: item.quantity,
                 status_id: 1,
                 note: ''
@@ -230,9 +231,16 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
                                                         {item.quantity}x
                                                     </span>
                                                     <div>
-                                                        <h3 className="font-bold text-slate-800">
+                                                        <div className='flex flex-col'>
+                                                            <h3 className='font-bold text-slate-800'>
+                                                                {item.food_item_name}
+                                                            </h3>
+
+                                                            <span className="text-[10px] text-slate-400 uppercase tracking-tighter">
                                                             Item #{item.food_item_id}
-                                                        </h3>
+                                                            </span>
+                                                        </div>
+                                                        
                                                         <p className="text-sm text-slate-500">
                                                             Rs. {item.unit_price} each
                                                         </p>
