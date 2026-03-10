@@ -109,7 +109,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
                     <div className="space-y-1">
                         <label className="text-sm font-semibold text-slate-600 flex items-center gap-2">
                             <DoorOpen size={16} className="text-status-confirmed" />
-                            Room ID
+                            Room Number
                         </label>
                         <input
                             type="number"
