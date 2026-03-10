@@ -57,7 +57,7 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
             console.error('Error fetching cart:', err);
             setError('Failed to load cart items');
         } finally {
-            setLoading(false);
+            setLoading(false);  
         }
     };
 
@@ -101,7 +101,7 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
             };
 
             // Create the order
-            const createdOrder = await orderService.createOrder(user.business_id, orderPayload);
+            await orderService.createOrder(user.business_id, orderPayload);
 
             const foodItemIds = cartItems.map(item => item.food_item_id);
 
@@ -115,7 +115,7 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
 
             // Close popup and navigate to order details
             onClose();
-            navigate(`/orders/${createdOrder.id}`);
+            navigate('cafe-orders');
         } catch (err: any) {
             console.error('Error creating order:', err);
             setError(err.message || 'Failed to create order');

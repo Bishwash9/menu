@@ -22,7 +22,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
 
     const [formData, setFormData] = useState({
         room_number: '',
-        guest_id: '',
+        guest_name: '',
         check_in: '',
         check_out: '',
     });
@@ -61,7 +61,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
 
     const payload: CreateBookingRequest = {
         room_number: Number(formData.room_number),
-        guest_id: Number(formData.guest_id),
+        guest_name: formData.guest_name,
         check_in: checkInDate.toISOString(),
         check_out: checkOutDate.toISOString(),
     };
@@ -74,7 +74,7 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
         onClose();
 
         //reset form data
-        setFormData({room_number: '', guest_id: '', check_in: '', check_out: ''});
+        setFormData({room_number: '', guest_name: '', check_in: '', check_out: ''});
 
     } catch (err) {
         setError('Failed to create booking');
@@ -122,20 +122,19 @@ export const AddBookingModal: React.FC<AddBookingModalProps> = ({
                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20"
                         />
                     </div>
-                    {/* Guest ID */}
+                    {/* Guest Name */}
                     <div className="space-y-1">
                         <label className="text-sm font-semibold text-slate-600 flex items-center gap-2">
                             <User size={16} className="text-status-confirmed" />
-                            Guest ID
+                            Guest Name
                         </label>
                         <input
-                            type="number"
-                            name="guest_id"
-                            value={formData.guest_id}
+                            type="text"
+                            name="guest_name"
+                            value={formData.guest_name}
                             onChange={handleChange}
                             required
-                            min={1}
-                            placeholder="Enter guest ID"
+                            placeholder="Enter guest name"
                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002366]/20"
                         />
                     </div>
