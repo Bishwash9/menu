@@ -32,7 +32,7 @@ function StaffDashboardContent() {
 
     const roomStats = {
         available: rooms.filter(r => r.status === 'Available').length,
-        occupied: rooms.filter(r => r.status === 'Occupied').length,
+        booked: rooms.filter(r => r.status === 'Booked').length,
         cleaning: rooms.filter(r => r.status === 'Cleaning').length,
         maintenance: rooms.filter(r => r.status === 'Maintenance').length,
     };
@@ -188,7 +188,7 @@ function StaffDashboardContent() {
                         <h3 className="text-[0.9vw] font-normal text-slate-400 uppercase tracking-widest mb-[2vh]">Inventory</h3>
                         <div className="flex-1 flex flex-col gap-[1vh] justify-center">
                             <SmallInventoryItem label="Total Rooms" value={rooms.length} color="slate" />
-                            <SmallInventoryItem label="Occupied" value={roomStats.occupied} color="royal" />
+                            <SmallInventoryItem label="Booked" value={roomStats.booked} color="royal" />
                             <SmallInventoryItem label="Cleaning" value={roomStats.cleaning} color="purple" />
                             <SmallInventoryItem label="Maintenance" value={roomStats.maintenance} color="orange" />
                         </div>

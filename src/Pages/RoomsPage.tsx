@@ -19,7 +19,7 @@ const RoomsPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-    const [roomStatusFilter, setRoomStatusFilter] = useState<'All' | 'Available' | 'Occupied' | 'Cleaning' | 'Maintenance'>('All');
+    const [roomStatusFilter, setRoomStatusFilter] = useState<'All' | 'Available' | 'Booked' | 'Cleaning' | 'Maintenance'>('All');
 
     // Popup state
     const [showCartReview, setShowCartReview] = useState(false);
@@ -64,7 +64,7 @@ const RoomsPage: React.FC = () => {
     const stats: RoomStats = {
         totalRooms: rooms.length,
         available: rooms.filter(r => r.status_name === 'Available').length,
-        occupied: rooms.filter(r => r.status_name === 'Occupied').length,
+        booked: rooms.filter(r => r.status_name === 'Booked').length,
         cleaning: rooms.filter(r => r.status_name === 'Cleaning').length,
         maintenance: rooms.filter(r => r.status_name === 'Maintenance').length,
     };
@@ -120,7 +120,7 @@ const RoomsPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div className="flex gap-3 flex-wrap w-full justify-between">
                     <div className="flex gap-2 flex-wrap">
-                        {['All', 'Available', 'Occupied', 'Cleaning', 'Maintenance'].map(status => (
+                        {['All', 'Available', 'Booked', 'Cleaning', 'Maintenance'].map(status => (
                             <button
                                 key={status}
                                 onClick={() => setRoomStatusFilter(status as any)}
@@ -136,7 +136,7 @@ const RoomsPage: React.FC = () => {
                     </div>
                     <button
                         onClick={handleAddRoom}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#b8962e] transition-colors shadow-sm"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-accent text-white rounded-lg font-medium hover:bg-accent transition-colors shadow-sm"
                     >
                         <Plus size={18} />
                         Add Room
@@ -164,8 +164,8 @@ const RoomsPage: React.FC = () => {
                     <RoomStatCard
                     title="Total Rooms"
                     value={stats.totalRooms}
-                    icon={<BedDouble size={24} className="text-[#002366]" />}
-                    iconBgColor="bg-[#002366]/10"
+                    icon={<BedDouble size={24} className="text-primary" />}
+                    iconBgColor="bg-primary/10"
                 />
                 <RoomStatCard
                     title="Available"
@@ -175,8 +175,8 @@ const RoomsPage: React.FC = () => {
                     valueColor="text-green-600"
                 />
                 <RoomStatCard
-                    title="Occupied"
-                    value={stats.occupied}
+                    title="Booked"
+                    value={stats.booked}
                     icon={<Users size={24} className="text-blue-600" />}
                     iconBgColor="bg-blue-100"
                     valueColor="text-blue-600"

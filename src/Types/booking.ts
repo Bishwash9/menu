@@ -18,7 +18,7 @@ export interface Booking {
 
 
 export interface CreateBookingRequest {
-    room_number: number;   
+    room_number: number;
     guest_name: string;
     check_in: string;
     check_out: string;

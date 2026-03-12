@@ -210,7 +210,8 @@ const TablesPage: React.FC = () => {
                         table={table}
                         onEdit={role === 'admin' ? handleEditTable : undefined}
                         onDelete={role === 'admin' ? handleDeleteTable : undefined}
-                        onClick={handleTableClick}
+                        onView={handleTableClick}
+                        
                     />
                 ))}
             </div>

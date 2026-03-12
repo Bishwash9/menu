@@ -98,7 +98,7 @@ const CafeOrdersPage: React.FC = () => {
                 <CafeStatCard
                     title="Today's Revenue"
                     value={`Rs. ${stats.todayRevenue.toFixed(2)}`}
-                    icon={<IconCurrencyRupeeNepalese size={24} className="text-[#D4AF37]" />}
+                    icon={<IconCurrencyRupeeNepalese size={24} className="text-accent" />}
                     iconBgColor="bg-[#D4AF37]/20"
                 />
                 <CafeStatCard

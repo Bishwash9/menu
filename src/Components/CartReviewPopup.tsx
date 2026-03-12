@@ -115,7 +115,7 @@ const CartReviewPopup: React.FC<CartReviewPopupProps> = ({ target, identifier, o
 
             // Close popup and navigate to order details
             onClose();
-            navigate('cafe-orders');
+            navigate('/cafe-orders');
         } catch (err: any) {
             console.error('Error creating order:', err);
             setError(err.message || 'Failed to create order');
