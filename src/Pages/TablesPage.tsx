@@ -97,19 +97,32 @@ const TablesPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteTable = (tableId: number) => {
-        setTables(tables.filter(t => t.id !== tableId));
+    const handleDeleteTable = async (tableId: number) => {
+        if (!window.confirm('Are you sure you want to delete this table?'))
+            return;
+
+        try {
+            const businessId = user?.business_id;
+            if (businessId) {
+                await tableService.deleteTable(businessId, tableId);
+                await fetchTables();
+            }
+        } catch (error) {
+            console.error('Failed to delete table:', error);
+            alert('Failed to delete table. Please try again.');
+        }
     };
 
     const handleSaveTable = async (tableData: Table) => {
         try {
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
             const businessId = userData.business_id;
-
             if (businessId) {
                 if (modalMode === 'add') {
-                    const newTable = await tableService.createTable(businessId, tableData);
-                    setTables([...tables, newTable]);
+                    await tableService.createTable(businessId, tableData);
+
+
+                    await fetchTables();
                 }
             }
             setIsModalOpen(false);
@@ -130,8 +143,8 @@ const TablesPage: React.FC = () => {
 
                     {role === 'admin' && (
                         <button
-                         onClick={() => {setModalMode('add'); setSelectedTable(null); setIsModalOpen(true);}}
-                         className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-colors">
+                            onClick={() => { setModalMode('add'); setSelectedTable(null); setIsModalOpen(true); }}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-colors">
 
                             + Add Table
 
@@ -145,11 +158,10 @@ const TablesPage: React.FC = () => {
             <div className="flex flex-wrap gap-2 mb-4">
                 <button
                     onClick={() => setSelectedLocation('All')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        selectedLocation === 'All'
-                            ? 'bg-[#002366] text-white shadow-md'
-                            : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                    }`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedLocation === 'All'
+                        ? 'bg-[#002366] text-white shadow-md'
+                        : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
+                        }`}
                 >
                     All
                 </button>
@@ -157,11 +169,10 @@ const TablesPage: React.FC = () => {
                     <button
                         key={location}
                         onClick={() => setSelectedLocation(location)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                            selectedLocation === location
-                                ? 'bg-[#002366] text-white shadow-md'
-                                : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
-                        }`}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedLocation === location
+                            ? 'bg-[#002366] text-white shadow-md'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:border-[#002366]'
+                            }`}
                     >
                         {location}
                     </button>
@@ -182,39 +193,43 @@ const TablesPage: React.FC = () => {
                 </div>
             )}
 
-            {/* Status Legend */}
-            <div className="flex flex-wrap items-center gap-6 mb-6">
-                <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-                    <span className="text-sm text-slate-600">Available ({stats.available})</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
-                    <span className="text-sm text-slate-600">Occupied ({stats.occupied})</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 bg-orange-500 rounded-full"></span>
-                    <span className="text-sm text-slate-600">Reserved ({stats.reserved})</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 bg-red-500 rounded-full"></span>
-                    <span className="text-sm text-slate-600">Unavailable ({stats.unavailable})</span>
-                </div>
-            </div>
+            
+            {!loading && !error && (
+                <>
+                    {/* Status Legend */}
+                    <div className="flex flex-wrap items-center gap-6 mb-6">
+                        <div className="flex items-center gap-2">
+                            <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                            <span className="text-sm text-slate-600">Available ({stats.available})</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <span className="text-sm text-slate-600">Occupied ({stats.occupied})</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="w-3 h-3 bg-orange-500 rounded-full"></span>
+                            <span className="text-sm text-slate-600">Reserved ({stats.reserved})</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span className="text-sm text-slate-600">Unavailable ({stats.unavailable})</span>
+                        </div>
+                    </div>
 
-            {/* Tables Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {filteredTables.map(table => (
-                    <TableCard
-                        key={table.id}
-                        table={table}
-                        onEdit={role === 'admin' ? handleEditTable : undefined}
-                        onDelete={role === 'admin' ? handleDeleteTable : undefined}
-                        onView={handleTableClick}
-                        
-                    />
-                ))}
-            </div>
+                    {/* Tables Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                        {filteredTables.map(table => (
+                            <TableCard
+                                key={table.id}
+                                table={table}
+                                onEdit={role === 'admin' ? handleEditTable : undefined}
+                                onDelete={role === 'admin' ? handleDeleteTable : undefined}
+                                onView={handleTableClick}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
 
             {/* Cart Review Popup */}
             {showCartReview && selectedTable && (

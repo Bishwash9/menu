@@ -1,6 +1,6 @@
 import type { Room, RoomStatus, RoomType, FloorType } from './Types';
 
-export const ROOM_STATUSES: RoomStatus[] = ['Available', 'Occupied', 'Cleaning', 'Maintenance'];
+export const ROOM_STATUSES: RoomStatus[] = ['Available', 'Booked', 'Cleaning', 'Maintenance'];
 export const ROOM_TYPES: RoomType[] = ['Single', 'Double', 'Suite', 'Deluxe', 'Family'];
 export const FLOORS: FloorType[] = ['1st floor', '2nd floor', '3rd floor', '4th floor'];
 export const AMENITIES = ['TV', 'WiFi', 'AC', 'Mini Bar', 'Balcony', 'Sea View', 'Room Service', 'Safe'];
@@ -21,7 +21,7 @@ export const initialRooms: Room[] = [
         roomNumber: '102',
         type: 'Double',
         floor: '1st floor',
-        status: 'Occupied',
+        status: 'Booked',
         price: 150,
         amenities: ['TV', 'WiFi', 'AC', 'Mini Bar'],
         capacity: 2,

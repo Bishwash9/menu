@@ -80,9 +80,9 @@ export const TableCard: React.FC<TableCardProps> = ({
                         <button
                             onClick={(e) => { 
                                 e.stopPropagation();
-                                if (confirm(`Delete table ${table.table_number}?`)) {
-                                    onDelete?.(table.id);
-                                }
+                                
+                                onDelete?.(table.id);
+                                
                                 setShowMenu(false); 
                             }}
                             className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"

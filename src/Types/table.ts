@@ -12,6 +12,13 @@ export interface Table {
     seats: number;
 }
 
+export interface CreateTableRequest {
+    business_id: number;
+    table_number: number;
+    location: string;
+    status_id: number;
+}
+
 export interface TableResponse {
     data: Table[];
 }

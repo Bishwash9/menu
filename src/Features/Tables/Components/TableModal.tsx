@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import type { Table } from '../../../Types/table';
+import { useAuth } from '../../../Context/AuthContext';
 
 // These should match your Backend's expected strings
 const LOCATIONS = ['Main Hall', 'Garden', 'Rooftop', 'Private'];
 const STATUSES = ['Available', 'Occupied', 'Reserved', 'Cleaning'];
+
+
+
+const STATUS_MAP : Record<string, number> ={
+    'Available': 1,
+    'Occupied': 2,
+    'Reserved': 3,
+    'Cleaning': 4,
+    'Unavailable': 5
+}
 
 interface TableModalProps {
     isOpen: boolean;
@@ -23,6 +34,7 @@ export const TableModal: React.FC<TableModalProps> = ({
     mode,
 }) => {
     const [loading, setLoading] = useState(false);
+    const { user } = useAuth();
     const [formData, setFormData] = useState({
         table_number: '',
         location: 'Main Hall',
@@ -50,25 +62,25 @@ export const TableModal: React.FC<TableModalProps> = ({
     }, [table, mode, isOpen]);
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-
-        try {
-            // Prepare payload
-            const payload = {
-                ...formData,
-                table_number: parseInt(formData.table_number),
-                id: table?.id // Include ID if we are editing
-            };
-
-            await onSave(payload);
-            onClose(); // Only close on success
-        } catch (error) {
-            console.error("Submission failed:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    e.preventDefault();
+    setLoading(true);
+    try {
+        // Get business_id from auth context
+        const business_id = user?.business_id;
+        const payload = {
+            business_id: business_id,
+            table_number: parseInt(formData.table_number),
+            location: formData.location,
+            status_id: STATUS_MAP[formData.status_name] || 1
+        };
+        await onSave(payload);
+        onClose();
+    } catch (error) {
+        console.error("Submission failed:", error);
+    } finally {
+        setLoading(false);
+    }
+};
 
     if (!isOpen) return null;
 
@@ -124,20 +136,7 @@ export const TableModal: React.FC<TableModalProps> = ({
                             </select>
                         </div>
 
-                        {/* Capacity */}
-                        <div>
-                            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5 ml-1">
-                                Seats
-                            </label>
-                            <input
-                                type="number"
-                                value={formData.seats}
-                                onChange={(e) => setFormData({ ...formData, seats: Number(e.target.value) })}
-                                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#002366]/10 focus:border-[#002366]"
-                                min="1"
-                                required
-                            />
-                        </div>
+                        
                     </div>
 
                     {/* Status Selection */}

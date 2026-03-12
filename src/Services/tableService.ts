@@ -33,5 +33,12 @@ export const tableService = {
         });
 
         return response.data || response;
+    },
+
+    deleteTable: async (businessId: number, tableId: any) => {
+        const response = await apiClient(`table/b${businessId}/t${tableId}/`, {
+            method: 'DELETE'
+        });
+        return response.data || response;
     }
 }
