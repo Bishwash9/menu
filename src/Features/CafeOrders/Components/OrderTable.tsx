@@ -133,7 +133,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                                         <td className="px-4 py-3 text-sm font-medium text-slate-900">#{order.order_number}</td>
                                         <td className="px-4 py-3 text-sm text-slate-600">{order.order_type_name}</td>
                                         <td className="px-4 py-3 text-sm text-slate-600">
-                                            {order.is_room_order ? `Room ${order.room_id}` : `Table ${order.table_number || order.table_id}`}
+                                            {order.is_room_order ? `Room ${order.room_number}` : `Table ${order.table_number || order.table_id}`}
                                         </td>
                                         <td className="px-4 py-3 text-sm text-slate-600">{order.items.length} items</td>
                                         <td className="px-4 py-3 text-sm font-semibold text-slate-900">Rs. {parseFloat(order.total_amount).toFixed(2)}</td>

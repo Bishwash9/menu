@@ -14,6 +14,7 @@ export interface Order{
     table_id: number | null;
     table_number?: number | null;
     room_id: number | null;
+    room_number?: string | null;
     is_room_order: boolean;
     guest_id: number | null;
     order_type_id: number;

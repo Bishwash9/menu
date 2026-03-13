@@ -5,7 +5,7 @@ export {RoomStatCard} from './Components/RoomStatCard';
 export {RoomModal} from './Components/RoomModal';
 export {RoomCard} from './Components/RoomCard';
 export {RoomContent} from './Components/RoomContent';
-export {ROOM_STATUSES,ROOM_TYPES,FLOORS,AMENITIES} from './data'
+export { ROOM_STATUSES, ROOM_TYPES, FLOORS, AMENITIES} from './data'
 
 
 

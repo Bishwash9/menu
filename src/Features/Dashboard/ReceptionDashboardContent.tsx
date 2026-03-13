@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import Banner from '@assets/Banner.svg';
+import { roomService } from '../../Services/roomService';
+import { bookingService } from '../../Services/bookingService';
+import { useAuth } from '../../Context/AuthContext';
 import {
     BedDouble,
     CalendarCheck,
@@ -12,29 +15,49 @@ import {
     AlertCircle,
     ChevronRight
 } from 'lucide-react';
-import { initialRooms } from '../Rooms/data';
 
-// Mock bookings for front-desk only view
-const mockBookings = [
-    { id: 'BK001', guestName: 'Alice Thompson', room: '101', type: 'Single', checkIn: 'Today', status: 'Confirmed' },
-    { id: 'BK002', guestName: 'Bob Harrison', room: '202', type: 'Deluxe', checkIn: 'Today', status: 'Arrived' },
-    { id: 'BK003', guestName: 'Charlie Davis', room: '301', type: 'Suite', checkOut: 'Today', status: 'Stayed' },
-];
+
+
+// Staff Dashboard view
 
 function StaffDashboardContent() {
     const [currentTime, setCurrentTime] = useState(new Date());
-    const [rooms] = useState(initialRooms);
+    const { user } = useAuth();
+    const [rooms, setRooms] = useState<any[]>([]);
+    const [bookings, setBookings] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
         return () => clearInterval(timer);
     }, []);
 
+    useEffect(() => {
+        const loadData = async () => {
+            if (!user?.business_id) return
+            try {
+                setLoading(true);
+                const [roomsData, bookingsData] = await Promise.all([
+                    roomService.getRooms(user.business_id),
+                    bookingService.getBookings(user.business_id)
+                ])
+                setRooms(roomsData);
+                setBookings(bookingsData);
+            } catch (error) {
+                console.error('Error loading data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadData();
+    }, [user?.business_id]);
+
     const roomStats = {
-        available: rooms.filter(r => r.status === 'Available').length,
-        booked: rooms.filter(r => r.status === 'Booked').length,
-        cleaning: rooms.filter(r => r.status === 'Cleaning').length,
-        maintenance: rooms.filter(r => r.status === 'Maintenance').length,
+        available: rooms.filter(r => r.status_name === 'Available').length,
+        booked: rooms.filter(r => r.status_name === 'Occupied' || r.status_name === 'Booked').length,
+        cleaning: rooms.filter(r => r.status_name === 'Cleaning').length,
+        maintenance: rooms.filter(r => r.status_name === 'Maintenance').length,
     };
 
     const formatDate = (date: Date) => {
@@ -53,6 +76,14 @@ function StaffDashboardContent() {
             hour12: true
         });
     };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-slate-50">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full h-[calc(100vh-3.5rem)] flex flex-col bg-dashboard-bg overflow-hidden font-light">
@@ -139,16 +170,16 @@ function StaffDashboardContent() {
                         </div>
 
                         <div className="flex-1 overflow-y-auto px-[2vw] py-[2vh] space-y-[1vh]">
-                            {mockBookings.map((booking) => (
+                            {bookings.map((booking) => (
                                 <div key={booking.id} className="flex items-center justify-between p-[1.2vw] rounded-[0.8vw] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer group">
                                     <div className="flex items-center gap-[1.5vw]">
                                         <div className="w-[3vw] h-[3vw] rounded-full bg-slate-100 text-dashboard-primary flex items-center justify-center font-light text-[1.1vw]">
-                                            {booking.guestName.charAt(0)}
+                                            {booking.guest_name.charAt(0)}
                                         </div>
                                         <div>
-                                            <p className="text-[1vw] font-normal text-slate-800 leading-tight">{booking.guestName}</p>
+                                            <p className="text-[1vw] font-normal text-slate-800 leading-tight">{booking.guest_name}</p>
                                             <p className="text-[0.8vw] text-slate-400 font-light mt-[0.2vh]">
-                                                Room {booking.room} • {booking.type}
+                                                Room {booking.room_number_display} • {booking.room_type_name}
                                             </p>
                                         </div>
                                     </div>
@@ -156,8 +187,8 @@ function StaffDashboardContent() {
                                     <div className="flex items-center gap-[2vw]">
                                         <div className="text-right">
                                             <span className={`text-[0.6vw] font-normal px-[0.7vw] py-[0.3vh] rounded-full uppercase
-                                                ${booking.status === 'Arrived' ? 'bg-green-50 text-green-600' : 'bg-blue-50 text-blue-600'}`}>
-                                                {booking.status}
+                                                ${booking.status_name === 'Arrived' ? 'bg-green-50 text-green-600' : 'bg-blue-50 text-blue-600'}`}>
+                                                {booking.status_name}
                                             </span>
                                             <p className="text-[0.6vw] text-slate-300 font-light mt-[0.3vh]">#{booking.id}</p>
                                         </div>
@@ -225,8 +256,8 @@ function StatusCard({ title, value, icon, color }: { title: string, value: numbe
     };
 
     return (
-        
-<div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex justify-between items-center gap-[1.2vw] overflow-hidden">
+
+        <div className="bg-white rounded-[1vw] p-[1.5vw] shadow-sm border border-slate-100 hover:shadow-md transition-all group flex justify-between items-center gap-[1.2vw] overflow-hidden">
             {/* ICON ON THE LEFT */}
             <div className={`p-[0.8vw] rounded-xl shrink-0 ${colors[color] || colors.royal} transition-all`}>
                 {icon}
@@ -236,7 +267,7 @@ function StatusCard({ title, value, icon, color }: { title: string, value: numbe
                 <p className="text-slate-400 text-[0.8vw] font-light uppercase tracking-wider mb-[0.2vh]">
                     {title}
                 </p>
-                
+
                 <h3 className="text-[clamp(0.75rem,1.2vw,1.8rem)] font-light text-slate-700 leading-none tabular-nums break-all">
                     {value}
                 </h3>
